@@ -7,7 +7,7 @@ GO
 --не включая индексы, ограничения и триггеры.
 
 CREATE TABLE [dbo].[StateProvince](
-	[StateProvinceID] [int] IDENTITY(1,1) NOT NULL,
+	[StateProvinceID] [int] NOT NULL,
 	[StateProvinceCode] [nchar](3) NOT NULL,
 	[CountryRegionCode] [nvarchar](3) NOT NULL,
 	[IsOnlyStateProvinceFlag] [dbo].[Flag] NOT NULL,
@@ -40,19 +40,20 @@ CREATE TABLE [dbo].[StateProvince](
  --5. Заполните новую таблицу данными из Person.StateProvince. 
  --Выберите для вставки только те данные, где имя штата/государства совпадает с именем страны/региона в таблице CountryRegion.
 
- SET IDENTITY_INSERT dbo.StateProvince ON
  GO
- INSERT INTO dbo.StateProvince (StateProvinceID, StateProvinceCode, CountryRegionCode, IsOnlyStateProvinceFlag, Name, TerritoryID, ModifiedDate)
- SELECT  sp.StateProvinceID, sp.StateProvinceCode, sp.CountryRegionCode, sp.IsOnlyStateProvinceFlag, sp.Name, sp.TerritoryID, sp.ModifiedDate
- FROM Person.StateProvince AS sp INNER JOIN Person.CountryRegion as cr ON sp.CountryRegionCode = cr.CountryRegionCode
- WHERE sp.Name = cr.Name
+ INSERT INTO dbo.StateProvince (StateProvinceID, StateProvinceCode, CountryRegionCode, IsOnlyStateProvinceFlag, Name, TerritoryID)
+ SELECT  sp.StateProvinceID, sp.StateProvinceCode, sp.CountryRegionCode, sp.IsOnlyStateProvinceFlag, sp.Name, sp.TerritoryID
+   FROM Person.StateProvince AS sp 
+        INNER JOIN Person.CountryRegion as cr 
+		ON sp.CountryRegionCode = cr.CountryRegionCode
+  WHERE sp.Name = cr.Name
  GO
 
 --6. Удалите поле IsOnlyStateProvinceFlag из таблицы dbo.StateProvince. Создайте поле Population типа INT, поддерживающее NULL-значения.
 
 ALTER TABLE dbo.StateProvince
-DROP COLUMN IsOnlyStateProvinceFlag
+ DROP COLUMN IsOnlyStateProvinceFlag
 GO
 ALTER TABLE dbo.StateProvince
-ADD Population INT NULL
+  ADD Population INT NULL
 GO
