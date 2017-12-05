@@ -35,20 +35,6 @@ SELECT e.BusinessEntityID, e.JobTitle, COUNT(eph.Rate) AS RateCount
 HAVING COUNT(eph.Rate) > 1
 GO
 
-	--Исправленный запрос 3. С учетом "Если сотрудник больше не работает в отделе — не учитывать такие данные."
-	--Запрос отображает количество изменений ставок работников при их работе в текущем отделе
-
-SELECT e.BusinessEntityID, e.JobTitle, COUNT(eph.Rate) AS RateCount 
-  FROM HumanResources.Employee AS e
-       INNER JOIN HumanResources.EmployeePayHistory AS eph 
-       ON e.BusinessEntityID = eph.BusinessEntityID
-       INNER JOIN HumanResources.EmployeeDepartmentHistory AS edh 
-       ON e.BusinessEntityID = edh.BusinessEntityID
- WHERE edh.EndDate IS NULL AND  edh.StartDate <= eph.RateChangeDate
- GROUP BY e.BusinessEntityID, e.JobTitle
-HAVING COUNT(eph.Rate) > 1
-GO
-
  --4.Вывести на экран количество сотрудников в каждом отделе. Назовите столбец, содержащий результат - EmployeeCount.
 
 SELECT  d.DepartmentID, d.Name, COUNT(edh.BusinessEntityID) AS EmployeeCount
@@ -111,7 +97,7 @@ set statistics time off;
 
 SELECT d.Name, 
        e.BusinessEntityID,
-	   MAX(eph.Rate) AS maxRate,
+	   eph.Rate AS Rate,
 	   MAX(eph.Rate) OVER (PARTITION BY d.Name) AS MaxInDepartment,
 	   DENSE_RANK() OVER (PARTITION BY d.Name ORDER BY eph.Rate) AS RateGroup
   FROM HumanResources.Department AS d 

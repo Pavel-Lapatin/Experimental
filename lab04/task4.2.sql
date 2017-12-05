@@ -41,8 +41,8 @@ CREATE TABLE [dbo].[StateProvince](
  --Выберите для вставки только те данные, где имя штата/государства совпадает с именем страны/региона в таблице CountryRegion.
 
  GO
- INSERT INTO dbo.StateProvince (StateProvinceID, StateProvinceCode, CountryRegionCode, IsOnlyStateProvinceFlag, Name, TerritoryID)
- SELECT  sp.StateProvinceID, sp.StateProvinceCode, sp.CountryRegionCode, sp.IsOnlyStateProvinceFlag, sp.Name, sp.TerritoryID
+ INSERT INTO dbo.StateProvince (StateProvinceID, StateProvinceCode, CountryRegionCode, IsOnlyStateProvinceFlag, Name, TerritoryID, ModifiedDate)
+ SELECT  sp.StateProvinceID, sp.StateProvinceCode, sp.CountryRegionCode, sp.IsOnlyStateProvinceFlag, sp.Name, sp.TerritoryID, sp.ModifiedDate
    FROM Person.StateProvince AS sp 
         INNER JOIN Person.CountryRegion as cr 
 		ON sp.CountryRegionCode = cr.CountryRegionCode

@@ -44,8 +44,8 @@ CREATE TABLE [dbo].[Person](
  --5. Заполните новую таблицу данными из Person.Person только для тех сотрудников, 
  --которые существуют в таблице HumanResources.Employee, исключив сотрудников из отдела Finance.
 
-INSERT INTO dbo.Person (BusinessEntityID, PersonType, NameStyle, FirstName, MiddleName, LastName, Suffix, EmailPromotion, ModifiedDate)
-SELECT p.BusinessEntityID, p.PersonType, p.NameStyle, p.FirstName, p.MiddleName, p.LastName, p.Suffix, p.EmailPromotion, p.ModifiedDate
+INSERT INTO dbo.Person (BusinessEntityID, PersonType, NameStyle, FirstName, MiddleName, LastName, Suffix, EmailPromotion, ModifiedDate, Title)
+SELECT p.BusinessEntityID, p.PersonType, p.NameStyle, p.FirstName, p.MiddleName, p.LastName, p.Suffix, p.EmailPromotion, p.ModifiedDate, p.Title
   FROM Person.Person AS p 
        INNER JOIN HumanResources.Employee as e 
 	   ON p.BusinessEntityID = e.BusinessEntityID
