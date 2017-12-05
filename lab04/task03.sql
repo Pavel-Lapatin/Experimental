@@ -106,24 +106,6 @@ SELECT e.BusinessEntityID,
 set statistics time off;
 
 
----------------------------------------Еще не исправил 3.6 в процессе--------------------------
---6. Вывести на экран почасовые ставки сотрудников, с указанием максимальной ставки для каждого отдела в столбце MaxInDepartment. 
---В рамках каждого отдела разбейте все ставки на группы таким образом, чтобы ставки с одинаковыми значениями входили в состав одной группы. 
-
-SELECT d.Name, 
-       t.BusinessEntityID, 
-	   t.maxRate,
-	   MAX(t.maxRate) OVER (PARTITION BY d.Name ORDER BY t.maxRate DESC) AS MaxInDepartment, 
-	   DENSE_RANK() OVER (PARTITION BY d.Name ORDER BY t.maxRate) AS RateGroup						
-  FROM HumanResources.Department AS d 
-       INNER JOIN HumanResources.EmployeeDepartmentHistory AS edh 
-	   ON d.DepartmentID = edh.DepartmentID
-	   INNER JOIN (SELECT  HumanResources.Employee.BusinessEntityID, MAX(HumanResources.EmployeePayHistory.Rate) AS maxRate
-					FROM  HumanResources.Employee INNER JOIN HumanResources.EmployeePayHistory ON  HumanResources.EmployeePayHistory.BusinessEntityID = HumanResources.Employee.BusinessEntityID
-					GROUP BY HumanResources.Employee.BusinessEntityID) AS t ON t.BusinessEntityID = edh.BusinessEntityID 												 
- GROUP BY d.Name, t.BusinessEntityID, t.maxRate
- ORDER BY d.Name, maxRate
-GO
 --6. Вывести на экран почасовые ставки сотрудников, с указанием максимальной ставки для каждого отдела в столбце MaxInDepartment. 
 --В рамках каждого отдела разбейте все ставки на группы таким образом, чтобы ставки с одинаковыми значениями входили в состав одной группы. 
 
@@ -138,12 +120,8 @@ SELECT d.Name,
 	   INNER JOIN HumanResources.Employee AS e
 	   ON e.BusinessEntityID = edh.BusinessEntityID
 	   INNER JOIN HumanResources.EmployeePayHistory As eph
-	   ON eph.BusinessEntityID = e.BusinessEntityID		
-	   WHERE (eph.RateChangeDate >= edh.StartDate AND eph.RateChangeDate <= ISNULL(edh.EndDate, GETDATE())) 
-		  OR eph.RateChangeDate >= (SELECT  MAX(eph1.RateChangeDate)
-									 FROM HumanResources.EmployeePayHistory As eph1
-						            WHERE eph1.RateChangeDate < eph.RateChangeDate AND eph1.BusinessEntityID = eph.BusinessEntityID
-									ORDER BY eph1.RateChangeDate DESC)
+	   ON eph.BusinessEntityID = e.BusinessEntityID	
+	   WHERE edh.EndDate IS NULL	
 	   GROUP BY e.BusinessEntityID, d.Name, eph.Rate
 GO
 ---------------------------------------------------------------------------------------------------------------
