@@ -66,13 +66,14 @@ SELECT p.BusinessEntityID,
 GO
  --4. Обновите поле Salutation в таблице dbo.Person значением, которое равно объединению полей Title и FirstName из той же таблицы. 
  --В качестве разделителя использовать пробел. Например, для Dana Burnell Salutation будет выглядеть как Ms. Dana.
-UPDATE p1
-   SET p1.Title = p2.Title
-  FROM dbo.Person AS p1
-        INNER JOIN dbo.Person_New as p2 ON p1.PersonId = p2.PersonId
 
 UPDATE dbo.Person
-   SET Salutation = CONCAT(dbo.Person.Title, ' ', dbo.Person.FirstName) 
+   SET Salutation = LTRIM(CONCAT(dbo.Person.Title, ' ', dbo.Person.FirstName))  
+GO
+
+--or--------------------
+UPDATE dbo.Person
+   SET Salutation = IIF(dbo.Person.Title IS NULL, dbo.Person.FirstName, dbo.Person.Title+' '+dbo.Person.FirstName)  
 GO
 
 --5. Удалите данные из dbo.Person, где значение поля Salutation превысило 10 символов.
