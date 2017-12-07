@@ -1,0 +1,7 @@
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\bin\Debug\QueueDemonstrate.exe.config
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\bin\Debug\QueueDemonstrate.exe
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\bin\Debug\QueueDemonstrate.pdb
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\obj\Debug\QueueDemonstrate.csprojResolveAssemblyReference.cache
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\obj\Debug\QueueDemonstrate.csproj.CoreCompileInputs.cache
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\obj\Debug\QueueDemonstrate.exe
+C:\Users\p.lapatsin\source\repos\QueueDemonstrate\QueueDemonstrate\obj\Debug\QueueDemonstrate.pdb
