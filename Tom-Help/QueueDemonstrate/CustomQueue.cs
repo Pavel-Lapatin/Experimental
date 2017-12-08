@@ -10,9 +10,8 @@ namespace QueueDemonstrate
 {
     public class CustomQueue<T> : IQueue<T> where T : class
     {
-        private QueueElement<T> FirstElemetn;
-        private QueueElement<T> LastElement;
-        private QueueElement<T> CurrentElement { get; set; }
+        private QueueElement<T> firstElemetn;
+        private QueueElement<T> lastElement;
 
       
         public void Enqueue(T element)
@@ -20,29 +19,28 @@ namespace QueueDemonstrate
             QueueElement<T> currentElement = new QueueElement<T>();
             currentElement.Current = element;
             currentElement.Parent = null;
-            if (FirstElemetn == null)
+            if (firstElemetn == null)
             {
-                FirstElemetn = currentElement;
-                LastElement = currentElement;
+                firstElemetn = currentElement;
+                lastElement = currentElement;
             }
             else
             {
-                FirstElemetn.Parent = currentElement;
-                currentElement.Previous = FirstElemetn;
-                FirstElemetn = currentElement;
+                firstElemetn.Parent = currentElement;
+                firstElemetn = currentElement;
             }
         }
 
         public T Dequeue()
         {
-            QueueElement<T> currentElement = LastElement;
-            LastElement = currentElement.Parent;
+            QueueElement<T> currentElement = lastElement;
+            lastElement = currentElement.Parent;
             return currentElement.Current;
         }
 
         public T Peek()
         {
-            return LastElement.Current;
+            return lastElement.Current;
         }
     }
 }

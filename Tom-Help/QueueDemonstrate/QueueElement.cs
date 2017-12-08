@@ -8,8 +8,7 @@ namespace QueueDemonstrate
 {
     public class QueueElement<T> where T : class
     {
-        public T Current { get; set; }
+        public T Value { get; set; }
         public QueueElement<T> Parent { get; set; }
-        public QueueElement<T> Previous { get; set; }
     }
 }
