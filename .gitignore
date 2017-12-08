@@ -1,1 +1,8 @@
-*.bak
+**/*.bak
+**/packages
+**/bin
+**/obj
+**/.vs
+**/*.dll
+**/*.exe
+**/*.log
