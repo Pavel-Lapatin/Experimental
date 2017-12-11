@@ -1,41 +1,67 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Resources;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.FileManeger.Controller;
+using NetMastery.FileManeger;
 
-namespace FileManager
+namespace NetMastery.FileManeger.ConsoleApp
 {
     internal static class CommandLineHelpers
     {
-        public static void AddCommands(CommandLineApplication  cmd, ResourceManager rm)
+        public static void AddCommands(CommandLineApplication cmd)
         {
+            var rm = new ResourceManager(typeof(EnglishLocalisation));
             cmd.Name = "ConspleArgs";
             cmd.Description = "File Manager";
             cmd.HelpOption(CommandLineNames.HelpOption);
-            //cmd.Command(CommandLineNames.LsCommand, x =>
-            //{
-            //    x.HelpOption(CommandLineNames.HelpOption);
-            //    x.OnExecute(() =>
-            //    {
-            //        Console.WriteLine();
-            //        return 0;
-            //    });
-            //});
+
             cmd.Command(CommandLineNames.LoginCommand, x =>
             {
                 x.HelpOption(CommandLineNames.HelpOption);
-                var login = x.Option(CommandLineNames.LoginOption, rm.GetString(), CommandOptionType.SingleValue);
-                var password = x.Option(CommandLineNames.PasswordOption, rm.GetString(), CommandOptionType.SingleValue);
+                var login = x.Option(CommandLineNames.LoginOption, rm.GetString("LoginOptionHelpNote"), CommandOptionType.SingleValue);
+                var password = x.Option(CommandLineNames.PasswordOption, rm.GetString("PasswordOtionHelpNote"), CommandOptionType.SingleValue);
                 x.OnExecute(() =>
                 {
-                    if (login == null || password == null)
+                    if (login.Value() == null || password.Value() == null)
                     {
-                        throw new NullReferenceException("Login or Password are required");
+                        throw new NullReferenceException();
                     }
-                    VerifyPassword(login, password);
+                    try
+                    {
+                        if (Program.AccountController.VerifyPassword(login.Value(), password.Value()))
+                        {
+                            Console.WriteLine(rm.GetString("WelcomeNote") + login.Value());
+                        }
+                        else
+                        {
+                            Console.WriteLine(rm.GetString("FailedAthenticationNote"));
+                        }
+                    }
+                    catch (NullReferenceException)
+                    {
+                        Console.WriteLine(rm.GetString("FailedAthenticationNote") + login);
+                    }
+                    Console.WriteLine();
+                    return 0;
+                });
+            });
+
+            cmd.Command(CommandLineNames.UserInfoCommand, x =>
+            {
+                x.HelpOption(CommandLineNames.HelpOption);
+                x.OnExecute(() =>
+                {
+                    if (Program.AccountController.CurrentUser == null)
+                    {
+                        throw new NullReferenceException();
+                    }
+                    else
+                    {
+                        Console.WriteLine();
+                        Console.WriteLine(rm.GetString("UserInfoCmdOutputLogin") + Program.AccountController.CurrentUser.Login);
+                        Console.WriteLine(rm.GetString("UserInfoCmdOutputCreationDate") + Program.AccountController.CurrentUser.Login);
+                        Console.WriteLine(rm.GetString("UserInfoCmdOutputStorageSize") + Program.AccountController.CurrentUser.Login);
+                    }
                     Console.WriteLine();
                     return 0;
                 });
@@ -43,8 +69,8 @@ namespace FileManager
 
 
 
-            
-            
+
+
         }
     }
 }

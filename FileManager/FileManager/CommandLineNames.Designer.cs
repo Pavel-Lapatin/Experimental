@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FileManager {
+namespace NetMastery.FileManeger.ConsoleApp {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FileManager {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FileManager.CommandLineNames", typeof(CommandLineNames).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.FileManeger.ConsoleApp.CommandLineNames", typeof(CommandLineNames).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -174,6 +174,15 @@ namespace FileManager {
         internal static string RemoveRoleCommand {
             get {
                 return ResourceManager.GetString("RemoveRoleCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to user info.
+        /// </summary>
+        internal static string UserInfoCommand {
+            get {
+                return ResourceManager.GetString("UserInfoCommand", resourceCulture);
             }
         }
         

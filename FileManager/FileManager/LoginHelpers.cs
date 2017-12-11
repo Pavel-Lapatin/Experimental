@@ -2,7 +2,7 @@
 using System.Security.Cryptography;
 
 
-namespace FileManager
+namespace NetMastery.FileManeger.ConsoleApp
 {
     internal static class LoginHelpers
     {

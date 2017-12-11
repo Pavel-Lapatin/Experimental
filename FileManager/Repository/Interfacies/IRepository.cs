@@ -6,6 +6,6 @@ namespace NetMastery.Lab05.FileManager.Repository
     {
         void AddItem(T item);
         IEnumerable<T> GetAll();
-
+        void ConfigureAutoMapper();
     }
 }

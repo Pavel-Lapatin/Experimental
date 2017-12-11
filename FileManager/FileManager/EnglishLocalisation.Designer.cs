@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace FileManager {
+namespace NetMastery.FileManeger.ConsoleApp {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace FileManager {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("FileManager.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.FileManeger.ConsoleApp.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,11 +61,74 @@ namespace FileManager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to Sorry, password is incorrect.
         /// </summary>
-        internal static string CommandFormatLs {
+        internal static string FailedAuthenticationNote {
             get {
-                return ResourceManager.GetString("CommandNameLs", resourceCulture);
+                return ResourceManager.GetString("FailedAuthenticationNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Sorry, trere is no user with login .
+        /// </summary>
+        internal static string FailedIdentificationNote {
+            get {
+                return ResourceManager.GetString("FailedIdentificationNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Login  is required.
+        /// </summary>
+        internal static string LoginOptionHelpNote {
+            get {
+                return ResourceManager.GetString("LoginOptionHelpNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Password is required.
+        /// </summary>
+        internal static string PasswordOptionHelpNote {
+            get {
+                return ResourceManager.GetString("PasswordOptionHelpNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to creation date: .
+        /// </summary>
+        internal static string UserInfoCmdOutputCreationDate {
+            get {
+                return ResourceManager.GetString("UserInfoCmdOutputCreationDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to login: .
+        /// </summary>
+        internal static string UserInfoCmdOutputLogin {
+            get {
+                return ResourceManager.GetString("UserInfoCmdOutputLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to storaged used: .
+        /// </summary>
+        internal static string UserInfoCmdOutputStorageSize {
+            get {
+                return ResourceManager.GetString("UserInfoCmdOutputStorageSize", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hi, .
+        /// </summary>
+        internal static string WelcomeNote {
+            get {
+                return ResourceManager.GetString("WelcomeNote", resourceCulture);
             }
         }
     }

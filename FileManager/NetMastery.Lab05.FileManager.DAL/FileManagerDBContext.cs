@@ -18,5 +18,12 @@ namespace NetMastery.Lab05.FileManager.DAL
 
         public DbSet<Account> Accounts { get; set; }
 
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Account>()
+                .HasRequired(c => new {c.Login, c.Password, c.CreationDate});
+            modelBuilder.Entity<Storage>()
+                .HasKey(c => c.)
+        }
     }
 }

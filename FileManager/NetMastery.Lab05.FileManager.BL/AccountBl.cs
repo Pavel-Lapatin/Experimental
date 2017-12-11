@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.BL
 {
-    public class Account
+    public class AccountBl
     {
         public string Login { get; set; }
-        public string Password { get; set; }
         public DateTime CreationDate { get; set; }
+
     }
 }

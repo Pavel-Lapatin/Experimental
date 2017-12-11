@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{288EB39E-009C-4839-87F5-FA5B20036103}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>FileManager</RootNamespace>
-    <AssemblyName>FileManager</AssemblyName>
+    <RootNamespace>NetMastery.FileManeger.ConsoleApp</RootNamespace>
+    <AssemblyName>NetMastery.FileManeger.ConsoleApp</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -55,13 +55,13 @@
       <DependentUpon>CommandLineNames.resx</DependentUpon>
     </Compile>
     <Compile Include="CommandLineOptions.cs" />
+    <Compile Include="Container.cs" />
     <Compile Include="EnglishLocalisation.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EnglishLocalisation.resx</DependentUpon>
     </Compile>
     <Compile Include="LoginHelpers.cs" />
-    <Compile Include="MapperConfiguration.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -78,6 +78,24 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.FileManeger.Controller.csproj">
+      <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
+      <Name>NetMastery.FileManeger.Controller</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.BL.csproj">
+      <Project>{c9cf9681-d861-4399-8695-53006f68b282}</Project>
+      <Name>NetMastery.Lab05.FileManager.BL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
+      <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>
+      <Name>NetMastery.Lab05.FileManager.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Repository\Repository.csproj">
+      <Project>{fa3e605f-49ae-483a-b31d-cab0705ace60}</Project>
+      <Name>Repository</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

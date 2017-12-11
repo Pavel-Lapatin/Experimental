@@ -48,7 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Entities\Account.cs" />
-    <Compile Include="Entities\Directory.cs" />
+    <Compile Include="Entities\Storage.cs" />
     <Compile Include="Entities\File.cs" />
     <Compile Include="Entities\FileType.cs" />
     <Compile Include="Entities\Rights.cs" />

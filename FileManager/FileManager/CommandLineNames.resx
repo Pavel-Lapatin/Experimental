@@ -167,4 +167,7 @@
     <value>-p|--password &lt;value&gt;</value>
     <comment>Input password for your account</comment>
   </data>
+  <data name="UserInfoCommand" xml:space="preserve">
+    <value>user info</value>
+  </data>
 </root>

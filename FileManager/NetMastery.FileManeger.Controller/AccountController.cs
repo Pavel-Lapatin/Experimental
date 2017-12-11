@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Security.Cryptography;
+using NetMastery.Lab05.FileManager.BL;
 using NetMastery.Lab05.FileManager.Repository;
 
 namespace NetMastery.FileManeger.Controller
 {
     public class AccountController
     {
+        public AccountBl CurrentUser { get; set; }
         private const int SaltByteSize = 8;
         private const int HashByteSize = 8; // to match the size of the PBKDF2-HMAC-SHA-1 hash 
         private const int Pbkdf2Iterations = 5000;
@@ -13,17 +15,23 @@ namespace NetMastery.FileManeger.Controller
         private const int SaltIndex = 1;
         private const int Pbkdf2Index = 2;
 
-        private IAccountRepository accountRepository;
+        private readonly IAccountRepository _accountRepository;
 
         public AccountController(IAccountRepository repository)
         {
-            accountRepository = repository;
+            _accountRepository = repository;
         }
 
         public bool VerifyPassword(string login, string password)
         {
-            var pwd = accountRepository.GetPasswordByLogin(login);
-            return ValidatePassword(password, login);
+            var account = _accountRepository.GetAccountByLogin(login);
+            if (account == null) throw new NullReferenceException();
+            if (ValidatePassword(password, _accountRepository.GetPasswordByLogin(login)))
+            {
+                CurrentUser = account;
+                return true;
+            }
+            return false;
         }
 
         private string HashPassword(string password)

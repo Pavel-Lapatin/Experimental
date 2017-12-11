@@ -7,8 +7,9 @@ using NetMastery.Lab05.FileManager.BL;
 
 namespace NetMastery.Lab05.FileManager.Repository
 {
-    public interface IAccountRepository : IRepository<Account>
+    public interface IAccountRepository : IRepository<AccountBl>
     {
         string GetPasswordByLogin(string login);
+        AccountBl GetAccountByLogin(string login);
     }
 }
