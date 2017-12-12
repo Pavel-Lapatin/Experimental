@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NetMastery.Lab05.FileManager.BL;
+﻿using NetMastery.Lab05.FileManager.DAL.Entities;
 
-namespace NetMastery.Lab05.FileManager.Repository
+namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IAccountRepository : IRepository<AccountBl>
+    public interface IAccountRepository : IRepository<Account>
     {
         string GetPasswordByLogin(string login);
-        AccountBl GetAccountByLogin(string login);
     }
 }

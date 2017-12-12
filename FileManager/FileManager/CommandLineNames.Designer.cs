@@ -70,6 +70,15 @@ namespace NetMastery.FileManeger.ConsoleApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cd.
+        /// </summary>
+        internal static string CdCommand {
+            get {
+                return ResourceManager.GetString("CdCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to copy.
         /// </summary>
         internal static string CopyCommand {
@@ -187,7 +196,7 @@ namespace NetMastery.FileManeger.ConsoleApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -u|--user &lt;value&gt;.
+        ///   Looks up a localized string similar to -u | --user &lt;value&gt;.
         /// </summary>
         internal static string userOption {
             get {

@@ -117,31 +117,10 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="FailedAuthenticationNote" xml:space="preserve">
-    <value>Sorry, password is incorrect</value>
+  <data name="Target" xml:space="preserve">
+    <value>H4sIAAAAAAAEAM1X227jNhB9L7D/IOhpF8iKtoMCbSDvwmvHhVE7CVbZfaelsUMsRaokldoo+mV96Cf1FzrU/eLYTpqihV9kaubMzJkb9dcff/ofdzF3HkFpJsXYHXoD1wERyoiJ7dhNzeb9D+7HD2++86+jeOd8LeUurRxqCj12H4xJrgjR4QPEVHsxC5XUcmO8UMaERpKMBoMfyXBIACFcxHIc/3MqDIsh+4N/p1KEkJiU8pWMgOviHN8EGapzQ2PQCQ1h7N6AWVFtQO29JV0PvvfmjMOKCroF5c0mS9eZcEbRrwD4xnWoENJQg15ffdEQGCXFNkjwgPL7fQIot6FcQxHNVS1+bmCDkQ2M1IolVJhqI+NnAg4vC6ZIV/1FfLsVk8jlNXJu9jbqjM+xOwlDiYlwna6tqylXVu40214GykB7BdiFc0rloiojrDb7u3CmKTepgrGA1CjKL5y7dM1Z+DPs7+U3EGORct4MBYPBd60DPLpTMgFl9p9h0wjQOrWIXIe09UkXoFI/oJtzsRDmcuQ6N+gMXXOoKqfBW2Ckgp9AgKIGojtqkAZM/CKCjPueFx2bS7llojSHtYpN6DoruluC2JqHsTvCrpuzHUTlQeHBF8GwZVHHqBQOeHjc6h3V+lepoiOG8fHfsDxVkPE2Q7ZK6/b5HmfDCTCf1OXcL3IcKIYyTENhqFGCs0/2JewOlT1OiKLydRFR2/0cPADTbiDtOrUz+eDxqt465HTlXj3oSD7pyolInhiJ/oomCWanMSKLEyfI5+P0ffD8URHnGCTUByZG5W1lCascqey8RdPo6ZwpbTCHdE1tyqZR3BM7mIwniC5Ndvjutn5Nf6lgn3OlkyOsTFUHtKZ2jtHG2MFZ4FD5Vg/Qnma2uSin6shQmUqexuLUoDqGVoyLJlBxdD5G3fxNmPr0fKR2MzfR2m/6iD7pEN1NL+nltzPMu/VyrOe6IpX1qvc6PeYX9X76btJrgFzEdZCqRxbZ4g/2WIqxZwW84Bc+5QzslCgFsC7ZBrTJ9x4O/OGoc6H5/1wuiNYRf+kNYyEi2I3d35zf//vFzqyHJ1f3M3dba5eLR6rCB6p62/wfruoS921Md+9eZf1G+Gxee/32F8NZe/XYWs07C/1dS3Q997Nexy9cuv1G90nzU8WfgWbbGsJ+uAgILYc1aCmzEBtZEo6hNT0qRTr5WIGhyD+dKMM2NDT4OgSts8vYV8pTFLmO1xAtxG1qktRMtIZ4zVvXSp8ct5/dLNo++7eJ/adfIwR0k9kSuhWfUsajyu/5gRJ6AsIWS9GH6BVeRhFuu6+QbqQ4E6igbwYJCNvF9xAnHMH0rQjoI7zEN7wgLmFLw305r58GOZ2INu3+jNGtorEuMGp9+/lN7Pf3h78BDyVdurEPAAA=</value>
   </data>
-  <data name="FailedIdentificationNote" xml:space="preserve">
-    <value>Sorry, trere is no user with login </value>
-  </data>
-  <data name="LoginNote" xml:space="preserve">
-    <value>Hi stranger. Please login for using this service.</value>
-  </data>
-  <data name="LoginOptionHelpNote" xml:space="preserve">
-    <value>Login  is required</value>
-  </data>
-  <data name="PasswordOptionHelpNote" xml:space="preserve">
-    <value>Password is required</value>
-  </data>
-  <data name="UserInfoCmdOutputCreationDate" xml:space="preserve">
-    <value>creation date: </value>
-  </data>
-  <data name="UserInfoCmdOutputLogin" xml:space="preserve">
-    <value>login: </value>
-  </data>
-  <data name="UserInfoCmdOutputStorageSize" xml:space="preserve">
-    <value>storaged used: </value>
-  </data>
-  <data name="WelcomeNote" xml:space="preserve">
-    <value>Hi, </value>
+  <data name="DefaultSchema" xml:space="preserve">
+    <value>dbo</value>
   </data>
 </root>

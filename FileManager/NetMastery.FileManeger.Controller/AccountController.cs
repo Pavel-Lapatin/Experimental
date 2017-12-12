@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Linq;
 using System.Security.Cryptography;
 using NetMastery.Lab05.FileManager.BL;
-using NetMastery.Lab05.FileManager.Repository;
+using NetMastery.Lab05.FileManager.DAL.Interfacies;
+
 
 namespace NetMastery.FileManeger.Controller
 {
@@ -24,11 +26,11 @@ namespace NetMastery.FileManeger.Controller
 
         public bool VerifyPassword(string login, string password)
         {
-            var account = _accountRepository.GetAccountByLogin(login);
+            var account = _accountRepository.Find(x => x.Login == login).FirstOrDefault();
             if (account == null) throw new NullReferenceException();
             if (ValidatePassword(password, _accountRepository.GetPasswordByLogin(login)))
             {
-                CurrentUser = account;
+                CurrentUser =  AutoMapper.Mapper.Instance.Map<AccountBl>(account);
                 return true;
             }
             return false;

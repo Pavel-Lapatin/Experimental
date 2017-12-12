@@ -151,7 +151,7 @@
     <value />
   </data>
   <data name="userOption" xml:space="preserve">
-    <value>-u|--user &lt;value&gt;</value>
+    <value>-u | --user &lt;value&gt;</value>
   </data>
   <data name="WhoAmICommand" xml:space="preserve">
     <value>whoami</value>
@@ -169,5 +169,8 @@
   </data>
   <data name="UserInfoCommand" xml:space="preserve">
     <value>user info</value>
+  </data>
+  <data name="CdCommand" xml:space="preserve">
+    <value>cd</value>
   </data>
 </root>

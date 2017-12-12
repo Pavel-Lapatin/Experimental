@@ -1,39 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using NetMastery.Lab05.FileManager.DAL;
+﻿using System.Linq;
 using NetMastery.Lab05.FileManager.DAL.Entities;
+using NetMastery.Lab05.FileManager.DAL.Interfacies;
 
-namespace NetMastery.Lab05.FileManager.Repository.Repository
+namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
     
-    public class AccountRepository : IAccountRepository
+    public class AccountRepository : Repository<Account>, IAccountRepository
     {
-        private readonly FileManagerDBContext _context = new FileManagerDBContext();
         
-        public void AddItem(BL.AccountBl item)
+        public AccountRepository(FileManagerDBContext context) : base(context)
         {
-
-        }
-
-        public IEnumerable<AccountBl> GetAll()
-        {
-            throw new NotImplementedException();
-        }
-
-        public void ConfigureAutoMapper()
-        {
-            
         }
 
         public string GetPasswordByLogin(string login)
         {
-            return _context.Accounts.FirstOrDefault(x => x.Login == login)?.Password;
-        }
-
-        public AccountBl GetAccountByLogin(string login)
-        {
-            return _mapper.Map<AccountBl>(_context.Accounts.FirstOrDefault(x => x.Login == login));
+            return ((FileManagerDBContext)Context).Accounts.FirstOrDefault(x => x.Login == login)?.Password;
         }
     }
 }

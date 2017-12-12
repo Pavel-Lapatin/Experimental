@@ -35,10 +35,17 @@
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.CommandLineUtils.1.1.1\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -83,9 +90,9 @@
       <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
       <Name>NetMastery.FileManeger.Controller</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.BL.csproj">
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.DTO.csproj">
       <Project>{c9cf9681-d861-4399-8695-53006f68b282}</Project>
-      <Name>NetMastery.Lab05.FileManager.BL</Name>
+      <Name>NetMastery.Lab05.FileManager.DTO</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>

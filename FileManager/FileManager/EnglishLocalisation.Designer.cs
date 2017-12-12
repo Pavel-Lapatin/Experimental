@@ -79,6 +79,15 @@ namespace NetMastery.FileManeger.ConsoleApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hi stranger. Please login for using this service..
+        /// </summary>
+        internal static string LoginNote {
+            get {
+                return ResourceManager.GetString("LoginNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login  is required.
         /// </summary>
         internal static string LoginOptionHelpNote {

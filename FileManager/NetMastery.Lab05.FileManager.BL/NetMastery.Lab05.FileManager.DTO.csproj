@@ -7,8 +7,8 @@
     <ProjectGuid>{C9CF9681-D861-4399-8695-53006F68B282}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetMastery.Lab05.FileManager.BL</RootNamespace>
-    <AssemblyName>NetMastery.Lab05.FileManager.BL</AssemblyName>
+    <RootNamespace>NetMastery.Lab05.FileManager.DTO</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManager.DTO</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -40,9 +40,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountBl.cs" />
+    <Compile Include="AccountDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StorageBl.cs" />
+    <Compile Include="StorageDto.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

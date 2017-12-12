@@ -30,8 +30,12 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,10 +49,17 @@
     <Compile Include="StorageController.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.BL.csproj">
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.DTO.csproj">
       <Project>{c9cf9681-d861-4399-8695-53006f68b282}</Project>
-      <Name>NetMastery.Lab05.FileManager.BL</Name>
+      <Name>NetMastery.Lab05.FileManager.DTO</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
+      <Project>{F720039F-B67D-4D0B-8448-D9698879F546}</Project>
+      <Name>NetMastery.Lab05.FileManager.DAL</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

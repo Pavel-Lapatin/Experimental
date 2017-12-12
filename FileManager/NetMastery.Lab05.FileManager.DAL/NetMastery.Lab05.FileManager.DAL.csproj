@@ -59,15 +59,35 @@
     <Compile Include="Interfacies\IRepository.cs" />
     <Compile Include="Interfacies\IRoleRepository.cs" />
     <Compile Include="Interfacies\IStorageRepository.cs" />
+    <Compile Include="Interfacies\IUnitOfWork.cs" />
+    <Compile Include="Migrations\201712121019055_InitialCreate.cs" />
+    <Compile Include="Migrations\201712121019055_InitialCreate.Designer.cs">
+      <DependentUpon>201712121019055_InitialCreate.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712121245082_AccountCreated.cs" />
+    <Compile Include="Migrations\201712121245082_AccountCreated.Designer.cs">
+      <DependentUpon>201712121245082_AccountCreated.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
+    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\StorageRepository.cs" />
+    <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201712121019055_InitialCreate.resx">
+      <DependentUpon>201712121019055_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712121245082_AccountCreated.resx">
+      <DependentUpon>201712121245082_AccountCreated.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
