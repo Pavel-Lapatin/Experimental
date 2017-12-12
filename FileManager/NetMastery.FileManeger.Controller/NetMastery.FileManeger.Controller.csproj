@@ -49,10 +49,6 @@
       <Project>{c9cf9681-d861-4399-8695-53006f68b282}</Project>
       <Name>NetMastery.Lab05.FileManager.BL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Repository\Repository.csproj">
-      <Project>{FA3E605F-49AE-483A-B31D-CAB0705ACE60}</Project>
-      <Name>Repository</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

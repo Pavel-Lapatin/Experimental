@@ -53,9 +53,16 @@
     <Compile Include="Entities\FileType.cs" />
     <Compile Include="Entities\Rights.cs" />
     <Compile Include="FileManagerDBContext.cs" />
+    <Compile Include="FileManegerInitializer.cs" />
+    <Compile Include="Helpers\DBInitializerHellprs.cs" />
+    <Compile Include="Interfacies\IAccountRepository.cs" />
+    <Compile Include="Interfacies\IRepository.cs" />
+    <Compile Include="Interfacies\IRoleRepository.cs" />
+    <Compile Include="Interfacies\IStorageRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\Role.cs" />
     <Compile Include="Entities\User.cs" />
+    <Compile Include="Repository\AccountRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

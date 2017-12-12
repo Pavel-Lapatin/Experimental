@@ -6,7 +6,7 @@ using NetMastery.FileManeger;
 
 namespace NetMastery.FileManeger.ConsoleApp
 {
-    internal static class CommandLineHelpers
+    public static class CommandLineOptions
     {
         public static void AddCommands(CommandLineApplication cmd)
         {

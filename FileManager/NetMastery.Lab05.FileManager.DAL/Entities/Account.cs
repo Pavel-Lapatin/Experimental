@@ -9,7 +9,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Entities
 {
     public class Account
     {
-        public Account AccoountId { get; set; }
+        public int AccoountId { get; set; }
         public string Login { get; set; }
         public string Password { get; set; }
         public DateTime CreationDate { get; set; }

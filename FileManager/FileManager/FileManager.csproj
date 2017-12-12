@@ -61,7 +61,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>EnglishLocalisation.resx</DependentUpon>
     </Compile>
-    <Compile Include="LoginHelpers.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -91,10 +90,6 @@
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>
       <Name>NetMastery.Lab05.FileManager.DAL</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Repository\Repository.csproj">
-      <Project>{fa3e605f-49ae-483a-b31d-cab0705ace60}</Project>
-      <Name>Repository</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

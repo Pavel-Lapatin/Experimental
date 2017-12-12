@@ -9,11 +9,11 @@ using NetMastery.Lab05.FileManager.DAL.Entities;
 
 namespace NetMastery.Lab05.FileManager.DAL
 {
-    public class FileManagerDb : DbContext
+    public class FileManagerDBContext : DbContext
     {
-        public FileManagerDb(string name) : base(name)
+        public FileManagerDBContext() : base("name=FileManagerDB")
         {
-            
+            Database.SetInitializer(new FileManegerInitializer());
         }
 
         public DbSet<Account> Accounts { get; set; }
@@ -21,9 +21,20 @@ namespace NetMastery.Lab05.FileManager.DAL
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Account>()
-                .HasRequired(c => new {c.Login, c.Password, c.CreationDate});
-            modelBuilder.Entity<Storage>()
-                .HasKey(c => c.)
+                .HasKey(c => c.AccoountId);
+            modelBuilder.Entity<Account>()
+                .Property(p => p.Login)
+                .HasMaxLength(20)
+                .IsRequired()
+                .IsUnicode();
+            modelBuilder.Entity<Account>()
+                .Property(p => p.Password)
+                .IsRequired();
+            modelBuilder.Entity<Account>()
+                .Property(p => p.CreationDate)
+                .IsRequired();
+
+
         }
     }
 }

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
-using NetMastery.Lab05.FileManager.BL;
 using NetMastery.Lab05.FileManager.DAL;
 using NetMastery.Lab05.FileManager.DAL.Entities;
-using NetMastery.Lab05.FileManager.DAL.Helpers;
 
 namespace NetMastery.Lab05.FileManager.Repository.Repository
 {
@@ -13,15 +10,10 @@ namespace NetMastery.Lab05.FileManager.Repository.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly FileManagerDBContext _context = new FileManagerDBContext();
-        private IMapper _mapper;
         
         public void AddItem(BL.AccountBl item)
         {
-            var configuration = new MapperConfiguration(cfg =>
-            {
-                cfg.CreateMap<Account, AccountBl>();
-            });
-            _mapper = configuration.CreateMapper();
+
         }
 
         public IEnumerable<AccountBl> GetAll()
