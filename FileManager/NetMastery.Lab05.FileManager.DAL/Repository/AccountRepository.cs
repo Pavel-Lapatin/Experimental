@@ -8,13 +8,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
     public class AccountRepository : Repository<Account>, IAccountRepository
     {
         
-        public AccountRepository(FileManagerDBContext context) : base(context)
+        public AccountRepository(FileManagerDbContext context) : base(context)
         {
         }
 
         public string GetPasswordByLogin(string login)
         {
-            return ((FileManagerDBContext)Context).Accounts.FirstOrDefault(x => x.Login == login)?.Password;
+            return ((FileManagerDbContext)Context).Accounts.FirstOrDefault(x => x.Login == login)?.Password;
         }
     }
 }

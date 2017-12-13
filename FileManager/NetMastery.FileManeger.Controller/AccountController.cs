@@ -1,17 +1,19 @@
 ﻿using System;
 using System.Linq;
 using System.Security.Cryptography;
-using NetMastery.Lab05.FileManager.BL;
+using AutoMapper;
+using NetMastery.Lab05.FileManager.DAL.Entities;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
+using NetMastery.Lab05.FileManager.DTO;
 
 
 namespace NetMastery.FileManeger.Controller
 {
     public class AccountController
     {
-        public AccountBl CurrentUser { get; set; }
-        private const int SaltByteSize = 8;
-        private const int HashByteSize = 8; // to match the size of the PBKDF2-HMAC-SHA-1 hash 
+        public AccountDto CurrentUser { get; set; }
+        private const int SaltByteSize = 24;
+        private const int HashByteSize = 24; // to match the size of the PBKDF2-HMAC-SHA-1 hash 
         private const int Pbkdf2Iterations = 5000;
         private const int IterationIndex = 0;
         private const int SaltIndex = 1;
@@ -24,13 +26,15 @@ namespace NetMastery.FileManeger.Controller
             _accountRepository = repository;
         }
 
+        #region Autentication
+
         public bool VerifyPassword(string login, string password)
         {
             var account = _accountRepository.Find(x => x.Login == login).FirstOrDefault();
             if (account == null) throw new NullReferenceException();
             if (ValidatePassword(password, _accountRepository.GetPasswordByLogin(login)))
             {
-                CurrentUser =  AutoMapper.Mapper.Instance.Map<AccountBl>(account);
+                CurrentUser =  Mapper.Instance.Map<AccountDto>(account);
                 return true;
             }
             return false;
@@ -66,5 +70,21 @@ namespace NetMastery.FileManeger.Controller
             pbkdf2.IterationCount = iterations;
             return pbkdf2.GetBytes(outputBytes);
         }
+        #endregion
+
+        #region Registration
+
+        public void RegisterUser(string login, string password)
+        {
+            var hashPassword = HashPassword(password);
+            var newAccount = new AccountDto
+            {
+                Login = login,
+                Password = hashPassword,
+                CreationDate = DateTime.Now
+            };
+            _accountRepository.Add(Mapper.Map<Account>(newAccount));
+        }
+        #endregion
     }
 }

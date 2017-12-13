@@ -5,7 +5,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDBContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDbContext>
     {
         public Configuration()
         {
@@ -13,7 +13,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
             ContextKey = "NetMastery.Lab05.FileManager.DAL.FileManagerDBContext";
         }
 
-        protected override void Seed(NetMastery.Lab05.FileManager.DAL.FileManagerDBContext context)
+        protected override void Seed(NetMastery.Lab05.FileManager.DAL.FileManagerDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

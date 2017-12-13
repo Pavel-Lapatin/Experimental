@@ -61,6 +61,60 @@ namespace NetMastery.FileManeger.ConsoleApp {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DirectoryCreateOptionNote {
+            get {
+                return ResourceManager.GetString("DirectoryCreateOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DirectoryInfoOptionNote {
+            get {
+                return ResourceManager.GetString("DirectoryInfoOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DirectoryListOptionNote {
+            get {
+                return ResourceManager.GetString("DirectoryListOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DirectoryMoveOptionNote {
+            get {
+                return ResourceManager.GetString("DirectoryMoveOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DirectoryRemoveOptionNote {
+            get {
+                return ResourceManager.GetString("DirectoryRemoveOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to .
+        /// </summary>
+        internal static string DirectorySearchOptionNote {
+            get {
+                return ResourceManager.GetString("DirectorySearchOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Sorry, password is incorrect.
         /// </summary>
         internal static string FailedAuthenticationNote {

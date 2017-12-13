@@ -70,15 +70,6 @@ namespace NetMastery.FileManeger.ConsoleApp {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to cd.
-        /// </summary>
-        internal static string CdCommand {
-            get {
-                return ResourceManager.GetString("CdCommand", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to copy.
         /// </summary>
         internal static string CopyCommand {
@@ -102,6 +93,69 @@ namespace NetMastery.FileManeger.ConsoleApp {
         internal static string DeleteRoleCommand {
             get {
                 return ResourceManager.GetString("DeleteRoleCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to directory.
+        /// </summary>
+        internal static string DirectoryCommand {
+            get {
+                return ResourceManager.GetString("DirectoryCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -cr|--create &lt;value&gt;.
+        /// </summary>
+        internal static string DirectoryCreateOption {
+            get {
+                return ResourceManager.GetString("DirectoryCreateOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -i|--info &lt;value&gt;.
+        /// </summary>
+        internal static string DirectoryInfoOption {
+            get {
+                return ResourceManager.GetString("DirectoryInfoOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -ls|--list &lt;value&gt;.
+        /// </summary>
+        internal static string DirectoryListOption {
+            get {
+                return ResourceManager.GetString("DirectoryListOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -mv|--move &lt;value&gt;.
+        /// </summary>
+        internal static string DirectoryMoveOption {
+            get {
+                return ResourceManager.GetString("DirectoryMoveOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -rm|--remove &lt;value&gt;.
+        /// </summary>
+        internal static string DirectoryRemoveOption {
+            get {
+                return ResourceManager.GetString("DirectoryRemoveOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to -sr|--search &lt;value&gt;.
+        /// </summary>
+        internal static string DirectorySearchOption {
+            get {
+                return ResourceManager.GetString("DirectorySearchOption", resourceCulture);
             }
         }
         

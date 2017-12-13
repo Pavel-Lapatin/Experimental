@@ -7,13 +7,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class AccountCreated : IMigrationMetadata
+    public sealed partial class UniqueIndexToLogin : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AccountCreated));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(UniqueIndexToLogin));
         
         string IMigrationMetadata.Id
         {
-            get { return "201712121245082_AccountCreated"; }
+            get { return "201712130730233_UniqueIndexToLogin"; }
         }
         
         string IMigrationMetadata.Source

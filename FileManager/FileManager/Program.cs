@@ -18,18 +18,20 @@ namespace NetMastery.FileManeger.ConsoleApp
         internal static StorageController StorageController;
         static Program()
         {
-            InitializeControllers();
-
+            InitialiseMapper();
         }
 
         static void Main()
         {
-            using(var UnitOfWork = new UnitOfWork(new FileManagerDBContext()))
+            using(var UnitOfWork = new UnitOfWork(new FileManagerDbContext()))
             {
                 AccountController = new AccountController(UnitOfWork.Accounts);
                 StorageController = new StorageController(UnitOfWork.Storagies);
 
-
+                //----------------------check for hashes in seed---------------------
+               // AccountController.RegisterUser("admin2", "admin");
+               // UnitOfWork.Complete();
+                //-------------------------------------------------------------------
                 while (true)
                 {
                     Console.Write("command->");
@@ -53,11 +55,6 @@ namespace NetMastery.FileManeger.ConsoleApp
             });
         }
 
-        private static void InitializeControllers()
-        {
-            
-        }
-
         private static string[] ParseArguemts(string arguments)
         {
             var separators = new char[] { ' ' };
@@ -65,12 +62,6 @@ namespace NetMastery.FileManeger.ConsoleApp
 
         }
 
-        private ResourceManager  InitializeResourceManager(string language)
-        {
-            ResourceManager rm = new ResourceManager();
-            var separators = new char[] { ' ' };
-            return arguments.Split(separators);
 
-        }
     }
 }

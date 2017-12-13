@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using NetMastery.Lab05.FileManager.DAL;
-using NetMastery.Lab05.FileManager.DAL.Interfacies;
+﻿using NetMastery.Lab05.FileManager.DAL.Entities;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {

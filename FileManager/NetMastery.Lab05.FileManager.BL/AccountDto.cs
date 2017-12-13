@@ -10,5 +10,6 @@ namespace NetMastery.Lab05.FileManager.DTO
     {
         public string Login { get; set; }
         public DateTime CreationDate { get; set; }
+        public string Password { get; set; }
     }
 }

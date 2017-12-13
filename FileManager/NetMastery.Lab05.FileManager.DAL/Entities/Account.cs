@@ -13,5 +13,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Entities
         public string Login { get; set; }
         public string Password { get; set; }
         public DateTime CreationDate { get; set; }
+
+        public virtual Storage Storage { get; set; }
     }
 }

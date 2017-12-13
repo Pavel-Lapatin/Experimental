@@ -1,9 +1,6 @@
 ﻿using NetMastery.Lab05.FileManager.BL;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 
 namespace NetMastery.FileManeger.Controller
@@ -20,7 +17,7 @@ namespace NetMastery.FileManeger.Controller
             _storageRepository = storageRepository;
         }
 
-        public MoveToTheDirrectory(string path)
+        public void MoveToTheDirrectory(string path)
         {
             var directories = PathParser(path);
             if (directories.Length == 0) throw  new NullReferenceException();
@@ -48,14 +45,13 @@ namespace NetMastery.FileManeger.Controller
                         break;
                     }
                 }
-
                 FullPath = newPath.ToString();
             }
         }
 
         private static string[] PathParser(string path)
         {
-            var separators = new char[] { '\\' };
+            var separators = new [] { '\\' };
             return path.Split(separators);
         }
     }

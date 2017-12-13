@@ -37,6 +37,7 @@
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -47,6 +48,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Configurations\AccountsMap.cs" />
+    <Compile Include="Configurations\FileMap.cs" />
+    <Compile Include="Configurations\StorageMap.cs" />
     <Compile Include="Entities\Account.cs" />
     <Compile Include="Entities\Storage.cs" />
     <Compile Include="Entities\File.cs" />
@@ -64,9 +68,9 @@
     <Compile Include="Migrations\201712121019055_InitialCreate.Designer.cs">
       <DependentUpon>201712121019055_InitialCreate.cs</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201712121245082_AccountCreated.cs" />
-    <Compile Include="Migrations\201712121245082_AccountCreated.Designer.cs">
-      <DependentUpon>201712121245082_AccountCreated.cs</DependentUpon>
+    <Compile Include="Migrations\201712130730233_UniqueIndexToLogin.cs" />
+    <Compile Include="Migrations\201712130730233_UniqueIndexToLogin.Designer.cs">
+      <DependentUpon>201712130730233_UniqueIndexToLogin.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -85,8 +89,8 @@
     <EmbeddedResource Include="Migrations\201712121019055_InitialCreate.resx">
       <DependentUpon>201712121019055_InitialCreate.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712121245082_AccountCreated.resx">
-      <DependentUpon>201712121245082_AccountCreated.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712130730233_UniqueIndexToLogin.resx">
+      <DependentUpon>201712130730233_UniqueIndexToLogin.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

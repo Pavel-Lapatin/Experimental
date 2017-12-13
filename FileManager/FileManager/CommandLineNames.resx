@@ -170,7 +170,25 @@
   <data name="UserInfoCommand" xml:space="preserve">
     <value>user info</value>
   </data>
-  <data name="CdCommand" xml:space="preserve">
-    <value>cd</value>
+  <data name="DirectoryCommand" xml:space="preserve">
+    <value>directory</value>
+  </data>
+  <data name="DirectoryCreateOption" xml:space="preserve">
+    <value>-cr|--create &lt;value&gt;</value>
+  </data>
+  <data name="DirectoryInfoOption" xml:space="preserve">
+    <value>-i|--info &lt;value&gt;</value>
+  </data>
+  <data name="DirectoryListOption" xml:space="preserve">
+    <value>-ls|--list &lt;value&gt;</value>
+  </data>
+  <data name="DirectoryMoveOption" xml:space="preserve">
+    <value>-mv|--move &lt;value&gt;</value>
+  </data>
+  <data name="DirectoryRemoveOption" xml:space="preserve">
+    <value>-rm|--remove &lt;value&gt;</value>
+  </data>
+  <data name="DirectorySearchOption" xml:space="preserve">
+    <value>-sr|--search &lt;value&gt;</value>
   </data>
 </root>

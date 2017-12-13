@@ -1,40 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Data.Entity;
 using NetMastery.Lab05.FileManager.DAL.Entities;
+using NetMastery.Lab05.FileManager.DAL.Configurations;
 
 namespace NetMastery.Lab05.FileManager.DAL
 {
-    public class FileManagerDBContext : DbContext
+    public class FileManagerDbContext : DbContext
     {
-        public FileManagerDBContext() : base("name=FileManagerDB")
+        public FileManagerDbContext() : base("name=FileManagerDB")
         {
             Database.SetInitializer(new FileManegerInitializer());
         }
 
         public DbSet<Account> Accounts { get; set; }
+        public DbSet<Storage> Storages { get; set; }
+        public DbSet<File> Files { get; set; }
+
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Account>()
-                .HasKey(c => c.AccoountId);
-            modelBuilder.Entity<Account>()
-                .Property(p => p.Login)
-                .HasMaxLength(20)
-                .IsRequired()
-                .IsUnicode();
-            modelBuilder.Entity<Account>()
-                .Property(p => p.Password)
-                .IsRequired();
-            modelBuilder.Entity<Account>()
-                .Property(p => p.CreationDate)
-                .IsRequired();
 
-
+            modelBuilder.Configurations.Add(new AccountsMap());
+            modelBuilder.Configurations.Add(new FileMap());
+            modelBuilder.Configurations.Add(new StorageMap());
         }
     }
 }

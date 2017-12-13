@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository

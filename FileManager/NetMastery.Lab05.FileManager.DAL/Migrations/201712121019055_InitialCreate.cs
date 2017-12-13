@@ -1,6 +1,5 @@
 namespace NetMastery.Lab05.FileManager.DAL.Migrations
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class InitialCreate : DbMigration
@@ -16,8 +15,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                         Password = c.String(nullable: false),
                         CreationDate = c.DateTime(nullable: false),
                     })
-                .PrimaryKey(t => t.AccoountId);
-            
+                .PrimaryKey(t => t.AccoountId); 
         }
         
         public override void Down()
