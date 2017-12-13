@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{288EB39E-009C-4839-87F5-FA5B20036103}</ProjectGuid>
     <OutputType>Exe</OutputType>
-    <RootNamespace>NetMastery.FileManeger.ConsoleApp</RootNamespace>
-    <AssemblyName>NetMastery.FileManeger.ConsoleApp</AssemblyName>
+    <RootNamespace>NetMastery.Lab05.FileManager</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManager</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -62,7 +62,6 @@
       <DependentUpon>CommandLineNames.resx</DependentUpon>
     </Compile>
     <Compile Include="CommandLineOptions.cs" />
-    <Compile Include="Container.cs" />
     <Compile Include="EnglishLocalisation.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -86,13 +85,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.FileManeger.Controller.csproj">
+    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManeger.Bl.csproj">
       <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
-      <Name>NetMastery.FileManeger.Controller</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.DTO.csproj">
-      <Project>{c9cf9681-d861-4399-8695-53006f68b282}</Project>
-      <Name>NetMastery.Lab05.FileManager.DTO</Name>
+      <Name>NetMastery.Lab05.FileManeger.Bl</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>

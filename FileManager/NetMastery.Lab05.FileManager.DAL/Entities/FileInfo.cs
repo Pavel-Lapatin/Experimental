@@ -7,15 +7,19 @@ using System.Threading.Tasks;
 namespace NetMastery.Lab05.FileManager.DAL.Entities
 
 {
-    public class File
+    public class FileInfo
     {
         public int FileId { get; set; }
         public string Name { get; set; }
         public DateTime CreationTime { get; set; }
         public DateTime ModificationDate { get; set; }
         public int FileSize { get; set; }
+        public int DownloadsNumber { get; set; }
+
+        public virtual int FileTypeId { get; set; }
+        public virtual FileType FileType  { get; set; }
 
         public virtual int StorageId { get; set; }
-        public virtual Storage Storage { get; set; }
+        public virtual DirectoryInfo Storage { get; set; }
     }
 }

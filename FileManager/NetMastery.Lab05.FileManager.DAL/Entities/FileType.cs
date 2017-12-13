@@ -1,14 +1,18 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Threading.Tasks;
+﻿using NetMastery.Lab05.FileManager.DAL.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-//namespace NetMastery.Lab05.FileManager.DAL
-//{
-//    public class FileType
-//    {
-//        public string TypeName { get; set; }
-//        public string Extension { get; set; }
-//    }
-//}
+namespace NetMastery.Lab05.FileManager.DAL
+{
+    public class FileType
+    {
+        public int TypeId { get; set; }
+        public string Extension { get; set; }
+        public string RelatedProgram { get; set; }
+
+        public virtual ICollection<FileInfo> Files {get; set;}
+    }
+}

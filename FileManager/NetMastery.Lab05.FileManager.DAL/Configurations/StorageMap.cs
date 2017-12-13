@@ -8,21 +8,16 @@ using NetMastery.Lab05.FileManager.DAL.Entities;
 
 namespace NetMastery.Lab05.FileManager.DAL.Configurations
 {
-    internal class StorageMap : EntityTypeConfiguration<Storage>
+    internal class StorageMap : EntityTypeConfiguration<DirectoryInfo>
     {
         public StorageMap()
         {
             HasKey(p => p.StorageId);
 
             HasOptional(x => x.ParentStorage)
-            .WithMany()
+            .WithMany(x => x.ChildrenStoragies)
             .HasForeignKey(x=>x.ParentStorageId);
 
-            HasOptional(x => x.ChildrenStoragies)
-                .WithMany();
-
-            HasRequired(x => x.Account)
-                .WithRequiredPrincipal(x => x.Storage);
             Property(p => p.CreationDate).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
             Property(p => p.Name).IsRequired().HasMaxLength(255);

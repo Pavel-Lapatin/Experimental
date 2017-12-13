@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace FileManager
+namespace NetMastery.Lab05.FileManager.BL.Dto
 {
-    public static class Container
+    public class DirectoryInfoDto
     {
 
     }

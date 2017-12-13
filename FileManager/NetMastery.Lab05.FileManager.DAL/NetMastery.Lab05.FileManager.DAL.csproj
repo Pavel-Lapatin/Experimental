@@ -50,27 +50,23 @@
   <ItemGroup>
     <Compile Include="Configurations\AccountsMap.cs" />
     <Compile Include="Configurations\FileMap.cs" />
+    <Compile Include="Configurations\FileTypeMap.cs" />
     <Compile Include="Configurations\StorageMap.cs" />
     <Compile Include="Entities\Account.cs" />
-    <Compile Include="Entities\Storage.cs" />
-    <Compile Include="Entities\File.cs" />
+    <Compile Include="Entities\DirectoryInfo.cs" />
+    <Compile Include="Entities\FileInfo.cs" />
     <Compile Include="Entities\FileType.cs" />
     <Compile Include="Entities\Rights.cs" />
     <Compile Include="FileManagerDBContext.cs" />
     <Compile Include="FileManegerInitializer.cs" />
-    <Compile Include="Helpers\DBInitializerHellprs.cs" />
     <Compile Include="Interfacies\IAccountRepository.cs" />
     <Compile Include="Interfacies\IRepository.cs" />
     <Compile Include="Interfacies\IRoleRepository.cs" />
-    <Compile Include="Interfacies\IStorageRepository.cs" />
+    <Compile Include="Interfacies\IDirectoryRepository.cs" />
     <Compile Include="Interfacies\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201712121019055_InitialCreate.cs" />
-    <Compile Include="Migrations\201712121019055_InitialCreate.Designer.cs">
-      <DependentUpon>201712121019055_InitialCreate.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201712130730233_UniqueIndexToLogin.cs" />
-    <Compile Include="Migrations\201712130730233_UniqueIndexToLogin.Designer.cs">
-      <DependentUpon>201712130730233_UniqueIndexToLogin.cs</DependentUpon>
+    <Compile Include="Migrations\201712132151169_InitialFileManagerDB.cs" />
+    <Compile Include="Migrations\201712132151169_InitialFileManagerDB.Designer.cs">
+      <DependentUpon>201712132151169_InitialFileManagerDB.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,7 +74,7 @@
     <Compile Include="Entities\User.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
-    <Compile Include="Repository\StorageRepository.cs" />
+    <Compile Include="Repository\DirectoryRepository.cs" />
     <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -86,12 +82,12 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712121019055_InitialCreate.resx">
-      <DependentUpon>201712121019055_InitialCreate.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712132151169_InitialFileManagerDB.resx">
+      <DependentUpon>201712132151169_InitialFileManagerDB.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201712130730233_UniqueIndexToLogin.resx">
-      <DependentUpon>201712130730233_UniqueIndexToLogin.cs</DependentUpon>
-    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

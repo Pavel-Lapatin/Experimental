@@ -7,13 +7,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class UniqueIndexToLogin : IMigrationMetadata
+    public sealed partial class InitialFileManagerDB : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(UniqueIndexToLogin));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialFileManagerDB));
         
         string IMigrationMetadata.Id
         {
-            get { return "201712130730233_UniqueIndexToLogin"; }
+            get { return "201712132151169_InitialFileManagerDB"; }
         }
         
         string IMigrationMetadata.Source

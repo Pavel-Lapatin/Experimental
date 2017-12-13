@@ -1,21 +1,16 @@
-﻿using NetMastery.FileManeger.Controller;
-using NetMastery.Lab05.FileManager.DAL.Entities;
-using NetMastery.Lab05.FileManager.BL;
+﻿using NetMastery.Lab05.FileManager.DAL.Entities;
 using System;
 using Microsoft.Extensions.CommandLineUtils;
 using AutoMapper;
-using NetMastery.Lab05.FileManager.DAL.Repository;
-using System.Resources;
-using NetMastery.Lab05.FileManager.DAL;
-using NetMastery.Lab05.FileManager.DTO;
+using NetMastery.FileManeger.Controller;
+using NetMastery.Lab05.FileManager.BL;
 
-namespace NetMastery.FileManeger.ConsoleApp
+namespace NetMastery.Lab05.FileManager
 {
    
     class Program
     {
-        internal static AccountController AccountController;
-        internal static StorageController StorageController;
+
         static Program()
         {
             InitialiseMapper();
@@ -23,26 +18,24 @@ namespace NetMastery.FileManeger.ConsoleApp
 
         static void Main()
         {
-            using(var UnitOfWork = new UnitOfWork(new FileManagerDbContext()))
-            {
-                AccountController = new AccountController(UnitOfWork.Accounts);
-                StorageController = new StorageController(UnitOfWork.Storagies);
+            CommandLineApplication cmd = new CommandLineApplication();
+            FileManagerModel model = new FileManagerModel();
+            CommandLineOptions.AddCommands(cmd, model);
 
-                //----------------------check for hashes in seed---------------------
-               // AccountController.RegisterUser("admin2", "admin");
-               // UnitOfWork.Complete();
-                //-------------------------------------------------------------------
-                while (true)
+            while (true)
+            {
+                try
                 {
                     Console.Write("command->");
                     var args = Console.ReadLine();
                     if (args == null) throw new NullReferenceException();
-                    CommandLineApplication cmd = new CommandLineApplication();
-                    CommandLineOptions.AddCommands(cmd);
                     cmd.Execute(ParseArguemts(args.Trim(' ')));
                 }
-
-            }        
+                catch (NullReferenceException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
+            }      
         }
 
         public static void InitialiseMapper()
@@ -50,7 +43,7 @@ namespace NetMastery.FileManeger.ConsoleApp
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<AccountDto, Account>();
-                cfg.CreateMap<StorageDto, Storage>();
+                cfg.CreateMap<StorageDto, DirectoryInfo>();
 
             });
         }

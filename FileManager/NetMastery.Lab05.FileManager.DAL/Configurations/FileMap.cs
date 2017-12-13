@@ -8,7 +8,7 @@ using NetMastery.Lab05.FileManager.DAL.Entities;
 
 namespace NetMastery.Lab05.FileManager.DAL.Configurations
 {
-    internal class FileMap : EntityTypeConfiguration<File>
+    internal class FileMap : EntityTypeConfiguration<FileInfo>
     {
         public FileMap()
         {
@@ -18,9 +18,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
             Property(p => p.CreationTime).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
 
-            HasRequired(x => x.Storage)
-                .WithMany(x => x.Files)
+            HasRequired(p => p.Storage)
+                .WithMany(c => c.Files)
                 .HasForeignKey(fk => fk.StorageId);
+
+            HasRequired(p => p.FileType)
+                .WithMany(c => c.Files)
+                .HasForeignKey(fk => fk.FileTypeId);
         }
     }
 }

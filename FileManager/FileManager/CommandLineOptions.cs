@@ -1,22 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Resources;
 using System.Security.Authentication;
 using Microsoft.Extensions.CommandLineUtils;
-using NetMastery.FileManeger.Controller;
 using NetMastery.Lab05.FileManager.DAL;
 using NetMastery.Lab05.FileManager.DAL.Repository;
+using NetMastery.Lab05.FileManeger.Bl.Servicies;
+using NetMastery.Lab05.FileManager.BL.Servicies;
+using NetMastery.Lab05.FileManager.BL;
 
-namespace NetMastery.FileManeger.ConsoleApp
+namespace NetMastery.Lab05.FileManager
 {
     public static class CommandLineOptions
     {
-        public static void AddCommands(CommandLineApplication cmd)
+        public static void AddCommands(CommandLineApplication cmd, FileManagerModel model)
         {
             var rm = new ResourceManager(typeof(EnglishLocalisation));
             cmd.Name = "ConspleArgs";
-            cmd.Description = "File Manager";
+            cmd.Description = "FileInfo Manager";
             cmd.HelpOption(CommandLineNames.HelpOption);
 
             #region CommandsForAccount  
@@ -34,24 +34,18 @@ namespace NetMastery.FileManeger.ConsoleApp
                     {
                         throw new NullReferenceException();
                     }
-                    try
+                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
                     {
-                        using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
+                        var accountService = new AccountService(unitOfWork.Accounts);
+                        model.Account = accountService.VerifyPassword(login.Value(), password.Value());
+                        if (model.Account != null)
                         {
-                            var accountController = new AccountController(unitOfWork.Accounts);
-                            if (accountController.VerifyPassword(login.Value(), password.Value()))
-                            {
-                                Console.WriteLine(rm.GetString("WelcomeNote") + login.Value());
-                            }
-                            else
-                            {
-                                Console.WriteLine(rm.GetString("FailedAuthenticationNote"));
-                            }
+                            Console.WriteLine(rm.GetString("WelcomeNote") + model.Account.Login);
                         }
-                    }
-                    catch (NullReferenceException)
-                    {
-                        Console.WriteLine(rm.GetString("FailedAuthenticationNote") + login);
+                        else
+                        {
+                            Console.WriteLine(rm.GetString("FailedAuthenticationNote"));
+                        }
                     }
                     Console.WriteLine();
                     return 0;
@@ -63,18 +57,22 @@ namespace NetMastery.FileManeger.ConsoleApp
                 x.HelpOption(CommandLineNames.HelpOption);
                 x.OnExecute(() =>
                 {
-                    if (Program.AccountController.CurrentUser == null)
+                    if (model.Account == null)
                     {
                         throw new AuthenticationException();
                     }
-                    Console.WriteLine();
-                    Console.WriteLine(rm.GetString("UserInfoCmdOutputLogin") +
-                                      Program.AccountController.CurrentUser.Login);
-                    Console.WriteLine(rm.GetString("UserInfoCmdOutputCreationDate") +
-                                      Program.AccountController.CurrentUser.Login);
-                    Console.WriteLine(rm.GetString("UserInfoCmdOutputStorageSize") +
-                                      Program.AccountController.CurrentUser.Login);
-                    Console.WriteLine();
+                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
+                    {
+                        var directoryService = new DirectoryService(unitOfWork.Directories);
+                        Console.WriteLine();
+                        Console.WriteLine(rm.GetString("UserInfoCmdOutputLogin") +
+                                          model.Account.Login);
+                        Console.WriteLine(rm.GetString("UserInfoCmdOutputCreationDate") +
+                                          model.Account.CreationDate);
+                        Console.WriteLine(rm.GetString("UserInfoCmdOutputStorageSize") +
+                                         directoryService.CalculateFullSize(model.Account.Login));
+                        Console.WriteLine();
+                    }
                     return 0;
                 });
             });
@@ -86,24 +84,24 @@ namespace NetMastery.FileManeger.ConsoleApp
             cmd.Command(CommandLineNames.DirectoryCommand, x =>
             {
                 x.HelpOption(CommandLineNames.HelpOption);
-                var info = x.Option(CommandLineNames.DirectoryInfoOption, rm.GetString("DirectoryCreateOptionNote"),
+                var info = x.Option(CommandLineNames.InfoOption, rm.GetString("DirectoryCreateOptionNote"),
                     CommandOptionType.NoValue);
-                var create = x.Option(CommandLineNames.DirectoryCreateOption, rm.GetString("DirectoryCreateOptionNote"),
+                var create = x.Option(CommandLineNames.CreateOption, rm.GetString("DirectoryCreateOptionNote"),
                     CommandOptionType.MultipleValue);
-                var move = x.Option(CommandLineNames.DirectoryMoveOption, rm.GetString("DirectoryMoveOptionNote"),
+                var move = x.Option(CommandLineNames.MoveOption, rm.GetString("DirectoryMoveOptionNote"),
                     CommandOptionType.MultipleValue);
-                var remove = x.Option(CommandLineNames.DirectoryRemoveOption, rm.GetString("DirectoryRemoveOptionNote"),
+                var remove = x.Option(CommandLineNames.RemoveOption, rm.GetString("DirectoryRemoveOptionNote"),
                     CommandOptionType.MultipleValue);
-                var list = x.Option(CommandLineNames.DirectoryListOption, rm.GetString("DirectoryListOptionNote"),
+                var list = x.Option(CommandLineNames.ListOption, rm.GetString("DirectoryListOptionNote"),
                     CommandOptionType.MultipleValue);
-                var search = x.Option(CommandLineNames.DirectorySearchOption, rm.GetString("DirectorySearchOptionNote"),
+                var search = x.Option(CommandLineNames.SearchOption, rm.GetString("DirectorySearchOptionNote"),
                     CommandOptionType.MultipleValue);
 
                 x.OnExecute(() =>
                 {
                     using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
                     {
-                        var StorageController = new StorageController(unitOfWork.Storagies);
+                        var StorageController = new DirectoryService(unitOfWork.Storagies);
                         if (info != null)
                         {
                             Console.WriteLine("Info");
@@ -139,6 +137,58 @@ namespace NetMastery.FileManeger.ConsoleApp
 
             });
             #endregion CommandsForDirrectory
+
+            #region CommandsForFiles
+            cmd.Command(CommandLineNames.FileCommand, x =>
+            {
+                x.HelpOption(CommandLineNames.HelpOption);
+                var info = x.Option(CommandLineNames.InfoOption, rm.GetString("DirectoryCreateOptionNote"),
+                    CommandOptionType.NoValue);
+                var upload = x.Option(CommandLineNames.UploadOption, rm.GetString("DirectoryCreateOptionNote"),
+                    CommandOptionType.MultipleValue);
+                var download = x.Option(CommandLineNames.MoveOption, rm.GetString("DirectoryMoveOptionNote"),
+                    CommandOptionType.MultipleValue);
+                var remove = x.Option(CommandLineNames.RemoveOption, rm.GetString("DirectoryRemoveOptionNote"),
+                    CommandOptionType.MultipleValue);
+                var move = x.Option(CommandLineNames.DownloadOption, rm.GetString("DirectoryListOptionNote"),
+                    CommandOptionType.MultipleValue);
+               
+
+                x.OnExecute(() =>
+                {
+                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
+                    {
+                        var StorageController = new DirectoryService(unitOfWork.Storagies);
+                        if (info != null)
+                        {
+                            Console.WriteLine("Info");
+                        }
+                        else if (upload != null)
+                        {
+                            if (upload.Values.Count != 2) throw new ArgumentException();
+                            Console.WriteLine("Upload");
+                        }
+                        else if (move != null)
+                        {
+                            if (move.Values.Count != 2) throw new ArgumentException();
+                            Console.WriteLine("Move");
+                        }
+                        else if (download != null)
+                        {
+                            if (download.Values.Count != 2) throw new ArgumentException();
+                            Console.WriteLine("Download");
+                        }
+                        else if (remove != null)
+                        {
+                            if (remove.Values.Count != 2) throw new ArgumentException();
+                            Console.WriteLine("Remove");
+                        }
+                    }
+                    return 0;
+                });
+
+            });
+            #endregion
         }
     }
 }

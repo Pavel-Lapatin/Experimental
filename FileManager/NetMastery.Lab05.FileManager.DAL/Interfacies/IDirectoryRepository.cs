@@ -2,7 +2,7 @@
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IStorageRepository : IRepository<Storage>
+    public interface IDirectoryRepository : IRepository<DirectoryInfo>
     {
     }
 }

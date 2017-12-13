@@ -4,14 +4,12 @@ using System.Security.Cryptography;
 using AutoMapper;
 using NetMastery.Lab05.FileManager.DAL.Entities;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
-using NetMastery.Lab05.FileManager.DTO;
+using NetMastery.Lab05.FileManeger.Bl.Dto;
 
-
-namespace NetMastery.FileManeger.Controller
+namespace NetMastery.Lab05.FileManeger.Bl.Servicies
 {
-    public class AccountController
+    public class AccountService
     {
-        public AccountDto CurrentUser { get; set; }
         private const int SaltByteSize = 24;
         private const int HashByteSize = 24; // to match the size of the PBKDF2-HMAC-SHA-1 hash 
         private const int Pbkdf2Iterations = 5000;
@@ -21,23 +19,22 @@ namespace NetMastery.FileManeger.Controller
 
         private readonly IAccountRepository _accountRepository;
 
-        public AccountController(IAccountRepository repository)
+        public AccountService(IAccountRepository repository)
         {
             _accountRepository = repository;
         }
 
         #region Autentication
 
-        public bool VerifyPassword(string login, string password)
+        public AccountDto VerifyPassword(string login, string password)
         {
             var account = _accountRepository.Find(x => x.Login == login).FirstOrDefault();
             if (account == null) throw new NullReferenceException();
             if (ValidatePassword(password, _accountRepository.GetPasswordByLogin(login)))
-            {
-                CurrentUser =  Mapper.Instance.Map<AccountDto>(account);
-                return true;
+            {   
+                return Mapper.Instance.Map<AccountDto>(account);
             }
-            return false;
+            return null;
         }
 
         private string HashPassword(string password)

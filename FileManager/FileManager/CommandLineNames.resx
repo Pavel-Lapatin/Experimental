@@ -173,22 +173,31 @@
   <data name="DirectoryCommand" xml:space="preserve">
     <value>directory</value>
   </data>
-  <data name="DirectoryCreateOption" xml:space="preserve">
+  <data name="CreateOption" xml:space="preserve">
     <value>-cr|--create &lt;value&gt;</value>
   </data>
-  <data name="DirectoryInfoOption" xml:space="preserve">
+  <data name="InfoOption" xml:space="preserve">
     <value>-i|--info &lt;value&gt;</value>
   </data>
-  <data name="DirectoryListOption" xml:space="preserve">
+  <data name="ListOption" xml:space="preserve">
     <value>-ls|--list &lt;value&gt;</value>
   </data>
-  <data name="DirectoryMoveOption" xml:space="preserve">
+  <data name="MoveOption" xml:space="preserve">
     <value>-mv|--move &lt;value&gt;</value>
   </data>
-  <data name="DirectoryRemoveOption" xml:space="preserve">
+  <data name="RemoveOption" xml:space="preserve">
     <value>-rm|--remove &lt;value&gt;</value>
   </data>
-  <data name="DirectorySearchOption" xml:space="preserve">
+  <data name="SearchOption" xml:space="preserve">
     <value>-sr|--search &lt;value&gt;</value>
+  </data>
+  <data name="DownloadOption" xml:space="preserve">
+    <value>-d|--download &lt;value&gt;</value>
+  </data>
+  <data name="FileCommand" xml:space="preserve">
+    <value>file</value>
+  </data>
+  <data name="UploadOption" xml:space="preserve">
+    <value>-u|--upload &lt;value&gt;</value>
   </data>
 </root>

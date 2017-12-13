@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetMastery.FileManeger.ConsoleApp {
+namespace NetMastery.Lab05.FileManager
+{
     using System;
     
     
@@ -39,7 +40,7 @@ namespace NetMastery.FileManeger.ConsoleApp {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.FileManeger.ConsoleApp.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManager.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

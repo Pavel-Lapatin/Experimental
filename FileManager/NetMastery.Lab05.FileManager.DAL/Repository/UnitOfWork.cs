@@ -13,13 +13,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
     {
         private readonly FileManagerDbContext _context;
         public IAccountRepository Accounts { get; }
-        public IStorageRepository Storagies { get; }
+        public IDirectoryRepository Directories { get; }
 
         public UnitOfWork(FileManagerDbContext context)
         {
             _context = context;
             Accounts = new AccountRepository(_context);
-            Storagies = new StorageRepository(_context);
+            Directories = new DirectoryRepository(_context);
         }
 
         public void Dispose()

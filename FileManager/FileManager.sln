@@ -1,15 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2009
+VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FileManager", "FileManager\FileManager.csproj", "{288EB39E-009C-4839-87F5-FA5B20036103}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager", "FileManager\NetMastery.Lab05.FileManager.csproj", "{288EB39E-009C-4839-87F5-FA5B20036103}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.DAL", "NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj", "{F720039F-B67D-4D0B-8448-D9698879F546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.DTO", "NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.DTO.csproj", "{C9CF9681-D861-4399-8695-53006F68B282}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.FileManeger.Controller", "NetMastery.FileManeger.Controller\NetMastery.FileManeger.Controller.csproj", "{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManeger.Bl", "NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManeger.Bl.csproj", "{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,10 +23,6 @@ Global
 		{F720039F-B67D-4D0B-8448-D9698879F546}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F720039F-B67D-4D0B-8448-D9698879F546}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F720039F-B67D-4D0B-8448-D9698879F546}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C9CF9681-D861-4399-8695-53006F68B282}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C9CF9681-D861-4399-8695-53006F68B282}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C9CF9681-D861-4399-8695-53006F68B282}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C9CF9681-D861-4399-8695-53006F68B282}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}.Release|Any CPU.ActiveCfg = Release|Any CPU

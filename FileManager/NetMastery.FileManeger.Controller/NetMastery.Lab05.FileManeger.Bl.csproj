@@ -7,8 +7,8 @@
     <ProjectGuid>{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetMastery.FileManeger.Controller</RootNamespace>
-    <AssemblyName>NetMastery.FileManeger.Controller</AssemblyName>
+    <RootNamespace>NetMastery.FileManeger.Bl</RootNamespace>
+    <AssemblyName>NetMastery.FileManeger.Bl</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -44,15 +44,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AccountController.cs" />
+    <Compile Include="DtoClasses\AccountDto.cs" />
+    <Compile Include="DtoClasses\DirectoryinfoDto.cs" />
+    <Compile Include="Servicies\AccountService.cs" />
+    <Compile Include="FileManagerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="StorageController.cs" />
+    <Compile Include="Servicies\DirectoryService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BL\NetMastery.Lab05.FileManager.DTO.csproj">
-      <Project>{c9cf9681-d861-4399-8695-53006f68b282}</Project>
-      <Name>NetMastery.Lab05.FileManager.DTO</Name>
-    </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{F720039F-B67D-4D0B-8448-D9698879F546}</Project>
       <Name>NetMastery.Lab05.FileManager.DAL</Name>
