@@ -7,13 +7,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.2.0-61023")]
-    public sealed partial class V100 : IMigrationMetadata
+    public sealed partial class v101 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(V100));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(v101));
         
         string IMigrationMetadata.Id
         {
-            get { return "201712142115244_v1.0.0"; }
+            get { return "201712151551131_v.1.0.1"; }
         }
         
         string IMigrationMetadata.Source

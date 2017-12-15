@@ -8,9 +8,9 @@ using NetMastery.Lab05.FileManager.DAL.Entities;
 
 namespace NetMastery.Lab05.FileManager.DAL.Configurations
 {
-    internal class FileMap : EntityTypeConfiguration<FileInfo>
+    internal class FileStructMap : EntityTypeConfiguration<FileStructure>
     {
-        public FileMap()
+        public FileStructMap()
         {
             HasKey(x => x.FileId);
             Property(p => p.Name).HasMaxLength(50).IsRequired();

@@ -14,143 +14,169 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
 
         protected override void Seed(NetMastery.Lab05.FileManager.DAL.FileManagerDbContext context)
         {
-            context.Accounts.AddRange(new[]
-           {
+            /*
+            var fileTypes = new[]
+            {
+                new FileType
+                {
+                    TypeId = 1,
+                    Extension = ".exe",
+                    RelatedProgram = "",
+                },
+                new FileType
+                {
+                    TypeId = 2,
+                    Extension = ".doc",
+                    RelatedProgram = "MicrosoftWord",
+                },
+                new FileType
+                {
+                    TypeId = 3,
+                    Extension = ".txt",
+                    RelatedProgram = "NotePad",
+                },
+                new FileType
+                {
+                    TypeId = 4,
+                    Extension = ".html",
+                    RelatedProgram = "MozilaFireFox",
+                }
+            };
 
-               new Account
-               {
+            var directories = new[]
+            {
+                new DirectoryStructure
+                {
+                    DirectoryId = 1,
+                    Name = "adminId1-Root",
+                    CreationDate = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    ParentDirectoryId = null,
+                },
+
+                new DirectoryStructure
+                {
+                    DirectoryId = 2,
+                    Name = "PashaId2-Root",
+                    CreationDate = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    ParentDirectoryId = null,
+                },
+
+                new DirectoryStructure
+                {
+                    DirectoryId = 3,
+                    Name = "adminId1-Dir1-Lvl1",
+                    CreationDate = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    ParentDirectoryId = 1,
+                },
+
+                new DirectoryStructure
+                {
+                    DirectoryId = 4,
+                    Name = "adminId1-Dir2-Lvl1",
+                    CreationDate = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    ParentDirectoryId = 1,
+                },
+
+                 new DirectoryStructure
+                {
+                    DirectoryId = 5,
+                    Name = "adminId1-Dir2-Lvl1",
+                    CreationDate = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    ParentDirectoryId = 4
+                }
+            };
+
+            context.Directories.AddOrUpdate(directories);
+
+            var files = new[]
+            {
+                new FileStructure
+                {
+                    FileId = 1,
+                    FileTypeId = 1,
+                    Name = "DirId5-FileId1",
+                    DirectoryId = 5,
+                    CreationTime = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    FileSize = 1024,
+                    DownloadsNumber = 5
+                },
+                new FileStructure
+                {
+                    FileId = 2,
+                    FileTypeId = 2,
+                    Name = "DirId1-FileId2",
+                    DirectoryId = 1,
+                    CreationTime = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    FileSize = 2048,
+                    DownloadsNumber = 0
+                },
+                new FileStructure
+                {
+                    FileId = 3,
+                    FileTypeId = 3,
+                    Name = "DirId1-FileId3",
+                    DirectoryId = 1,
+                    CreationTime = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    FileSize = 1024,
+                    DownloadsNumber = 5
+                },
+                new FileStructure
+                {
+                    FileId = 4,
+                    FileTypeId = 1,
+                    Name = "DirId1-FileId4",
+                    DirectoryId = 5,
+                    CreationTime = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    FileSize = 18000,
+                    DownloadsNumber = 2
+                },
+                new FileStructure
+                {
+                    FileId = 1,
+                    FileTypeId = 1,
+                    Name = "DirId4-FileId3",
+                    DirectoryId = 5,
+                    CreationTime = new DateTime(2016,2,6),
+                    ModificationDate = new DateTime(2016,2,6),
+                    FileSize = 15000,
+                    DownloadsNumber = 10
+                }
+            };
+
+            context.Files.AddOrUpdate<FileStructure>(files);
+
+            var accounts = new[]
+            {
+                new Account
+                {
+                    AccoountId = 1,
                    Login = "admin",
                    Password = "admin",
                    CreationDate = DateTime.Now,
-                   Directory = new DirectoryInfo
-                   {
-                       DirectoryId = 1,
-                       Name = "adminRoot",
-                       CreationDate = new DateTime(2000,2,6),
-                       ModificationDate = new DateTime(2015,4,23),
-                       ChildrenDirectories = new []
-                       {
-                           new DirectoryInfo
-                           {
-                               DirectoryId = 2,
-                               Name = "adminId2-Lvl1",
-                               CreationDate = new DateTime(2016,2,6),
-                               ModificationDate = new DateTime(2016,2,6),
-                               ParentDirectoryId = 1,
-                               Files = new []
-                               {
-                                   new FileInfo
-                                   {
-                                       FileId = 1,
-                                       Name = "adminId2-FileId1",
-                                       CreationTime = new DateTime(2010, 2, 2),
-                                       ModificationDate = new DateTime(2013, 1, 1),
-                                       DownloadsNumber = 3,
-                                       FileSize = 40,
-                                       FileType = new FileType
-                                       {
-                                            TypeId = 1,
-                                            Extension = ".exe",
-                                            RelatedProgram = "",
-                                       }
-                                   },
-                                   new FileInfo
-                                   {
-                                       FileId = 2,
-                                       Name = "adminId2-FileId2",
-                                       CreationTime = new DateTime(2011, 2, 2),
-                                       ModificationDate = new DateTime(2013, 1, 1),
-                                       DownloadsNumber = 1,
-                                       FileSize = 1024,
-                                       FileType = new FileType
-                                       {
-                                            TypeId =2,
-                                            Extension = ".doc",
-                                            RelatedProgram = "MicrosofWord",
-                                       }
-                                   }
-
-                               },
-                               ChildrenDirectories = new []
-                               {
-                                   new DirectoryInfo
-                                   {
-                                       DirectoryId = 6,
-                                       Name = "adminId6-Lvl2",
-                                       CreationDate = new DateTime(2016,2,6),
-                                       ModificationDate = new DateTime(2016,2,6),
-                                       ParentDirectoryId = 2,
-                                       ChildrenDirectories = new []
-                                       {
-                                           new DirectoryInfo
-                                           {
-                                            DirectoryId = 8,
-                                               Name = "adminId6-Lvl3",
-                                               CreationDate = new DateTime(2016,2,6),
-                                               ModificationDate = new DateTime(2016,2,6),
-                                               ParentDirectoryId = 6,
-                                               Files = new []
-                                               {
-                                                   new FileInfo
-                                                   {
-                                                       FileId = 1,
-                                                       Name = "adminId2-FileId1",
-                                                       CreationTime = new DateTime(2010, 2, 2),
-                                                       ModificationDate = new DateTime(2013, 1, 1),
-                                                       DownloadsNumber = 3,
-                                                       FileSize = 40,
-                                                       FileType = new FileType
-                                                       {
-                                                           TypeId = 3,
-                                                           Extension = ".html",
-                                                           RelatedProgram = "MozilaFireFox",
-                                                       }
-                                                   },
-                                               }
-                                           }
-                                       },
-
-                                   },
-                                   new DirectoryInfo
-                                   {
-                                       DirectoryId = 7,
-                                       Name = "adminId7-Lvl2",
-                                       CreationDate = new DateTime(2016,2,6),
-                                       ModificationDate = new DateTime(2016,2,6),
-                                       ParentDirectoryId = 1
-                                   }
-                               },
-                           },
-                           new DirectoryInfo
-                           {
-                               DirectoryId = 3,
-                               Name = "adminId3-Lvl1",
-                               CreationDate = new DateTime(2014,3,11),
-                               ModificationDate = new DateTime(2016,4,3),
-                               ParentDirectoryId = 1,
-                           }
-                       }
-
-                   }
-
-               },
-
-               new Account
-               {
+                   RootDirectory = directories[0],
+                },
+                new Account
+                {
+                   AccoountId = 2,
                    Login = "Pasha",
                    Password = "PashaTheBest",
                    CreationDate = new DateTime(2015,01,18),
-                   Directory = new DirectoryInfo
-                   {
-                      DirectoryId = 9,
-                      Name = "PashaRoot",
-                      CreationDate = new DateTime(2000,2,6),
-                      ModificationDate = new DateTime(2015,4,23),
-                   }
+                   RootDirectory = directories[1]
+                },
+            };
 
-               }
-           });
-
+            base.Seed(context);
+            context.SaveChanges();
+            */
 
             //  This method will be called after migrating to the latest version.
 

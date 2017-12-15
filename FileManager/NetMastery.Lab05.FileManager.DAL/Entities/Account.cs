@@ -14,6 +14,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Entities
         public string Password { get; set; }
         public DateTime CreationDate { get; set; }
 
-        public virtual DirectoryInfo Directory { get; set; }
+        public virtual DirectoryStructure RootDirectory { get; set; }
     }
 }

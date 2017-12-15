@@ -8,9 +8,9 @@ using NetMastery.Lab05.FileManager.DAL.Entities;
 
 namespace NetMastery.Lab05.FileManager.DAL.Configurations
 {
-    internal class StorageMap : EntityTypeConfiguration<DirectoryInfo>
+    internal class DirectoryStructMap : EntityTypeConfiguration<DirectoryStructure>
     {
-        public StorageMap()
+        public DirectoryStructMap()
         {
             HasKey(p => p.DirectoryId);
 
@@ -21,6 +21,9 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
             Property(p => p.CreationDate).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
             Property(p => p.Name).IsRequired().HasMaxLength(255);
+
+            HasRequired<Account>(x => x.Account)
+               .WithRequiredPrincipal();
         }
 
     }

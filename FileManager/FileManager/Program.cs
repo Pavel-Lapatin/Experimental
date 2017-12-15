@@ -48,7 +48,7 @@ namespace NetMastery.Lab05.FileManager
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<AccountDto, Account>();
-                cfg.CreateMap<DirectoryInfo, DirectoryInfo>();
+                cfg.CreateMap<DirectoryStructure, DirectoryStructure>();
 
             });
         }

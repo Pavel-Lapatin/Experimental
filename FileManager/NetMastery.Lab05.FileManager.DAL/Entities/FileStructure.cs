@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace NetMastery.Lab05.FileManager.DAL.Entities
 
 {
-    public class FileInfo
+    public class FileStructure
     {
         public int FileId { get; set; }
         public string Name { get; set; }
@@ -20,6 +20,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Entities
         public virtual FileType FileType  { get; set; }
 
         public virtual int DirectoryId { get; set; }
-        public virtual DirectoryInfo Directory { get; set; }
+        public virtual DirectoryStructure Directory { get; set; }
     }
 }

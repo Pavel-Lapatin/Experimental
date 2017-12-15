@@ -13,6 +13,6 @@ namespace NetMastery.Lab05.FileManager.DAL
         public string Extension { get; set; }
         public string RelatedProgram { get; set; }
 
-        public virtual ICollection<FileInfo> Files {get; set;}
+        public virtual ICollection<FileStructure> Files {get; set;}
     }
 }

@@ -49,24 +49,23 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configurations\AccountsMap.cs" />
-    <Compile Include="Configurations\FileMap.cs" />
+    <Compile Include="Configurations\FileStructMap.cs" />
     <Compile Include="Configurations\FileTypeMap.cs" />
-    <Compile Include="Configurations\StorageMap.cs" />
+    <Compile Include="Configurations\DirectoryStructMap.cs" />
     <Compile Include="Entities\Account.cs" />
-    <Compile Include="Entities\DirectoryInfo.cs" />
-    <Compile Include="Entities\FileInfo.cs" />
+    <Compile Include="Entities\DirectoryStructure.cs" />
+    <Compile Include="Entities\FileStructure.cs" />
     <Compile Include="Entities\FileType.cs" />
     <Compile Include="Entities\Rights.cs" />
     <Compile Include="FileManagerDBContext.cs" />
-    <Compile Include="FileManegerInitializer.cs" />
     <Compile Include="Interfacies\IAccountRepository.cs" />
     <Compile Include="Interfacies\IRepository.cs" />
     <Compile Include="Interfacies\IRoleRepository.cs" />
     <Compile Include="Interfacies\IDirectoryRepository.cs" />
     <Compile Include="Interfacies\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201712142115244_v1.0.0.cs" />
-    <Compile Include="Migrations\201712142115244_v1.0.0.Designer.cs">
-      <DependentUpon>201712142115244_v1.0.0.cs</DependentUpon>
+    <Compile Include="Migrations\201712151551131_v.1.0.1.cs" />
+    <Compile Include="Migrations\201712151551131_v.1.0.1.Designer.cs">
+      <DependentUpon>201712151551131_v.1.0.1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -87,8 +86,8 @@
     <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712142115244_v1.0.0.resx">
-      <DependentUpon>201712142115244_v1.0.0.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201712151551131_v.1.0.1.resx">
+      <DependentUpon>201712151551131_v.1.0.1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
