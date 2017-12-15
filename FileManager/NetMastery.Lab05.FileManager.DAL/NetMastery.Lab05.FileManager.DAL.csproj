@@ -64,9 +64,9 @@
     <Compile Include="Interfacies\IRoleRepository.cs" />
     <Compile Include="Interfacies\IDirectoryRepository.cs" />
     <Compile Include="Interfacies\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201712132151169_InitialFileManagerDB.cs" />
-    <Compile Include="Migrations\201712132151169_InitialFileManagerDB.Designer.cs">
-      <DependentUpon>201712132151169_InitialFileManagerDB.cs</DependentUpon>
+    <Compile Include="Migrations\201712142115244_v1.0.0.cs" />
+    <Compile Include="Migrations\201712142115244_v1.0.0.Designer.cs">
+      <DependentUpon>201712142115244_v1.0.0.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,16 +78,18 @@
     <Compile Include="Repository\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712132151169_InitialFileManagerDB.resx">
-      <DependentUpon>201712132151169_InitialFileManagerDB.cs</DependentUpon>
-    </EmbeddedResource>
+    <Folder Include="Helpers\" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
+    <EmbeddedResource Include="Migrations\201712142115244_v1.0.0.resx">
+      <DependentUpon>201712142115244_v1.0.0.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

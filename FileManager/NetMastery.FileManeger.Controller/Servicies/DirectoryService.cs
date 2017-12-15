@@ -18,9 +18,9 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             _storageRepository = storageRepository;
         }
 
-        public void CalculateFullSize(string login)
+        public int CalculateFullSize(string login)
         {
-            
+            return 0;
         }
 
         //public void MoveToTheDirrectory(string path)

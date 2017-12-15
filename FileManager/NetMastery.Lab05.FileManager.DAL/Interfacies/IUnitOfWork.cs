@@ -5,7 +5,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Interfacies
     interface IUnitOfWork : IDisposable
     {
         IAccountRepository Accounts {get;}
-        IDirectoryRepository Storagies { get; }
+        IDirectoryRepository Directories { get; }
         int Complete();
     }
 }

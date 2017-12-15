@@ -25,7 +25,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
             Property(p => p.Password).IsRequired();
             Property(p => p.CreationDate).IsRequired();
 
-            HasRequired(x => x.Storage)
+            HasRequired(x => x.Directory)
                 .WithRequiredDependent(x=>x.Account)
                 .Map(x=>x.MapKey("RootDirectory"));
                 

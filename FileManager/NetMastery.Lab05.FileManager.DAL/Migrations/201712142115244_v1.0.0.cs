@@ -3,7 +3,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class InitialFileManagerDB : DbMigration
+    public partial class V100 : DbMigration
     {
         public override void Up()
         {
@@ -26,16 +26,15 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 "dbo.DirectoryInfoes",
                 c => new
                     {
-                        StorageId = c.Int(nullable: false, identity: true),
-                        Path = c.String(),
+                        DirectoryId = c.Int(nullable: false, identity: true),
                         Name = c.String(nullable: false, maxLength: 255),
                         CreationDate = c.DateTime(nullable: false),
                         ModificationDate = c.DateTime(nullable: false),
-                        ParentStorageId = c.Int(),
+                        ParentDirectoryId = c.Int(),
                     })
-                .PrimaryKey(t => t.StorageId)
-                .ForeignKey("dbo.DirectoryInfoes", t => t.ParentStorageId)
-                .Index(t => t.ParentStorageId);
+                .PrimaryKey(t => t.DirectoryId)
+                .ForeignKey("dbo.DirectoryInfoes", t => t.ParentDirectoryId)
+                .Index(t => t.ParentDirectoryId);
             
             CreateTable(
                 "dbo.FileInfoes",
@@ -71,20 +70,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.Accounts", "RootDirectory", "dbo.DirectoryInfoes");
-            DropForeignKey("dbo.DirectoryInfoes", "ParentStorageId", "dbo.DirectoryInfoes");
-            DropForeignKey("dbo.FileInfoes", "StorageId", "dbo.DirectoryInfoes");
-            DropForeignKey("dbo.FileInfoes", "FileTypeId", "dbo.FileTypes");
-            DropIndex("dbo.FileTypes", "UQ_FileType_Extension");
-            DropIndex("dbo.FileInfoes", new[] { "StorageId" });
-            DropIndex("dbo.FileInfoes", new[] { "FileTypeId" });
-            DropIndex("dbo.DirectoryInfoes", new[] { "ParentStorageId" });
-            DropIndex("dbo.Accounts", new[] { "RootDirectory" });
-            DropIndex("dbo.Accounts", "UQ_Account_Name");
-            DropTable("dbo.FileTypes");
-            DropTable("dbo.FileInfoes");
-            DropTable("dbo.DirectoryInfoes");
-            DropTable("dbo.Accounts");
+            
         }
     }
 }

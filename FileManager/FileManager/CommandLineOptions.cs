@@ -101,7 +101,7 @@ namespace NetMastery.Lab05.FileManager
                 {
                     using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
                     {
-                        var StorageController = new DirectoryService(unitOfWork.Storagies);
+                        var StorageController = new DirectoryService(unitOfWork.Directories);
                         if (info != null)
                         {
                             Console.WriteLine("Info");
@@ -158,7 +158,7 @@ namespace NetMastery.Lab05.FileManager
                 {
                     using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
                     {
-                        var StorageController = new DirectoryService(unitOfWork.Storagies);
+                        var StorageController = new DirectoryService(unitOfWork.Directories);
                         if (info != null)
                         {
                             Console.WriteLine("Info");

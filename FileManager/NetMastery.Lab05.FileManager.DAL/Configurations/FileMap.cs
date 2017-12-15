@@ -18,9 +18,9 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
             Property(p => p.CreationTime).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
 
-            HasRequired(p => p.Storage)
+            HasRequired(p => p.Directory)
                 .WithMany(c => c.Files)
-                .HasForeignKey(fk => fk.StorageId);
+                .HasForeignKey(fk => fk.DirectoryId);
 
             HasRequired(p => p.FileType)
                 .WithMany(c => c.Files)

@@ -19,7 +19,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Entities
         public virtual int FileTypeId { get; set; }
         public virtual FileType FileType  { get; set; }
 
-        public virtual int StorageId { get; set; }
-        public virtual DirectoryInfo Storage { get; set; }
+        public virtual int DirectoryId { get; set; }
+        public virtual DirectoryInfo Directory { get; set; }
     }
 }

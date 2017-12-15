@@ -12,9 +12,9 @@ namespace NetMastery.Lab05.FileManager.DAL
         }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<DirectoryInfo> Storages { get; set; }
+        public DbSet<DirectoryInfo> Directories { get; set; }
         public DbSet<FileInfo> Files { get; set; }
-        public DbSet<FileType> FileTyped { get; set; }
+        public DbSet<FileType> FileTypes { get; set; }
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

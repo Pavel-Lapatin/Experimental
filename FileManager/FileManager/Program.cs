@@ -2,8 +2,8 @@
 using System;
 using Microsoft.Extensions.CommandLineUtils;
 using AutoMapper;
-using NetMastery.FileManeger.Controller;
 using NetMastery.Lab05.FileManager.BL;
+using NetMastery.Lab05.FileManeger.Bl.Dto;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -22,12 +22,17 @@ namespace NetMastery.Lab05.FileManager
             FileManagerModel model = new FileManagerModel();
             CommandLineOptions.AddCommands(cmd, model);
 
+            Console.Write("command->");
+            Console.WriteLine(" login -l admin -p admin");
+            //var args = Console.ReadLine();
+            var args = " login -l admin -p admin";
+            cmd.Execute(ParseArguemts(args.Trim(' ')));
             while (true)
             {
                 try
                 {
                     Console.Write("command->");
-                    var args = Console.ReadLine();
+                    args = Console.ReadLine();
                     if (args == null) throw new NullReferenceException();
                     cmd.Execute(ParseArguemts(args.Trim(' ')));
                 }
@@ -43,7 +48,7 @@ namespace NetMastery.Lab05.FileManager
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<AccountDto, Account>();
-                cfg.CreateMap<StorageDto, DirectoryInfo>();
+                cfg.CreateMap<DirectoryInfo, DirectoryInfo>();
 
             });
         }

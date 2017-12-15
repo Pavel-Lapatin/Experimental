@@ -77,7 +77,6 @@ namespace NetMastery.Lab05.FileManeger.Bl.Servicies
             var newAccount = new AccountDto
             {
                 Login = login,
-                Password = hashPassword,
                 CreationDate = DateTime.Now
             };
             _accountRepository.Add(Mapper.Map<Account>(newAccount));

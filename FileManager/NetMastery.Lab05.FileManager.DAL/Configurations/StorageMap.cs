@@ -12,11 +12,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
     {
         public StorageMap()
         {
-            HasKey(p => p.StorageId);
+            HasKey(p => p.DirectoryId);
 
-            HasOptional(x => x.ParentStorage)
-            .WithMany(x => x.ChildrenStoragies)
-            .HasForeignKey(x=>x.ParentStorageId);
+            HasOptional(x => x.ParentDirectory)
+            .WithMany(x => x.ChildrenDirectories)
+            .HasForeignKey(x=>x.ParentDirectoryId);
 
             Property(p => p.CreationDate).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
