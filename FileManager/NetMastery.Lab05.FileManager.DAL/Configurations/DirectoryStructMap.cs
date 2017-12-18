@@ -16,14 +16,14 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
 
             HasOptional(x => x.ParentDirectory)
             .WithMany(x => x.ChildrenDirectories)
-            .HasForeignKey(x=>x.ParentDirectoryId);
+            .Map(x=>x.MapKey("ParantDirectory"));
 
             Property(p => p.CreationDate).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
             Property(p => p.Name).IsRequired().HasMaxLength(255);
 
-            HasRequired<Account>(x => x.Account)
-               .WithRequiredPrincipal();
+
+
         }
 
     }

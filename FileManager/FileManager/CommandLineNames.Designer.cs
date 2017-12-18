@@ -70,6 +70,15 @@ namespace NetMastery.Lab05.FileManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to cd.
+        /// </summary>
+        internal static string ChangeDirectoryOption {
+            get {
+                return ResourceManager.GetString("ChangeDirectoryOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to copy.
         /// </summary>
         internal static string CopyCommand {
@@ -259,6 +268,15 @@ namespace NetMastery.Lab05.FileManager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to singup.
+        /// </summary>
+        internal static string SingupCommand {
+            get {
+                return ResourceManager.GetString("SingupCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -u|--upload &lt;value&gt;.
         /// </summary>
         internal static string UploadOption {
@@ -268,11 +286,11 @@ namespace NetMastery.Lab05.FileManager {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to user info.
+        ///   Looks up a localized string similar to user.
         /// </summary>
-        internal static string UserInfoCommand {
+        internal static string UserCommand {
             get {
-                return ResourceManager.GetString("UserInfoCommand", resourceCulture);
+                return ResourceManager.GetString("UserCommand", resourceCulture);
             }
         }
         

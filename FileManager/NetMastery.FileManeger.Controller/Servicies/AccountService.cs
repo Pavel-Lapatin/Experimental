@@ -1,86 +1,88 @@
 ﻿using System;
 using System.Linq;
-using System.Security.Cryptography;
 using AutoMapper;
 using NetMastery.Lab05.FileManager.DAL.Entities;
-using NetMastery.Lab05.FileManager.DAL.Interfacies;
-using NetMastery.Lab05.FileManeger.Bl.Dto;
+using NetMastery.Lab05.FileManager.DAL.Repository;
 
-namespace NetMastery.Lab05.FileManeger.Bl.Servicies
+using System.Resources;
+using NetMastery.Lab05.FileManager.BL.Dto;
+
+namespace NetMastery.Lab05.FileManager.BL.Servicies
 {
-    public class AccountService
+    public class AccountService : IDisposable
     {
-        private const int SaltByteSize = 24;
-        private const int HashByteSize = 24; // to match the size of the PBKDF2-HMAC-SHA-1 hash 
-        private const int Pbkdf2Iterations = 5000;
-        private const int IterationIndex = 0;
-        private const int SaltIndex = 1;
-        private const int Pbkdf2Index = 2;
+        private ResourceManager rm;
+        private UnitOfWork unitOfWork;
 
-        private readonly IAccountRepository _accountRepository;
-
-        public AccountService(IAccountRepository repository)
+        public AccountService(ResourceManager rm, UnitOfWork unitOfWork)
         {
-            _accountRepository = repository;
+            this.rm = rm;
+            this.unitOfWork = unitOfWork;
         }
 
         #region Autentication
 
-        public AccountDto VerifyPassword(string login, string password)
+        public AccountDto GetUserInfo(int accountId)
         {
-            var account = _accountRepository.Find(x => x.Login == login).FirstOrDefault();
-            if (account == null) throw new NullReferenceException();
-            if (ValidatePassword(password, _accountRepository.GetPasswordByLogin(login)))
-            {   
-                return Mapper.Instance.Map<AccountDto>(account);
+            return Mapper.Instance.Map<AccountDto>(unitOfWork.Accounts.Get(accountId));
+        }
+
+
+        public bool VerifyPassword(string login, string password, FileManagerModel model)
+        {
+
+            if (password == null || login == null)
+            {
+                throw new NullReferenceException(rm.GetString("LoginNullReferenceException"));
             }
-            return null;
+            var account = Mapper.Map<AccountDto>(unitOfWork.Accounts.Find(x => x.Login == login).FirstOrDefault());
+            if (BCrypt.Net.BCrypt.Verify(password, account.Password))
+            {
+                model.LoginName = account.Login;
+                model.AccountId = account.AccountId;
+                model.RootDirectoryId = account.RootDirectory.DirectoryId;
+                return true;
+            }
+            return false;
+
         }
 
-        private string HashPassword(string password)
-        {
-            var cryptoProvider = new RNGCryptoServiceProvider();
-            byte[] salt = new byte[SaltByteSize];
-            cryptoProvider.GetBytes(salt);
-
-            var hash = GetPbkdf2Bytes(password, salt, Pbkdf2Iterations, HashByteSize);
-            return Pbkdf2Iterations + ":" +
-                   Convert.ToBase64String(salt) + ":" +
-                   Convert.ToBase64String(hash);
-        }
-
-        public bool ValidatePassword(string password, string correctHash)
-        {
-            char[] delimiter = { ':' };
-            var split = correctHash.Split(delimiter);
-            var iterations = Int32.Parse(split[IterationIndex]);
-            var salt = Convert.FromBase64String(split[SaltIndex]);
-            var hash = Convert.FromBase64String(split[Pbkdf2Index]);
-
-            var testHash = GetPbkdf2Bytes(password, salt, iterations, hash.Length);
-            return Equals(hash, testHash);
-        }
-
-        private byte[] GetPbkdf2Bytes(string password, byte[] salt, int iterations, int outputBytes)
-        {
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt);
-            pbkdf2.IterationCount = iterations;
-            return pbkdf2.GetBytes(outputBytes);
-        }
         #endregion
 
         #region Registration
 
         public void RegisterUser(string login, string password)
         {
-            var hashPassword = HashPassword(password);
+            if (password == null || login == null)
+            {
+                throw new NullReferenceException(rm.GetString("LoginNullReferenceException"));
+            }
             var newAccount = new AccountDto
             {
+                AccountId = 0,
                 Login = login,
-                CreationDate = DateTime.Now
+                CreationDate = DateTime.Now,
+                Password = BCrypt.Net.BCrypt.HashPassword(password,
+                                                          BCrypt.Net.BCrypt.GenerateSalt()),
+                RootDirectory = new DirectoryStructureDto
+                {
+                    Name = login + "Root",
+                    CreationDate = DateTime.Now,
+                    ModificationDate = DateTime.Now,
+                    FullPath = "CommonStorage/" + login + "Root",
+
+                }
             };
-            _accountRepository.Add(Mapper.Map<Account>(newAccount));
+            unitOfWork.Accounts.Add(Mapper.Instance.Map<Account>(newAccount));
+            unitOfWork.Complete();
         }
+
+        public void Dispose()
+        {
+            unitOfWork.Dispose();
+        }
+
+
         #endregion
     }
 }

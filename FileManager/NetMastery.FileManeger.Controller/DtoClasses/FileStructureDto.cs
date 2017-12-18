@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NetMastery.Lab05.FileManager.DAL.Entities;
+using System;
 
-namespace NetMastery.Lab05.FileManager.DAL.Entities
-
+namespace NetMastery.Lab05.FileManager.BL.Dto
 {
-    public class FileStructure
+    public class FileStructureDto
     {
         public int FileId { get; set; }
         public string Name { get; set; }
@@ -16,7 +12,8 @@ namespace NetMastery.Lab05.FileManager.DAL.Entities
         public long FileSize { get; set; }
         public int DownloadsNumber { get; set; }
         public string Extension { get; set; }
+        public virtual DirectoryStructureDto Directory { get; set; }
 
-        public virtual DirectoryStructure Directory { get; set; }
+        //public int FileHash { get; set; }
     }
 }

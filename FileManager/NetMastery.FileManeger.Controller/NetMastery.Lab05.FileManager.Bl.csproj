@@ -33,6 +33,9 @@
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="BCrypt.Net, Version=0.1.4141.31969, Culture=neutral, PublicKeyToken=f3bc8f8c31beeb49, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net.0.1.0\lib\net35\BCrypt.Net.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
@@ -45,11 +48,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DtoClasses\AccountDto.cs" />
-    <Compile Include="DtoClasses\DirectoryinfoDto.cs" />
+    <Compile Include="DtoClasses\DirectoryStructureDto.cs" />
+    <Compile Include="DtoClasses\FileStructureDto.cs" />
     <Compile Include="Servicies\AccountService.cs" />
     <Compile Include="FileManagerModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicies\DirectoryService.cs" />
+    <Compile Include="ViewModels\DirectoryInfoViewModel.cs" />
+    <Compile Include="ViewModels\UserInfoViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">

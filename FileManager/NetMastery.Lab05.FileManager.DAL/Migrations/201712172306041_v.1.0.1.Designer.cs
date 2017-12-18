@@ -13,7 +13,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201712151551131_v.1.0.1"; }
+            get { return "201712172306041_v.1.0.1"; }
         }
         
         string IMigrationMetadata.Source

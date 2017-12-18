@@ -10,26 +10,20 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
     {
         public AccountsMap()
         {
-            HasKey(c => c.AccoountId);
-            HasRequired<DirectoryStructure>(x => x.RootDirectory)
-               .WithRequiredDependent();
+            HasKey(c => c.AccountId);
 
             Property(p => p.Login)
                 .HasMaxLength(20)
                 .IsRequired()
-                .IsUnicode()
-                .HasColumnAnnotation("Index",
-                    new IndexAnnotation(
-                        new IndexAttribute("UQ_Account_Name")
-                        {
-                            IsUnique = true
-                        }));
-
+                .IsUnicode();
+                
             Property(p => p.Password).IsRequired();
             Property(p => p.CreationDate).IsRequired();
 
-           
-                
+            HasRequired(x => x.RootDirectory)
+                .WithOptional()
+                .Map(x => x.MapKey("RootDirectory"));
+            HasIndex(x => x.Login).IsUnique();
         }
     }
 }

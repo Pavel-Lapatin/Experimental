@@ -167,8 +167,8 @@
     <value>-p|--password &lt;value&gt;</value>
     <comment>Input password for your account</comment>
   </data>
-  <data name="UserInfoCommand" xml:space="preserve">
-    <value>user info</value>
+  <data name="UserCommand" xml:space="preserve">
+    <value>user</value>
   </data>
   <data name="DirectoryCommand" xml:space="preserve">
     <value>directory</value>
@@ -199,5 +199,11 @@
   </data>
   <data name="UploadOption" xml:space="preserve">
     <value>-u|--upload &lt;value&gt;</value>
+  </data>
+  <data name="SingupCommand" xml:space="preserve">
+    <value>singup</value>
+  </data>
+  <data name="ChangeDirectoryOption" xml:space="preserve">
+    <value>cd</value>
   </data>
 </root>

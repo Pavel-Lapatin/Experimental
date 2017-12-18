@@ -3,7 +3,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class v101 : DbMigration
+    public partial class v100 : DbMigration
     {
         public override void Up()
         {
@@ -11,15 +11,16 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 "dbo.Accounts",
                 c => new
                     {
-                        AccoountId = c.Int(nullable: false),
+                        AccountId = c.Int(nullable: false, identity: true),
                         Login = c.String(nullable: false, maxLength: 20),
                         Password = c.String(nullable: false),
                         CreationDate = c.DateTime(nullable: false),
+                        RootDirectory = c.Int(nullable: false),
                     })
-                .PrimaryKey(t => t.AccoountId)
-                .ForeignKey("dbo.DirectoryStructures", t => t.AccoountId)
-                .Index(t => t.AccoountId)
-                .Index(t => t.Login, unique: true, name: "UQ_Account_Name");
+                .PrimaryKey(t => t.AccountId)
+                .ForeignKey("dbo.DirectoryStructures", t => t.RootDirectory)
+                .Index(t => t.Login, unique: true)
+                .Index(t => t.RootDirectory);
             
             CreateTable(
                 "dbo.DirectoryStructures",
@@ -29,11 +30,12 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                         Name = c.String(nullable: false, maxLength: 255),
                         CreationDate = c.DateTime(nullable: false),
                         ModificationDate = c.DateTime(nullable: false),
-                        ParentDirectoryId = c.Int(),
+                        FullPath = c.String(),
+                        ParantDirectory = c.Int(),
                     })
                 .PrimaryKey(t => t.DirectoryId)
-                .ForeignKey("dbo.DirectoryStructures", t => t.ParentDirectoryId)
-                .Index(t => t.ParentDirectoryId);
+                .ForeignKey("dbo.DirectoryStructures", t => t.ParantDirectory)
+                .Index(t => t.ParantDirectory);
             
             CreateTable(
                 "dbo.FileStructures",
@@ -45,14 +47,14 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                         ModificationDate = c.DateTime(nullable: false),
                         FileSize = c.Int(nullable: false),
                         DownloadsNumber = c.Int(nullable: false),
-                        FileTypeId = c.Int(nullable: false),
-                        DirectoryId = c.Int(nullable: false),
+                        Directory = c.Int(nullable: false),
+                        FileType = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.FileId)
-                .ForeignKey("dbo.DirectoryStructures", t => t.DirectoryId, cascadeDelete: true)
-                .ForeignKey("dbo.FileTypes", t => t.FileTypeId, cascadeDelete: true)
-                .Index(t => t.FileTypeId)
-                .Index(t => t.DirectoryId);
+                .ForeignKey("dbo.DirectoryStructures", t => t.Directory, cascadeDelete: true)
+                .ForeignKey("dbo.FileTypes", t => t.FileType, cascadeDelete: true)
+                .Index(t => t.Directory)
+                .Index(t => t.FileType);
             
             CreateTable(
                 "dbo.FileTypes",
@@ -69,16 +71,16 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
         
         public override void Down()
         {
-            DropForeignKey("dbo.DirectoryStructures", "ParentDirectoryId", "dbo.DirectoryStructures");
-            DropForeignKey("dbo.FileStructures", "FileTypeId", "dbo.FileTypes");
-            DropForeignKey("dbo.FileStructures", "DirectoryId", "dbo.DirectoryStructures");
-            DropForeignKey("dbo.Accounts", "AccoountId", "dbo.DirectoryStructures");
+            DropForeignKey("dbo.Accounts", "RootDirectory", "dbo.DirectoryStructures");
+            DropForeignKey("dbo.DirectoryStructures", "ParantDirectory", "dbo.DirectoryStructures");
+            DropForeignKey("dbo.FileStructures", "FileType", "dbo.FileTypes");
+            DropForeignKey("dbo.FileStructures", "Directory", "dbo.DirectoryStructures");
             DropIndex("dbo.FileTypes", "UQ_FileType_Extension");
-            DropIndex("dbo.FileStructures", new[] { "DirectoryId" });
-            DropIndex("dbo.FileStructures", new[] { "FileTypeId" });
-            DropIndex("dbo.DirectoryStructures", new[] { "ParentDirectoryId" });
-            DropIndex("dbo.Accounts", "UQ_Account_Name");
-            DropIndex("dbo.Accounts", new[] { "AccoountId" });
+            DropIndex("dbo.FileStructures", new[] { "FileType" });
+            DropIndex("dbo.FileStructures", new[] { "Directory" });
+            DropIndex("dbo.DirectoryStructures", new[] { "ParantDirectory" });
+            DropIndex("dbo.Accounts", new[] { "RootDirectory" });
+            DropIndex("dbo.Accounts", new[] { "Login" });
             DropTable("dbo.FileTypes");
             DropTable("dbo.FileStructures");
             DropTable("dbo.DirectoryStructures");

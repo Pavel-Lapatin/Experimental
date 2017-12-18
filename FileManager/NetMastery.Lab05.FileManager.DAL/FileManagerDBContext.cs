@@ -13,7 +13,7 @@ namespace NetMastery.Lab05.FileManager.DAL
         public DbSet<Account> Accounts { get; set; }
         public DbSet<DirectoryStructure> Directories { get; set; }
         public DbSet<FileStructure> Files { get; set; }
-        public DbSet<FileType> FileTypes { get; set; }
+
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
@@ -22,7 +22,7 @@ namespace NetMastery.Lab05.FileManager.DAL
             modelBuilder.Configurations.Add(new AccountsMap());
             modelBuilder.Configurations.Add(new FileStructMap());
             modelBuilder.Configurations.Add(new DirectoryStructMap());
-            modelBuilder.Configurations.Add(new FileTypeMap());
+
         }
     }
 }

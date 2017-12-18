@@ -8,8 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetMastery.Lab05.FileManager
-{
+namespace NetMastery.Lab05.FileManager {
     using System;
     
     
@@ -62,6 +61,33 @@ namespace NetMastery.Lab05.FileManager
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please, login in the system.
+        /// </summary>
+        internal static string AutenticationException {
+            get {
+                return ResourceManager.GetString("AutenticationException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Enter the path to change default directory.
+        /// </summary>
+        internal static string ChangeDirectoryOptionNote {
+            get {
+                return ResourceManager.GetString("ChangeDirectoryOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to  was added into database.
+        /// </summary>
+        internal static string CreateUserNote {
+            get {
+                return ResourceManager.GetString("CreateUserNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to .
         /// </summary>
         internal static string DirectoryCreateOptionNote {
@@ -94,6 +120,15 @@ namespace NetMastery.Lab05.FileManager
         internal static string DirectoryMoveOptionNote {
             get {
                 return ResourceManager.GetString("DirectoryMoveOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Shuch directori doesn&apos;t exist.
+        /// </summary>
+        internal static string DirectoryNotExistArgumenException {
+            get {
+                return ResourceManager.GetString("DirectoryNotExistArgumenException", resourceCulture);
             }
         }
         
@@ -143,6 +178,15 @@ namespace NetMastery.Lab05.FileManager
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login or password are required.
+        /// </summary>
+        internal static string LoginNullReferenceException {
+            get {
+                return ResourceManager.GetString("LoginNullReferenceException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login  is required.
         /// </summary>
         internal static string LoginOptionHelpNote {
@@ -157,6 +201,15 @@ namespace NetMastery.Lab05.FileManager
         internal static string PasswordOptionHelpNote {
             get {
                 return ResourceManager.GetString("PasswordOptionHelpNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to storage max:.
+        /// </summary>
+        internal static string UserInfoCmdOutputaMaxStorageSize {
+            get {
+                return ResourceManager.GetString("UserInfoCmdOutputaMaxStorageSize", resourceCulture);
             }
         }
         
@@ -179,7 +232,7 @@ namespace NetMastery.Lab05.FileManager
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to storaged used: .
+        ///   Looks up a localized string similar to storage used: .
         /// </summary>
         internal static string UserInfoCmdOutputStorageSize {
             get {

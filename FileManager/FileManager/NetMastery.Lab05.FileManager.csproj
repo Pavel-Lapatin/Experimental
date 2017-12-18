@@ -46,6 +46,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
@@ -85,9 +86,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManeger.Bl.csproj">
+    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManager.Bl.csproj">
       <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
-      <Name>NetMastery.Lab05.FileManeger.Bl</Name>
+      <Name>NetMastery.Lab05.FileManager.Bl</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>

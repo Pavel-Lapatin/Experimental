@@ -3,115 +3,103 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using NetMastery.Lab05.FileManager.DAL.Entities;
     using System;
     using System.Data.Entity.Migrations;
+    using System.IO;
 
     internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            AutomaticMigrationsEnabled = false;
             ContextKey = "NetMastery.Lab05.FileManager.DAL.FileManagerDBContext";
         }
 
         protected override void Seed(NetMastery.Lab05.FileManager.DAL.FileManagerDbContext context)
         {
-            /*
-            var fileTypes = new[]
-            {
-                new FileType
-                {
-                    TypeId = 1,
-                    Extension = ".exe",
-                    RelatedProgram = "",
-                },
-                new FileType
-                {
-                    TypeId = 2,
-                    Extension = ".doc",
-                    RelatedProgram = "MicrosoftWord",
-                },
-                new FileType
-                {
-                    TypeId = 3,
-                    Extension = ".txt",
-                    RelatedProgram = "NotePad",
-                },
-                new FileType
-                {
-                    TypeId = 4,
-                    Extension = ".html",
-                    RelatedProgram = "MozilaFireFox",
-                }
-            };
-
-            var directories = new[]
+            var rootDirectories = new[]
             {
                 new DirectoryStructure
                 {
                     DirectoryId = 1,
-                    Name = "adminId1-Root",
+                    Name = "adminRoot",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectoryId = null,
+                    FullPath = "~\\adminRoot"
                 },
 
                 new DirectoryStructure
                 {
                     DirectoryId = 2,
-                    Name = "PashaId2-Root",
+                    Name = "PashaRoot",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectoryId = null,
+                    FullPath = "~\\PashaRoot"
                 },
+
+            };
+
+            //Directory.CreateDirectory(".\\CommonStorage\\adminRoot");
+            //Directory.CreateDirectory(".\\CommonStorage\\PashaRoot");
+
+            var directories = new[]
+            {
 
                 new DirectoryStructure
                 {
                     DirectoryId = 3,
-                    Name = "adminId1-Dir1-Lvl1",
+                    Name = "admin-Dir1-Lvl1",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectoryId = 1,
+                    ParentDirectory = rootDirectories[0],
+                    FullPath = "~\\adminRoot\\admin-Dir2-Lvl1"
                 },
 
                 new DirectoryStructure
                 {
                     DirectoryId = 4,
-                    Name = "adminId1-Dir2-Lvl1",
+                    Name = "admin-Dir2-Lvl1",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectoryId = 1,
+                    ParentDirectory = rootDirectories[0],
+                    FullPath = "~\\admin-Root\\admin-Dir1-Lvl1"
                 },
 
                  new DirectoryStructure
                 {
                     DirectoryId = 5,
-                    Name = "adminId1-Dir2-Lvl1",
+                    Name = "admin-Dir2.1-Lvl2",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectoryId = 4
+                    FullPath = "~\\admin-Root\\admin-Dir1-Lvl1\\admin-Dir2.1-Lvl2"
+
                 }
             };
 
-            context.Directories.AddOrUpdate(directories);
+            directories[2].ParentDirectory = directories[1];
+
+            //Directory.CreateDirectory(".\\CommonStorage\\adminRoot\\admin-Dir1-Lvl1");
+            //Directory.CreateDirectory(".\\CommonStorage\\adminRoot\\admin-Dir2-Lvl1");
+            //Directory.CreateDirectory(".\\CommonStorage\\adminRoot\\admin-Dir1-Lvl1\\admin-Dir2.1-Lvl2");
 
             var files = new[]
             {
                 new FileStructure
                 {
                     FileId = 1,
-                    FileTypeId = 1,
-                    Name = "DirId5-FileId1",
-                    DirectoryId = 5,
+                    Extension = ".txt",
+                    Name = "file1",
+                    Directory = directories[2],
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 1024,
                     DownloadsNumber = 5
+                     
                 },
                 new FileStructure
                 {
                     FileId = 2,
-                    FileTypeId = 2,
-                    Name = "DirId1-FileId2",
-                    DirectoryId = 1,
+                    Extension = ".html",
+                    Name = "file2",
+                    Directory = rootDirectories[0],
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 2048,
@@ -120,9 +108,9 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 new FileStructure
                 {
                     FileId = 3,
-                    FileTypeId = 3,
-                    Name = "DirId1-FileId3",
-                    DirectoryId = 1,
+                    Extension = ".txt",
+                    Name = "file3",
+                    Directory = rootDirectories[0],
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 1024,
@@ -131,9 +119,9 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 new FileStructure
                 {
                     FileId = 4,
-                    FileTypeId = 1,
-                    Name = "DirId1-FileId4",
-                    DirectoryId = 5,
+                    Extension = ".txt",
+                    Name = "file4",
+                    Directory = directories[2],
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 18000,
@@ -141,10 +129,10 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 },
                 new FileStructure
                 {
-                    FileId = 1,
-                    FileTypeId = 1,
-                    Name = "DirId4-FileId3",
-                    DirectoryId = 5,
+                    FileId = 5,
+                    Extension = ".pdf",
+                    Name = "file5",
+                    Directory = directories[2],
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 15000,
@@ -154,29 +142,42 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
 
             context.Files.AddOrUpdate<FileStructure>(files);
 
+            //var file = File.Create(".\\CommonStorage\\adminRoot\\admin-Dir1-Lvl1\\admin-Dir2.1-Lvl2\\"+files[0].Name+files[0].Extension);
+            //file.SetLength(1024*1024);
+            //file = File.Create(".\\CommonStorage\\adminRoot\\" + files[1].Name + files[1].Extension);
+            //file.SetLength(2048 * 1024);
+            //file = File.Create(".\\CommonStorage\\adminRoot\\" + files[2].Name + files[2].Extension);
+            //file.SetLength(1024 * 1024);
+            //file = File.Create(".\\CommonStorage\\adminRoot\\admin-Dir1-Lvl1\\admin-Dir2.1-Lvl2\\" + files[3].Name + files[3].Extension);
+            //file.SetLength(1024 * 18000);
+            //file = File.Create(".\\CommonStorage\\admin-Root\\admin-Dir1-Lvl1\\admin-Dir2.1-Lvl2\\" + files[4].Name + files[4].Extension);
+            //file.SetLength(1024 * 15000);
+
             var accounts = new[]
             {
                 new Account
                 {
-                    AccoountId = 1,
+                   AccountId = 1,
                    Login = "admin",
-                   Password = "admin",
+                   Password = "$2a$10$q4Tpdy6rhVqWAIQgWNCzd.04Td7g4xy55RikeKYJP0CBHWtGBoJkW",
                    CreationDate = DateTime.Now,
-                   RootDirectory = directories[0],
+                   RootDirectory = rootDirectories[0],
                 },
                 new Account
                 {
-                   AccoountId = 2,
+                   AccountId = 2,
                    Login = "Pasha",
-                   Password = "PashaTheBest",
+                   Password = "$2a$10$euq/KV3PAGkUsfqc3kA7Zu0qNXr5SHZ97Y57lo1n7qzYR9vLTgJWG",
                    CreationDate = new DateTime(2015,01,18),
-                   RootDirectory = directories[1]
+                   RootDirectory = rootDirectories[1]
                 },
             };
 
-            base.Seed(context);
+            context.Accounts.AddOrUpdate(accounts);
+            context.Directories.AddOrUpdate(rootDirectories);
+            context.Directories.AddOrUpdate(directories);
+            context.Files.AddOrUpdate(files);
             context.SaveChanges();
-            */
 
             //  This method will be called after migrating to the latest version.
 

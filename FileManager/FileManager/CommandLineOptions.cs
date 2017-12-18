@@ -4,9 +4,9 @@ using System.Security.Authentication;
 using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.DAL;
 using NetMastery.Lab05.FileManager.DAL.Repository;
-using NetMastery.Lab05.FileManeger.Bl.Servicies;
 using NetMastery.Lab05.FileManager.BL.Servicies;
 using NetMastery.Lab05.FileManager.BL;
+using NetMastery.Lab05.FileManager.BL.Dto;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -15,12 +15,11 @@ namespace NetMastery.Lab05.FileManager
         public static void AddCommands(CommandLineApplication cmd, FileManagerModel model)
         {
             var rm = new ResourceManager(typeof(EnglishLocalisation));
-            cmd.Name = "ConspleArgs";
+            cmd.Name = "ConsoleArgs";
             cmd.Description = "FileInfo Manager";
             cmd.HelpOption(CommandLineNames.HelpOption);
 
-            #region CommandsForAccount  
-
+            #region login command
             cmd.Command(CommandLineNames.LoginCommand, x =>
             {
                 x.HelpOption(CommandLineNames.HelpOption);
@@ -30,115 +29,170 @@ namespace NetMastery.Lab05.FileManager
                     CommandOptionType.SingleValue);
                 x.OnExecute(() =>
                 {
-                    if (login.Value() == null || password.Value() == null)
+                    using (var accountService = new AccountService(rm, new UnitOfWork(new FileManagerDbContext())))
                     {
-                        throw new NullReferenceException();
-                    }
-                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
-                    {
-                        var accountService = new AccountService(unitOfWork.Accounts);
-                        model.Account = accountService.VerifyPassword(login.Value(), password.Value());
-                        if (model.Account != null)
+                        if (accountService.VerifyPassword(login.Value(), password.Value(), model))
                         {
-                            Console.WriteLine(rm.GetString("WelcomeNote") + model.Account.Login);
+                            Console.WriteLine(rm.GetString("WelcomeNote") + login.Value());
                         }
                         else
                         {
                             Console.WriteLine(rm.GetString("FailedAuthenticationNote"));
                         }
                     }
-                    Console.WriteLine();
                     return 0;
                 });
             });
-
-            cmd.Command(CommandLineNames.UserInfoCommand, x =>
+            #endregion
+            #region singup command
+            cmd.Command(CommandLineNames.SingupCommand, x =>
             {
                 x.HelpOption(CommandLineNames.HelpOption);
+                var login = x.Option(CommandLineNames.LoginOption, rm.GetString("LoginOptionHelpNote"),
+                    CommandOptionType.SingleValue);
+                var password = x.Option(CommandLineNames.PasswordOption, rm.GetString("PasswordOptionHelpNote"),
+                    CommandOptionType.SingleValue);
                 x.OnExecute(() =>
                 {
-                    if (model.Account == null)
+                    using (var accountService = new AccountService(rm, new UnitOfWork(new FileManagerDbContext())))
                     {
-                        throw new AuthenticationException();
+                        accountService.RegisterUser(login.Value(), password.Value());
+                        Console.WriteLine(login.Value() + rm.GetString("CreateUserNote"));
+                        Console.WriteLine();
                     }
-                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
+                    return 0;
+                });
+            });
+            #endregion
+            #region user command
+            cmd.Command(CommandLineNames.UserCommand, x =>
+            {
+                x.HelpOption(CommandLineNames.HelpOption);
+                var info = x.Option(CommandLineNames.InfoOption, rm.GetString("DirectoryCreateOptionNote"),
+                    CommandOptionType.NoValue);
+                x.OnExecute(() =>
+                {
+                    if (model.AccountId == 0)
                     {
-                        var directoryService = new DirectoryService(unitOfWork.Directories);
-                        Console.WriteLine();
-                        Console.WriteLine(rm.GetString("UserInfoCmdOutputLogin") +
-                                          model.Account.Login);
-                        Console.WriteLine(rm.GetString("UserInfoCmdOutputCreationDate") +
-                                          model.Account.CreationDate);
-                        Console.WriteLine(rm.GetString("UserInfoCmdOutputStorageSize") +
-                                         directoryService.CalculateFullSize(model.Account.Login));
-                        Console.WriteLine();
+                        throw new AuthenticationException("Please sign in first");
+                    }
+                    using (var accountService = new AccountService(rm, new UnitOfWork(new FileManagerDbContext())))
+                    {
+                        var accountInfo = accountService.GetUserInfo(model.AccountId);
+                        WriteUserInfo(accountInfo, rm);
                     }
                     return 0;
                 });
             });
 
             #endregion
-
-            #region CommandsForDirrectory
+            #region directory command
 
             cmd.Command(CommandLineNames.DirectoryCommand, x =>
             {
                 x.HelpOption(CommandLineNames.HelpOption);
-                var info = x.Option(CommandLineNames.InfoOption, rm.GetString("DirectoryCreateOptionNote"),
-                    CommandOptionType.NoValue);
-                var create = x.Option(CommandLineNames.CreateOption, rm.GetString("DirectoryCreateOptionNote"),
-                    CommandOptionType.MultipleValue);
-                var move = x.Option(CommandLineNames.MoveOption, rm.GetString("DirectoryMoveOptionNote"),
-                    CommandOptionType.MultipleValue);
-                var remove = x.Option(CommandLineNames.RemoveOption, rm.GetString("DirectoryRemoveOptionNote"),
-                    CommandOptionType.MultipleValue);
-                var list = x.Option(CommandLineNames.ListOption, rm.GetString("DirectoryListOptionNote"),
-                    CommandOptionType.MultipleValue);
-                var search = x.Option(CommandLineNames.SearchOption, rm.GetString("DirectorySearchOptionNote"),
-                    CommandOptionType.MultipleValue);
-
-                x.OnExecute(() =>
+                x.Command(CommandLineNames.InfoOption, c =>
                 {
-                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
+                    var info = c.Argument("path", rm.GetString("DirectoryInfoDescriptionNote"), false);
+                    c.OnExecute(() =>
                     {
-                        var StorageController = new DirectoryService(unitOfWork.Directories);
-                        if (info != null)
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
                         {
-                            Console.WriteLine("Info");
+                            var directoryInfo = directoryService.GetDirectoryInfo(info.Value, model.RootDirectoryId);
+                            WriteDirectoryInfo(directoryInfo, model, rm);
                         }
-                        else if (create != null)
-                        {
-                            if(create.Values.Count != 2) throw new ArgumentException();
-                            Console.WriteLine("Create");
-                        }
-                        else if (move != null)
-                        {
-                            if (move.Values.Count != 2) throw new ArgumentException();
-                            Console.WriteLine("Move");
-                        }
-                        else if (list != null)
-                        {
-                            if (list.Values.Count != 2) throw new ArgumentException();
-                            Console.WriteLine("List");
-                        }
-                        else if (search != null)
-                        {
-                            if (search.Values.Count != 2) throw new ArgumentException();
-                            Console.WriteLine("Search");
-                        }
-                        else if (remove != null)
-                        {
-                            if (remove.Values.Count != 2) throw new ArgumentException();
-                            Console.WriteLine("Remove");
-                        }
-                    }
-                    return 0;
+                        return 0;
+                    });
                 });
 
+                x.Command(CommandLineNames.CreateOption, c =>
+                {
+                    var cerate = c.Argument("path", rm.GetString("DirectoryCreateOptionNote"), true);
+                    c.OnExecute(() =>
+                    {
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                        {
+                            if (cerate.Values.Count != 2) throw new ArgumentException("Create option has two parameters");
+                            directoryService.AddNewCatalog(cerate.Values[0], cerate.Values[1], model.RootDirectoryId);
+                            Console.WriteLine("Directory hsd been created successfully");
+                        }
+                        return 0;
+                    });
+                });
+                x.Command(CommandLineNames.MoveOption, c =>
+                {
+                    var move = c.Argument("path", rm.GetString("DirectoryMoveOptionNote"), true);
+                    c.OnExecute(() =>
+                    {
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                        {
+                            if (move.Values.Count != 2) throw new ArgumentException();
+                            directoryService.MoveCatalog(move.Values[0], move.Values[1], model.RootDirectoryId);
+                            Console.WriteLine("Directory hsd been moved successfully");
+                        }
+                        return 0;
+                    });
+                });
+                x.Command(CommandLineNames.ListOption, c =>
+                {
+                    var list = c.Argument("path", rm.GetString("DirectoryListOptionNote"), false);
+                    c.OnExecute(() =>
+                    {
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                        {
+                            var directory = directoryService.GetRootDirectory(list.Value, model.RootDirectoryId);
+                            RecursiveWriter(directory);
+                        }
+                        return 0;
+                    });
+                });
+                x.Command(CommandLineNames.RemoveOption, c =>
+                {
+                    var remove = c.Argument("path", rm.GetString("DirectoryRemoveOptionNote"), false);
+                    c.OnExecute(() =>
+                    {
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                        {
+                            directoryService.RemoveCatalog(remove.Value, model.RootDirectoryId);
+                            Console.WriteLine("Directory has been removed successfully");
+                        }
+                        return 0;
+                    });
+                });
+                x.Command(CommandLineNames.SearchOption, c =>
+                {
+                    var search = c.Argument("path", rm.GetString("DirectorySearchOptionNote"), true);
+                    c.OnExecute(() =>
+                    {
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                        {
+                            if (search.Values.Count != 2) throw new ArgumentException();
+                            var results = directoryService.Search(search.Values[0], search.Values[1], model.RootDirectoryId);
+                            foreach (var result in results)
+                            {
+                                Console.WriteLine(result);
+                            }
+                            Console.WriteLine();
+                        }
+                        return 0;
+                    });
+                });
+                x.Command(CommandLineNames.ChangeDirectoryOption, c =>
+                {
+                    var cd = c.Argument("path", rm.GetString("ChangeDirectoryOptionNote"), false);
+                    c.OnExecute(() =>
+                    {
+                        using (var directoryService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                        {
+                            directoryService.ChangeWorkDirectory(cd.Value, model);
+                        }
+                        return 0;
+                    });
+                });   
             });
-            #endregion CommandsForDirrectory
+            #endregion
 
-            #region CommandsForFiles
+            #region fileCommand
             cmd.Command(CommandLineNames.FileCommand, x =>
             {
                 x.HelpOption(CommandLineNames.HelpOption);
@@ -152,13 +206,15 @@ namespace NetMastery.Lab05.FileManager
                     CommandOptionType.MultipleValue);
                 var move = x.Option(CommandLineNames.DownloadOption, rm.GetString("DirectoryListOptionNote"),
                     CommandOptionType.MultipleValue);
-               
-
                 x.OnExecute(() =>
                 {
-                    using (var unitOfWork = new UnitOfWork(new FileManagerDbContext()))
+
+                    if (model.AccountId == 0)
                     {
-                        var StorageController = new DirectoryService(unitOfWork.Directories);
+                        throw new AuthenticationException("Please sign in first");
+                    }
+                    using (var fileService = new DirectoryService(rm, new UnitOfWork(new FileManagerDbContext())))
+                    {
                         if (info != null)
                         {
                             Console.WriteLine("Info");
@@ -184,11 +240,52 @@ namespace NetMastery.Lab05.FileManager
                             Console.WriteLine("Remove");
                         }
                     }
+
                     return 0;
                 });
 
             });
             #endregion
+        }
+
+        public static void WriteUserInfo(AccountDto account, ResourceManager rm)
+        {
+            Console.WriteLine(rm.GetString("UserInfoCmdOutputLogin") + account.Login);
+            Console.WriteLine(rm.GetString("UserInfoCmdOutputCreationDate") + account.CreationDate.ToString("yyyy-MM-dd"));
+            Console.WriteLine(rm.GetString("UserInfoCmdOutputStorageSize") + account.CurentStorageSize + " kB");
+            Console.WriteLine(rm.GetString("UserInfoCmdOutputaMaxStorageSize") + account.MaxStorageSize + " kB");
+            Console.WriteLine();
+        }
+
+        public static void WriteDirectoryInfo(DirectoryStructureDto directory, FileManagerModel model, ResourceManager rm)
+        {
+            Console.WriteLine("name: " + directory.Name);
+            Console.WriteLine("path " + directory.FullPath);
+            Console.WriteLine("creation date: " + directory.CreationDate.ToString("yyyy-MM-dd"));
+            Console.WriteLine("modification date " + directory.ModificationDate.ToString("yyyy-MM-dd"));
+            Console.WriteLine("size " + directory.DirectorySize + " kB");
+            Console.WriteLine("login " + model.LoginName);
+            Console.WriteLine();
+        }
+
+        private static void RecursiveWriter(DirectoryStructureDto rootDirectory)
+        {
+            while (rootDirectory.ChildrenDirectories != null || rootDirectory.ChildrenDirectories.Count != 0)
+            {
+                Console.WriteLine(rootDirectory.Name);
+                if (rootDirectory.Files != null)
+                {
+                    foreach (var file in rootDirectory.Files)
+                    {
+                        Console.WriteLine(file.Name);
+                    }
+                }
+                foreach (var child in rootDirectory.ChildrenDirectories)
+                {
+                    RecursiveWriter(child);
+                }
+            }
+            
         }
     }
 }

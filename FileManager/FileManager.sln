@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.DAL", "NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj", "{F720039F-B67D-4D0B-8448-D9698879F546}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManeger.Bl", "NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManeger.Bl.csproj", "{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Bl", "NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManager.Bl.csproj", "{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

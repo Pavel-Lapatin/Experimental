@@ -2,8 +2,11 @@
 using System;
 using Microsoft.Extensions.CommandLineUtils;
 using AutoMapper;
+using System.Configuration;
+using System.Reflection;
+using System.IO;
 using NetMastery.Lab05.FileManager.BL;
-using NetMastery.Lab05.FileManeger.Bl.Dto;
+using NetMastery.Lab05.FileManager.BL.Dto;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -16,31 +19,35 @@ namespace NetMastery.Lab05.FileManager
             InitialiseMapper();
         }
 
+
         static void Main()
         {
-            CommandLineApplication cmd = new CommandLineApplication();
-            FileManagerModel model = new FileManagerModel();
-            CommandLineOptions.AddCommands(cmd, model);
-
-            Console.Write("command->");
-            Console.WriteLine(" login -l admin -p admin");
-            //var args = Console.ReadLine();
-            var args = " login -l admin -p admin";
-            cmd.Execute(ParseArguemts(args.Trim(' ')));
+           // try
+           // {
+            SetCurrentDirectory();
+            Console.WriteLine("WorkDirectory " + Directory.GetCurrentDirectory()); 
+            FileManagerModel model = new FileManagerModel
+            {
+                currentFullPath = @"~\",
+            };
+            
             while (true)
             {
                 try
                 {
-                    Console.Write("command->");
-                    args = Console.ReadLine();
-                    if (args == null) throw new NullReferenceException();
-                    cmd.Execute(ParseArguemts(args.Trim(' ')));
+                    CommandLineApplication cmd = new CommandLineApplication();
+                    CommandLineOptions.AddCommands(cmd, model);
+                    Console.Write(model.currentFullPath + "->");
+                    var arguments = Console.ReadLine();
+                    if (arguments == null) throw new NullReferenceException();
+                    var args = ParseArguemts(arguments);
+                    cmd.Execute(args);
                 }
                 catch (NullReferenceException e)
                 {
                     Console.WriteLine(e.Message);
                 }
-            }      
+            }
         }
 
         public static void InitialiseMapper()
@@ -48,8 +55,8 @@ namespace NetMastery.Lab05.FileManager
             Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<AccountDto, Account>();
-                cfg.CreateMap<DirectoryStructure, DirectoryStructure>();
-
+                cfg.CreateMap<DirectoryStructureDto, DirectoryStructure>();
+                cfg.CreateMap<FileStructureDto, FileStructure>();
             });
         }
 
@@ -58,6 +65,20 @@ namespace NetMastery.Lab05.FileManager
             var separators = new char[] { ' ' };
             return arguments.Split(separators);
 
+        }
+
+        private static void SetCurrentDirectory()
+        {
+            var codeBase = Assembly.GetExecutingAssembly().CodeBase;
+            var uri = new UriBuilder(codeBase);
+            var path = Uri.UnescapeDataString(uri.Path);
+            var directoryPath = Path.GetDirectoryName(path);
+            var workDirectory = Path.Combine(directoryPath, ConfigurationManager.AppSettings["StoragePath"]);
+            if (!Directory.Exists(workDirectory))
+            {
+                Directory.CreateDirectory(workDirectory);
+            }
+            Directory.SetCurrentDirectory(workDirectory);
         }
 
 
