@@ -9,6 +9,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManage
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Bl", "NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManager.Bl.csproj", "{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.DomainModel", "DomainModel\NetMastery.Lab05.FileManager.DomainModel.csproj", "{D6B4138F-8BEE-491A-BF19-3DE08114EA30}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Infrastructure", "NetMastery.Lab05.FileManager.Infrastructure\NetMastery.Lab05.FileManager.Infrastructure.csproj", "{CA731D18-2214-4572-904C-FA3B195C7182}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.BLModel", "NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.BLModel.csproj", "{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.BlExtensions", "NetMastery.Lab05.FileManager.BlExtensions\NetMastery.Lab05.FileManager.BlExtensions.csproj", "{7C1252C9-0990-4D17-A205-1F2845B8B8A6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +35,22 @@ Global
 		{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6B4138F-8BEE-491A-BF19-3DE08114EA30}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B4138F-8BEE-491A-BF19-3DE08114EA30}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B4138F-8BEE-491A-BF19-3DE08114EA30}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B4138F-8BEE-491A-BF19-3DE08114EA30}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA731D18-2214-4572-904C-FA3B195C7182}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA731D18-2214-4572-904C-FA3B195C7182}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA731D18-2214-4572-904C-FA3B195C7182}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA731D18-2214-4572-904C-FA3B195C7182}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C1252C9-0990-4D17-A205-1F2845B8B8A6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C1252C9-0990-4D17-A205-1F2845B8B8A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C1252C9-0990-4D17-A205-1F2845B8B8A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C1252C9-0990-4D17-A205-1F2845B8B8A6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

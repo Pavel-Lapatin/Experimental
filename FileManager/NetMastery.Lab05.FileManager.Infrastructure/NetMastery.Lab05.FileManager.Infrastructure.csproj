@@ -4,16 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{288EB39E-009C-4839-87F5-FA5B20036103}</ProjectGuid>
-    <OutputType>Exe</OutputType>
-    <RootNamespace>NetMastery.Lab05.FileManager</RootNamespace>
-    <AssemblyName>NetMastery.Lab05.FileManager</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <ProjectGuid>{CA731D18-2214-4572-904C-FA3B195C7182}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetMastery.Lab05.FileManager.Infrastructure</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManager.Infrastructure</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -23,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -32,22 +30,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
-    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
-    </Reference>
-    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
-      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Extensions.CommandLineUtils.1.1.1\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
-    <Reference Include="System.ComponentModel.DataAnnotations" />
-    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -57,44 +50,37 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineNames.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommandLineNames.resx</DependentUpon>
-    </Compile>
-    <Compile Include="CommandLineOptions.cs" />
-    <Compile Include="EnglishLocalisation.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EnglishLocalisation.resx</DependentUpon>
-    </Compile>
-    <Compile Include="Program.cs" />
+    <Compile Include="AutoMapping\AutoMapperInitializer.cs" />
+    <Compile Include="AutoMapping\Configuration\AccountMapping.cs" />
+    <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
+    <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
+    <Compile Include="IoC-Container\AutofucContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\UserInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CommandLineNames.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommandLineNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EnglishLocalisation.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
+    <ProjectReference Include="..\DomainModel\NetMastery.Lab05.FileManager.DomainModel.csproj">
+      <Project>{d6b4138f-8bee-491a-bf19-3de08114ea30}</Project>
+      <Name>NetMastery.Lab05.FileManager.DomainModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManager.Bl.csproj">
       <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
       <Name>NetMastery.Lab05.FileManager.Bl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BlExtensions\NetMastery.Lab05.FileManager.BlExtensions.csproj">
+      <Project>{7c1252c9-0990-4d17-a205-1f2845b8b8a6}</Project>
+      <Name>NetMastery.Lab05.FileManager.BlExtensions</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.BLModel.csproj">
+      <Project>{5d4e6f56-c45c-48f0-b01f-b4d5b7c5ffd7}</Project>
+      <Name>NetMastery.Lab05.FileManager.BLModel</Name>
     </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>
       <Name>NetMastery.Lab05.FileManager.DAL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

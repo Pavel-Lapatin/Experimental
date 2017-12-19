@@ -4,12 +4,12 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}</ProjectGuid>
+    <ProjectGuid>{7C1252C9-0990-4D17-A205-1F2845B8B8A6}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetMastery.FileManeger.Bl</RootNamespace>
-    <AssemblyName>NetMastery.FileManeger.Bl</AssemblyName>
-    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <RootNamespace>NetMastery.Lab05.FileManager.BlExtensions</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManager.BlExtensions</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -30,15 +30,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
-    </Reference>
-    <Reference Include="BCrypt.Net, Version=0.1.4141.31969, Culture=neutral, PublicKeyToken=f3bc8f8c31beeb49, processorArchitecture=MSIL">
-      <HintPath>..\packages\BCrypt.Net.0.1.0\lib\net35\BCrypt.Net.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,30 +40,18 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Interfaces\IUserAuthentication.cs" />
-    <Compile Include="Interfaces\IDirectoryService.cs" />
-    <Compile Include="Interfaces\IFileService.cs" />
-    <Compile Include="Interfaces\IUserInfoWriter.cs" />
-    <Compile Include="Servicies\AccountService.cs" />
-    <Compile Include="FileManagerModel.cs" />
+    <Compile Include="UserInfoConsoleWriter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Servicies\UserAuthentication.cs" />
-    <Compile Include="Servicies\UserService.cs" />
-    <Compile Include="Servicies\DirectoryService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManager.Bl.csproj">
+      <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
+      <Name>NetMastery.Lab05.FileManager.Bl</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.BLModel.csproj">
-      <Project>{5d4e6f56-c45c-48f0-b01f-b4d5b7c5ffd7}</Project>
+      <Project>{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}</Project>
       <Name>NetMastery.Lab05.FileManager.BLModel</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
-      <Project>{F720039F-B67D-4D0B-8448-D9698879F546}</Project>
-      <Name>NetMastery.Lab05.FileManager.DAL</Name>
-    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

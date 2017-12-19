@@ -250,11 +250,7 @@ namespace NetMastery.Lab05.FileManager
 
         public static void WriteUserInfo(AccountDto account, ResourceManager rm)
         {
-            Console.WriteLine(rm.GetString("UserInfoCmdOutputLogin") + account.Login);
-            Console.WriteLine(rm.GetString("UserInfoCmdOutputCreationDate") + account.CreationDate.ToString("yyyy-MM-dd"));
-            Console.WriteLine(rm.GetString("UserInfoCmdOutputStorageSize") + account.CurentStorageSize + " kB");
-            Console.WriteLine(rm.GetString("UserInfoCmdOutputaMaxStorageSize") + account.MaxStorageSize + " kB");
-            Console.WriteLine();
+            
         }
 
         public static void WriteDirectoryInfo(DirectoryStructureDto directory, FileManagerModel model, ResourceManager rm)
