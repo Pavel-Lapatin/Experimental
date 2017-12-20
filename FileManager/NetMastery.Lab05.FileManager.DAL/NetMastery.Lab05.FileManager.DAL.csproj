@@ -57,7 +57,7 @@
     <Compile Include="UnitOfWork\Factory\AbstractUnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWork\Factory\UnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWork\Factory\UnitOfWorkFactoryGeneric.cs" />
-    <Compile Include="UnitOfWork\IUnitOfWork.cs" />
+    <Compile Include="UnitOfWork\GenericUnitOfWorkWithOneRepo\IUnitOfWork.cs" />
     <Compile Include="Migrations\201712170945302_v1.0.0.cs" />
     <Compile Include="Migrations\201712170945302_v1.0.0.Designer.cs">
       <DependentUpon>201712170945302_v1.0.0.cs</DependentUpon>
@@ -72,7 +72,7 @@
     <Compile Include="Repository\FileRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\DirectoryRepository.cs" />
-    <Compile Include="UnitOfWork\UnitOfWorkEntities\UnitOfWork.cs" />
+    <Compile Include="UnitOfWork\GenericUnitOfWorkWithOneRepo\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">
