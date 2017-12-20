@@ -13,34 +13,21 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
 {
     public class DirectoryService : IDisposable
     {
-        private ResourceManager rm;
-        private UnitOfWork unitOfWork;
-
+        IUnitOfWork _unitOfWOrk;
 
         #region Constructors
-        public DirectoryService(ResourceManager rm, UnitOfWork unitOfWork) 
+        public DirectoryService(IUnitOfWork unitOfWOrk)
         {
-            this.rm = rm;
-            this.unitOfWork = unitOfWork;
-        }
+            _untOfWOrk = unitOfWOrk;
+        }        
         #endregion
 
         #region DirectoryServiceAPI
 
-        public DirectoryStructureDto GetDirectoryInfo(string path, int rootDirectoryId)
+        public void AddDirectory(string path, string name, string currentPath)
         {
-            var currentDirectory = GetDirectoryByPath(path, rootDirectoryId);
-            if (currentDirectory != null)
-            {
-                return Mapper.Instance.Map<DirectoryStructureDto>(currentDirectory);
-            }
-            else throw new ArgumentException(rm.GetString("DirectoryNotExistArgumenException"));
-        }
-
-        public void AddNewCatalog(string path, string name, int rootDirectoryId)
-        {
-
-            var currentDirectory = GetDirectoryByPath(path, rootDirectoryId);
+            var fullPath = CreatePath(currentPath, path);
+            var currentDirectory = _unitOfWOrk.Repository<DirectoryStructure>().Find(x=>x.FullPathh == fullPath).FirstOrDefault();
             if (currentDirectory != null)
             {
                 var newDirectory = new DirectoryStructureDto
@@ -50,42 +37,60 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                     ModificationDate = DateTime.Now,
                     ParentDirectory = currentDirectory,
                 };
-                unitOfWork.Directories.Add(Mapper.Map<DirectoryStructure>(newDirectory));
-                unitOfWork.Complete();
+                var newDirInfo = Directory.CreateDirectory(fullPath.Replace("~", Directory.GetCurrentDirectory())+"\\"+"name");
+                try
+                {
+                    unitOfWork.Directories.Add(Mapper.Map<DirectoryStructure>(newDirectory));
+                    unitOfWork.Complete();
+                }
+                catch (Exception e)
+                {
+                    Directory.Delete(fullPath);
+                    throw;
+                }
             }
             else
-                throw new ArgumentException(rm.GetString("DirectoryNotExistArgumenException"));
+                throw new ArgumentException();
         }
 
-        public void MoveCatalog(string path1, string path2, int rootDirectoryId)
+        public void MoveDirectory(string pathFrom, string pathTo, string currentPath)
         {
-            var currentDirectory = GetDirectoryByPath(rootDirectoryId, new[] {path1, path2 });
-            if (currentDirectory[0] != null && currentDirectory[1] != null)
+            var fullPathFrom = CreatePath(currentPath, pathFrom);
+            var fullPathTo = CreatePath(currentPath, pathTo);
+            var currentDirectoryFrom = _unitOfWOrk.Repository<DirectoryStructure>().Find(x => x.FullPathh == fullPathFrom).FirstOrDefault();
+            var currentDirectoryTo = _unitOfWOrk.Repository<DirectoryStructure>().Find(x => x.FullPathh == fullPathTo).FirstOrDefault();
+            if (currentDirectoryFrom != null && currentDirectoryTo != null)
             {
-                currentDirectory[0].ParentDirectory = currentDirectory[1];
-                currentDirectory[0].FullPath = currentDirectory[1].FullPath + "\\" + currentDirectory[1].Name;
-                currentDirectory[0].ModificationDate = DateTime.Now;
+                currentDirectoryFrom.ParentDirectory = currentDirectoryTo;
+                currentDirectoryTo.ChildDirectories.Add(currentDirectoryFrom);
+                currentDirectoryFrom.FullPath = currentDirectoryTo.FullPath + "\\" + currentDirectoryFrom.Name;
+                currentDirectoryFrom.ModificationDate = DateTime.Now;
+            }
+            Directory.Move(fullPathFrom.Replace("~", Directory.GetCurrentDirectory()),
+                            fullPathTo.Replace("~", Directory.GetCurrentDirectory()));
+            try
+            {
+                _unitOfWork.Repository<DirectoryStructure>.AddRange(new[] { Mapper.Instance.Map<DirectoryStructure>(currentDirectoryFrom), Mapper.Instance.Map<DirectoryStructure>(currentDirectoryTo) });
+                unitOfWork.Complete();
+            }
+            catch (Exception e)
+            {
+                Directory.Move(fullPathTo.Replace("~", Directory.GetCurrentDirectory()),
+                            fullPathFrom.Replace("~", Directory.GetCurrentDirectory()));
+                throw;
             }
         }
+    
 
-        public void RemoveCatalog(string path, int rootDirectoryId)
+        public void RemoveDirectory(string path, string CurrentPath)
         {
-            var currentDirectory = GetDirectoryByPath(path, rootDirectoryId);
+            var fullPath = CreatePath(currentPath, path);
+            var currentDirectory = _unitOfWOrk.Repository<DirectoryStructure>().Find(x => x.FullPathh == fullPath).FirstOrDefault();
             if (currentDirectory != null)
             {
                 RecursiveRemove(currentDirectory);
+                Directory.Delete(fullPath.Replace("~", Directory.GetCurrentDirectory()), true);
                 unitOfWork.Complete();
-            }
-            else
-                throw new ArgumentException(rm.GetString("DirectoryNotExistArgumenException"));
-        }
-
-        public DirectoryStructureDto GetRootDirectory(string path, int rootDirectoryId)
-        {
-            var currentDirectory = GetDirectoryByPath(path, rootDirectoryId);
-            if (currentDirectory != null)
-            {
-                return currentDirectory;
             }
             else
                 throw new ArgumentException(rm.GetString("DirectoryNotExistArgumenException"));
@@ -98,7 +103,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             IList<string> results = new List<string>();
             if (currentDirectory != null)
             {
-                RecursiveSearch(currentDirectory, pattern, results, rootFullPath);
+                RecursiveSearch(pattern, results, rootFullPath);
                 return results;
             }
             else
@@ -208,31 +213,28 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             return path.ToString();
         }
 
-        private DirectoryStructureDto GetDirectoryByFullPath(string fullPath)
-        {
-            //method 1 using FullPath property
-           var directory = unitOfWork.Directories.;
-
-
-            return Mapper.Instance.Map<DirectoryStructureDto>(directory);
-
-            
-        }
-
-        private void RecursiveSearch(DirectoryStructureDto rootDirectory, string pattern,  IList<string> results, StringBuilder fullPath)
+        private void RecursiveSearch(DirectoryStructureDto rootDirectory, string pattern,  IList<string> results)
         {          
-            if (rootDirectory.ChildrenDirectories != null || rootDirectory.ChildrenDirectories.Count != 0)
+            if (rootDirectory.ChildrenDirectories != null && rootDirectory.ChildrenDirectories.Count != 0)
             {
                 foreach (var child in rootDirectory.ChildrenDirectories)
                 {
-                    fullPath.Append('\\');
-                    fullPath.Append(child.Name);
-                    RecursiveSearch(child, pattern, results, fullPath);
+                    RecursiveSearch(child, pattern, results);
                 }
             }
-            if(fullPath.ToString().Contains(pattern))
+            if(rootDirectory.Name.Contains(pattern))
             {
-                results.Add(fullPath.ToString());
+                results.Add(rootDirectory.FullPath);
+            }
+            if(rootDirectory.Files != null && rootDirectory.Files.Count != 0)
+            {
+                foreach (var file in rootDirectory.Files)
+                {
+                    if(file.Name.Contains(pattern))
+                    {
+                        results.Add(rootDirectory.FullPath + "\\" + file.Name);
+                    }
+                }
             }
         }
 
@@ -247,82 +249,9 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             }
             if (rootDirectory.Files != null)
             {
-                unitOfWork.Files.RemoveRange(rootDirectory.Files.Select(x => Mapper.Instance.Map<FileStructure>(x)));
+                _unitOfWork.Repository<FileStructure>.RemoveRange(rootDirectory.Files.Select(x => Mapper.Instance.Map<FileStructure>(x)));
             }
-            unitOfWork.Directories.Remove(Mapper.Instance.Map<DirectoryStructure>(rootDirectory));
-        }
-
-        private DirectoryStructureDto GetDirectoryByPath(string path, int directoryId)
-        {
-            var names = path.Split('\\');
-            var rootTree = Mapper.Instance.Map<DirectoryStructureDto>(unitOfWork.Directories.Get(directoryId));
-            if (rootTree == null || rootTree.Name != names[0]) return null;
-            DirectoryStructureDto directory = rootTree;
-            for (int i = 1; i < names.Length; i++)
-            {
-                foreach (var child in directory.ChildrenDirectories)
-                {
-                    if (child.Name == names[i])
-                    {
-                        directory = child;
-                        break;
-                    }
-                    directory = null;
-                }
-            }
-            return directory;  
-        }
-
-        private List<DirectoryStructureDto> GetDirectoryByPath(int directoryId, params string[] pathes)
-        {
-            var rootTree = Mapper.Instance.Map<DirectoryStructureDto>(unitOfWork.Directories.Get(directoryId));
-            if (rootTree == null) return null;
-            List<DirectoryStructureDto> result = new List<DirectoryStructureDto>();
-            foreach (var path in pathes)
-            {
-                var names = path.Split('\\');
-                if (rootTree.Name != names[0]) result.Add(null);
-                DirectoryStructureDto directory = rootTree;
-                for (int i = 1; i < names.Length; i++)
-                {
-                    foreach (var child in directory.ChildrenDirectories)
-                    {
-                        if (child.Name == names[i])
-                        {
-                            directory = child;
-                            break;
-                        }
-                        directory = null;
-                    }
-                }
-                result.Add(directory);
-            }
-            return result;
-        }
-
-        //private void CalculateSum(DirectoryStructureDto rootDirectory, ref long sum)
-        //{
-        //    if(rootDirectory.Files != null && rootDirectory.Files.Count >0)
-        //    {
-        //        foreach (var file in rootDirectory.Files)
-        //        {
-        //            sum += file.FileSize;
-        //        }
-        //    }
-        //    foreach (var directory in rootDirectory.ChildrenDirectories)
-        //    {
-        //        CalculateSum(directory, ref sum);
-        //    }
-        //}
-     
-        private bool CheckName(DirectoryStructureDto directory, string name)
-        {
-            foreach (var child in directory.ChildrenDirectories)
-            {
-                if (child.Name == name) ;
-                return false;
-            }
-            return true;
+            _unitOfWork.Repository<DirectoryStructure>.Remove(Mapper.Instance.Map<DirectoryStructure>(rootDirectory));
         }
 
         public void Dispose()

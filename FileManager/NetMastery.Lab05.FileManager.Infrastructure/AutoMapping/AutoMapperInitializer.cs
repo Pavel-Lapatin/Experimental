@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using NetMastery.Lab05.FileManager.Infrastructure.AutoMapping.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,10 +14,10 @@ namespace NetMastery.Lab05.FileManager.Infrastructure.AutoMapping
         {
             Mapper.Initialize(cfg =>
             {
-                foreach (var profile in profiles)
-                {
-                    cfg.AddProfile(profile);
-                }
+                cfg.AddProfile(new AccountMapping());
+                cfg.AddProfile(new DirectoryMapping());
+                cfg.AddProfile(new FileMapping());
+                cfg.AddProfile(new DirectoryOnDirectoryInfoMapping());
             });
         }
     }

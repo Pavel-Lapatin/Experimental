@@ -53,6 +53,7 @@
     <Compile Include="AutoMapping\AutoMapperInitializer.cs" />
     <Compile Include="AutoMapping\Configuration\AccountMapping.cs" />
     <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
+    <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
     <Compile Include="IoC-Container\AutofucContainer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

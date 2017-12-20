@@ -5,16 +5,10 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IUnitOfWork<T> : IDisposable
+    public interface IUnitOfWork : IDisposable
     {
         IRepository<T> Repository<T>() where T : class;
-        bool HasPendingChanges { get; }
-        RegisterNew(T item) ;
-        void RegisterChanged(T item);
-        void RegisterRemoved(T item);
-        void Unregister(T item);
-        void Rollback();
-        Task CommitAsync(CancellationToken cancellationToken);
+        void Commit();
     }
 }
 

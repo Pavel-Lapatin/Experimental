@@ -59,6 +59,10 @@
     <Compile Include="Servicies\DirectoryService.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DomainModel\NetMastery.Lab05.FileManager.DomainModel.csproj">
+      <Project>{D6B4138F-8BEE-491A-BF19-3DE08114EA30}</Project>
+      <Name>NetMastery.Lab05.FileManager.DomainModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.BLModel.csproj">
       <Project>{5d4e6f56-c45c-48f0-b01f-b4d5b7c5ffd7}</Project>
       <Name>NetMastery.Lab05.FileManager.BLModel</Name>
