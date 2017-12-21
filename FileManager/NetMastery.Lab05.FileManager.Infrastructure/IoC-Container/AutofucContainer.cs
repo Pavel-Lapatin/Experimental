@@ -13,13 +13,7 @@ namespace NetMastery.Lab05.FileManager.Infrastructure.IoC_Container
     {
         public AutofucContainer()
         {
-            var builder = new ContainerBuilder();
-            builder.RegisterType<UserInfoConsoleWriter>().As<IUserInfoWriter>();
-            builder.RegisterType<>().As<>();
-            builder.RegisterType<>().As<>();
-            builder.RegisterType<>().As<>();
-            builder.RegisterType<>().As<>();
-            builder.RegisterType<>().As<>();
+            
 
         }
     }
