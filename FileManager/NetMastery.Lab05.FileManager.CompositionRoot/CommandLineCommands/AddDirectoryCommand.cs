@@ -8,7 +8,7 @@ namespace CompositionRoot.CommandLineCommands
 {
     public class AddDirectoryCommand : CommandLineCommand
     {
-        public AddDirectoryCommand(IContainer container, AppViewModel model) : base(container)
+        public AddDirectoryCommand(IContainer container) : base(container)
         {
             Name = CommandLineNames.DirectoryCommand;
 
@@ -20,7 +20,7 @@ namespace CompositionRoot.CommandLineCommands
                     using (var scope = _container.BeginLifetimeScope())
                     {
                         container.Resolve<DirectoryController>()
-                        .Add(arguments.Values[0], arguments.Values[1], model.CurrentPath);
+                        .Add(arguments.Values[0], arguments.Values[1]);
                     }
                     return 0;
                 });

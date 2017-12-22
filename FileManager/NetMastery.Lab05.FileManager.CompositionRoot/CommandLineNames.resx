@@ -206,4 +206,7 @@
   <data name="ChangeDirectoryOption" xml:space="preserve">
     <value>cd</value>
   </data>
+  <data name="InfoCommand" xml:space="preserve">
+    <value>info</value>
+  </data>
 </root>

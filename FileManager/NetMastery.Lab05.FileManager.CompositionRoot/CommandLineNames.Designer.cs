@@ -160,6 +160,15 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to info.
+        /// </summary>
+        internal static string InfoCommand {
+            get {
+                return ResourceManager.GetString("InfoCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -i|--info &lt;value&gt;.
         /// </summary>
         internal static string InfoOption {

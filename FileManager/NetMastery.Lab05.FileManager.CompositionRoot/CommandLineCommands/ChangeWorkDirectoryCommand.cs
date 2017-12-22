@@ -20,7 +20,7 @@ namespace CompositionRoot.CommandLineCommands
                     using (var scope = _container.BeginLifetimeScope())
                     {
                         container.Resolve<DirectoryController>()
-                        .ChangeWorkingDirectory(arguments.Values[0], model.CurrentPath);
+                        .ChangeWorkingDirectory(arguments.Values[0]);
                     }
                     return 0;
                 });

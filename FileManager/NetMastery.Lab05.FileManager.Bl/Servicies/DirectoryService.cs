@@ -24,12 +24,11 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
 
         #region DirectoryServiceAPI
 
-        public void Add(string path, string name, string currentPath)
+        public void Add(string path, string name)
         {
-            var fullPath = CreatePath(currentPath, path);
             var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find(x=>x.FullPath == fullPath)
+                .Find(x=>x.FullPath == path)
                 .FirstOrDefault());
 
             if (currentDirectory != null)
@@ -41,7 +40,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                     ModificationDate = DateTime.Now,
                     ParentDirectory = currentDirectory,
                 };
-                var newDirInfo = Directory.CreateDirectory(fullPath.Replace("~", Directory.GetCurrentDirectory())+"\\"+"name");
+                var newDirInfo = Directory.CreateDirectory(path.Replace("~", Directory.GetCurrentDirectory())+"\\"+"name");
                 try
                 {
                     _unitOfWork.Repository<DirectoryStructure>()
@@ -51,7 +50,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                 }
                 catch (Exception)
                 {
-                    Directory.Delete(fullPath);
+                    Directory.Delete(path);
                     throw;
                 }
             }
@@ -59,19 +58,16 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                 throw new ArgumentException();
         }
 
-        public void MoveDirectory(string pathFrom, string pathTo, string currentPath)
+        public void Move(string pathFrom, string pathTo)
         {
-            var fullPathFrom = CreatePath(currentPath, pathFrom);
-            var fullPathTo = CreatePath(currentPath, pathTo);
-
             var currentDirectoryFrom = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find(x => x.FullPath == fullPathFrom)
+                .Find(x => x.FullPath == pathFrom)
                 .FirstOrDefault());
 
             var currentDirectoryTo = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find(x => x.FullPath == fullPathTo)
+                .Find(x => x.FullPath == pathTo)
                 .FirstOrDefault());
 
             if (currentDirectoryFrom != null && currentDirectoryTo != null)
@@ -81,8 +77,8 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                 currentDirectoryFrom.FullPath = currentDirectoryTo.FullPath + "\\" + currentDirectoryFrom.Name;
                 currentDirectoryFrom.ModificationDate = DateTime.Now;
             }
-            Directory.Move(fullPathFrom.Replace("~", Directory.GetCurrentDirectory()),
-                            fullPathTo.Replace("~", Directory.GetCurrentDirectory()));
+            Directory.Move(pathFrom.Replace("~", Directory.GetCurrentDirectory()),
+                            pathTo.Replace("~", Directory.GetCurrentDirectory()));
             try
             {
                 _unitOfWork.Repository<DirectoryStructure>().AddRange(new[] { Mapper.Instance.Map<DirectoryStructure>(currentDirectoryFrom), Mapper.Instance.Map<DirectoryStructure>(currentDirectoryTo) });
@@ -90,32 +86,31 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             }
             catch (Exception)
             {
-                Directory.Move(fullPathTo.Replace("~", Directory.GetCurrentDirectory()),
-                            fullPathFrom.Replace("~", Directory.GetCurrentDirectory()));
+                Directory.Move(pathTo.Replace("~", Directory.GetCurrentDirectory()),
+                            pathFrom.Replace("~", Directory.GetCurrentDirectory()));
                 throw;
             }
         }
     
 
-        public void RemoveDirectory(string path, string currentPath)
+        public void RemoveDirectory(string path)
         {
-            var fullPath = CreatePath(currentPath, path);
             var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork.Repository<DirectoryStructure>().Find(x => x.FullPath == fullPath).FirstOrDefault());
             if (currentDirectory != null)
             {
                 RecursiveRemove(currentDirectory);
-                Directory.Delete(fullPath.Replace("~", Directory.GetCurrentDirectory()), true);
+                Directory.Delete(path.Replace("~", Directory.GetCurrentDirectory()), true);
                 _unitOfWork.Commit();
             }
             else
                 throw new ArgumentException("Directory doesn't exist");
         }
 
-        public IEnumerable<string> Search(string currentPath, string pattern)
+        public IEnumerable<string> Search(string pattern, string path)
         {
             var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find(x => x.FullPath == currentPath)
+                .Find(x => x.FullPath == path)
                 .FirstOrDefault());
 
             IList<string> results = new List<string>();
@@ -129,17 +124,16 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                 throw new ArgumentException("Directory doesn't exist");
         }
 
-        public string ChangeWorkDirectory(string path,string currentPath)
+        public string ChangeWorkDirectory(string path)
         {
-            var createdPath = CreatePath(currentPath, path);
             var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                .Repository<DirectoryStructure>()
-               .Find(x => x.FullPath == currentPath)
+               .Find(x => x.FullPath == path)
                .FirstOrDefault());
 
             if (currentDirectory != null)
             {
-                return createdPath;
+                return path;
             }
             else
             {
@@ -150,46 +144,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
 
         #endregion
 
-        private string CreatePath(string existingPath, string newPath)
-        {
-            string[] pathParts = newPath.Split('\\');
-            var path = new StringBuilder();
-            foreach (var partName in pathParts)
-            {
-                switch(partName)
-                {
-                    case "..":
-                        if (path.Length == 0) path.Append(existingPath);
-                        var index = path.ToString().LastIndexOf("\\");
-                        path = path.Remove(index, path.Length - index);
-                        break;
-                    case "." :
-                        if (path.Length == 0) path.Append(existingPath);
-                        break;
-                    default:
-                        if (partName.Any(x => x == '/' 
-                        || x == ':' 
-                        || x == '*' 
-                        || x== '?' 
-                        || x=='<' 
-                        || x=='>' 
-                        || x == '\"' 
-                        || x=='|' 
-                        || x == '~'))
-                        {
-                            throw new ArgumentException("The characters: /,|,:,*,<,>,\\,~\" are not allowed");
-                        }
-                        if(!string.IsNullOrEmpty(partName))
-                        {
-                            path.Append(partName);
-                        }
-                        break;
-                }
-            }
-            return path.ToString();
-        }
-
-        public DirectoryStructureDto GetInfoByCurrentPath(string path)
+        public DirectoryStructureDto GetInfoByPath(string path)
         {
             return Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>().Find(x => x.FullPath == path).FirstOrDefault());

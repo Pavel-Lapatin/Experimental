@@ -3,6 +3,7 @@ using NetMastery.Lab05.FileManager.CompositionRoot;
 using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping;
 using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.ViewModels;
+using System.IO;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -15,7 +16,9 @@ namespace NetMastery.Lab05.FileManager
             { 
                 var container = ContainerConfiguration.Configurate();
                 AutoMapperInitializer.Initialize();
+                Console.WriteLine(Directory.GetCurrentDirectory());
                 DirectoryInitializer.SetCurrentDirectory();
+                Console.WriteLine(Directory.GetCurrentDirectory());
                 var appViewModel = new AppViewModel();
                 var cmd = new CommandLineApplication();
                 while (true)

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using NetMastery.Lab05.FileManager.Dto;
 
 namespace NetMastery.FileManeger.Bl.Interfaces
 {
-    interface IFileService
+    public interface IFileService
     {
+        void Upload(string path, string name);
+        void Download(string pathFrom, string pathTo);
+        void Move(string pathFrom, string pathTo);
+        void Remove(string path, string currentPath);
+        FileStructureDto GetInfoByCurrentPath(string path);
     }
 }

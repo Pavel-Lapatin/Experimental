@@ -4,26 +4,17 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
-    public class UserController
+    public class UserController : AuthenticateController
     {
         private readonly IAuthenticationService _authenticationService;
         private readonly IUserService _userService;
 
-        public UserController(IAuthenticationService authenticationService, IUserService userService)
+        public UserController(IAuthenticationService authenticationService, IUserService userService, )
         {
             _authenticationService = authenticationService;
             _userService = userService;
         }
 
-        public string Singin(string login, string password)
-        {
-            if(login == null || password == null)
-            {
-                throw new NullReferenceException();
-            }
-
-            return _authenticationService.Signin(login, password).Login;
-        }
 
         public void Singup(string login, string password)
         {
@@ -34,7 +25,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             _authenticationService.Singup(login, password);
         }
 
-      public UserInfo GetUserInfo(string login)
+        public UserInfo GetUserInfo()
         {
             if (login == null)
                 throw new NullReferenceException("user hasn't been registred yet");

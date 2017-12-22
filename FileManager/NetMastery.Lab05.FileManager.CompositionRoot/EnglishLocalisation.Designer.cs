@@ -124,7 +124,7 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Shuch directori doesn&apos;t exist.
+        ///   Looks up a localized string similar to Shuch directory doesn&apos;t exist.
         /// </summary>
         internal static string DirectoryNotExistArgumenException {
             get {
@@ -165,6 +165,24 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         internal static string FailedIdentificationNote {
             get {
                 return ResourceManager.GetString("FailedIdentificationNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check pathes for directory and file.
+        /// </summary>
+        internal static string FileDownloadOptionNote {
+            get {
+                return ResourceManager.GetString("FileDownloadOptionNote", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please check pathes for directory and file.
+        /// </summary>
+        internal static string FileUploadOptionNote {
+            get {
+                return ResourceManager.GetString("FileUploadOptionNote", resourceCulture);
             }
         }
         

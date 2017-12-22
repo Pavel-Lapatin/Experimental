@@ -175,9 +175,15 @@
     <value>Hi, </value>
   </data>
   <data name="DirectoryNotExistArgumenException" xml:space="preserve">
-    <value>Shuch directori doesn't exist</value>
+    <value>Shuch directory doesn't exist</value>
   </data>
   <data name="ChangeDirectoryOptionNote" xml:space="preserve">
     <value>Enter the path to change default directory</value>
+  </data>
+  <data name="FileUploadOptionNote" xml:space="preserve">
+    <value>Please check pathes for directory and file</value>
+  </data>
+  <data name="FileDownloadOptionNote" xml:space="preserve">
+    <value>Please check pathes for directory and file</value>
   </data>
 </root>

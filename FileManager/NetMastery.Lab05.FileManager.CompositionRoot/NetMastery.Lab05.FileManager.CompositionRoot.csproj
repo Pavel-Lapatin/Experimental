@@ -63,11 +63,16 @@
     <Compile Include="CommandLineCommands\AddDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\ChangeWorkDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\CommandLineCommand.cs" />
+    <Compile Include="CommandLineCommands\DownloadFileCommand.cs" />
     <Compile Include="CommandLineCommands\InfoDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\InfoFileCommand.cs" />
     <Compile Include="CommandLineCommands\LoginCommand.cs" />
     <Compile Include="CommandLineCommands\MoveDirrectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\MoveFileCommand.cs" />
     <Compile Include="CommandLineCommands\RemoveDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\RemoveFileCommand.cs" />
     <Compile Include="CommandLineCommands\Search.cs" />
+    <Compile Include="CommandLineCommands\UploadFileCommand.cs" />
     <Compile Include="CommandLineCommands\UserInfoCommand.cs" />
     <Compile Include="CommandLineInitializer.cs" />
     <Compile Include="CommandLineNames.Designer.cs">

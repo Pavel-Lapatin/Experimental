@@ -6,12 +6,13 @@ namespace NetMastery.FileManeger.Bl.Interfaces
 {
     public interface IDirectoryService
     {
-        void Add(string path, string name, string currentPath);
+        void Add(string path, string name);
         void Move(string pathFrom, string pathTo);
-        void Remove(string path, string currentPath);
-        IEnumerable<string> Search(string currentPAth, string pattern);
-        string ChangeWorkDirectory(string path, string currentPath);
-        DirectoryStructureDto GetInfoByCurrentPath(string path);
+        void Remove(string path);
+        IEnumerable<string> Search(string pattern, string path);
+        string ChangeWorkDirectory(string path);
+
+        DirectoryStructureDto GetInfoByPath(string path);
 
     }
 }

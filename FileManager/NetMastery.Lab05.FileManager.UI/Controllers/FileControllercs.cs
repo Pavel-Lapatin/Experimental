@@ -1,28 +1,24 @@
 ﻿using NetMastery.FileManeger.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.ViewModels;
 using System;
 using System.Collections.Generic;
 
-
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
-    public class DirectoryController : AuthenticateController
+    public class FileController : AuthenticateController
     {
-        private readonly IDirectoryService _directoryService;
-
-        public DirectoryController(IDirectoryService directoryService, AppViewModel model) : base(model)
+        private readonly IFileService _fileService;
+        public FileController(IFileService fileService, AppViewModel model) : base(model)
         {
-            _directoryService = directoryService;
-            
+            _fileService = fileService;
         }
 
-        public void Add(string path, string name)
+        public void Upload(string path, string externFilePath)
         {
-            if(path != null && name != null )
+            if (path != null && externFilePath != null)
             {
-                
-                _directoryService.Add(CreatePath(path), name);
+
+                _fileService.Upload(CreatePath(path), externFilePath);
             }
             else
             {
@@ -30,11 +26,23 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void Move(string pathFrom, string pathTo, string currentPath)
+        public void Download(string externFilePath, string path)
+        {
+            if (path != null && externFilePath != null)
+            {
+                _fileService.Upload(CreatePath(path), CreatePath(externFilePath));
+            }
+            else
+            {
+                throw new NullReferenceException("The path of the directory couldn't be found");
+            }
+        }
+
+        public void Move(string pathFrom, string pathTo)
         {
             if (pathFrom != null && pathTo != null)
             {
-                _directoryService.Move(CreatePath(pathFrom), CreatePath(pathTo));
+                _fileService.Move(CreatePath(pathFrom), CreatePath(pathTo));
             }
             else
             {
@@ -58,7 +66,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null)
             {
-                return _directoryService.Search(pattern, CreatePath(path));
+                return _directoryService.Search(pattern, path);
             }
             else
             {
@@ -66,11 +74,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void ChangeWorkingDirectory(string path)
+        public void ChangeWorkingDirectory(string path, string currentPath)
         {
             if (path != null)
             {
-                _directoryService.ChangeWorkDirectory(CreatePath(path));
+                _directoryService.ChangeWorkDirectory(currentPath, path);
             }
             else
             {
@@ -82,12 +90,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null)
             {
-                return _directoryService.GetInfoByPath(CreatePath(path));
+                return _directoryService.GetInfoByCurrentPath(path);
             }
             {
                 throw new NullReferenceException("The path of the directory couldn't be found");
             }
         }
+
+
+
 
     }
 }
