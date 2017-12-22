@@ -1,0 +1,123 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{C00A4263-D0E8-43E9-AEA1-F380BC299BE1}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>NetMastery.Lab05.FileManagerCompositionRoot</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManagerCompositionRoot</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
+    </Reference>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Extensions.CommandLineUtils.1.1.1\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AutoMapperInitializer.cs" />
+    <Compile Include="AutoMapping\Configuration\AccountMapping.cs" />
+    <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
+    <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
+    <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
+    <Compile Include="CommandLineCommands\AddDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\ChangeWorkDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\CommandLineCommand.cs" />
+    <Compile Include="CommandLineCommands\InfoDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\LoginCommand.cs" />
+    <Compile Include="CommandLineCommands\MoveDirrectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\RemoveDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\Search.cs" />
+    <Compile Include="CommandLineCommands\UserInfoCommand.cs" />
+    <Compile Include="CommandLineInitializer.cs" />
+    <Compile Include="CommandLineNames.Designer.cs">
+      <DependentUpon>CommandLineNames.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="ContainerConfiguration.cs" />
+    <Compile Include="DirectoryInitializer.cs" />
+    <Compile Include="EnglishLocalisation.Designer.cs">
+      <DependentUpon>EnglishLocalisation.resx</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="CommandLineNames.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>CommandLineNames.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="EnglishLocalisation.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.Bl\NetMastery.Lab05.FileManager.Bl.csproj">
+      <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
+      <Name>NetMastery.Lab05.FileManager.Bl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
+      <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>
+      <Name>NetMastery.Lab05.FileManager.DAL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.Domain\NetMastery.Lab05.FileManager.Domain.csproj">
+      <Project>{d6b4138f-8bee-491a-bf19-3de08114ea30}</Project>
+      <Name>NetMastery.Lab05.FileManager.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.Dto\NetMastery.Lab05.FileManager.Dto.csproj">
+      <Project>{5d4e6f56-c45c-48f0-b01f-b4d5b7c5ffd7}</Project>
+      <Name>NetMastery.Lab05.FileManager.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.UI\NetMastery.Lab05.FileManager.UI.csproj">
+      <Project>{B0912E97-0C69-4A3C-8DFF-CB6291F48DF1}</Project>
+      <Name>NetMastery.Lab05.FileManager.UI</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

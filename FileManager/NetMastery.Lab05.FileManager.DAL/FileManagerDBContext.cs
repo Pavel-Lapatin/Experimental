@@ -1,6 +1,6 @@
 ﻿using System.Data.Entity;
-using NetMastery.Lab05.FileManager.DAL.Entities;
 using NetMastery.Lab05.FileManager.DAL.Configurations;
+using NetMastery.Lab05.FileManager.Domain;
 
 namespace NetMastery.Lab05.FileManager.DAL
 {

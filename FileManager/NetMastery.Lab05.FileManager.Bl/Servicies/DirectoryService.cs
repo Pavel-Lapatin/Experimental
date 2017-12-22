@@ -1,14 +1,12 @@
 ﻿using System;
-using NetMastery.Lab05.FileManager.DAL.Repository;
 using System.Linq;
 using AutoMapper;
-using NetMastery.Lab05.FileManager.DAL.Entities;
-using System.Resources;
 using System.Collections.Generic;
 using System.Text;
-using NetMastery.Lab05.FileManager.BL.Dto;
 using System.IO;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
+using NetMastery.Lab05.FileManager.Dto;
+using NetMastery.Lab05.FileManager.Domain;
 
 namespace NetMastery.Lab05.FileManager.BL.Servicies
 {
@@ -51,7 +49,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
 
                     _unitOfWork.Commit();
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     Directory.Delete(fullPath);
                     throw;
@@ -90,7 +88,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                 _unitOfWork.Repository<DirectoryStructure>().AddRange(new[] { Mapper.Instance.Map<DirectoryStructure>(currentDirectoryFrom), Mapper.Instance.Map<DirectoryStructure>(currentDirectoryTo) });
                 _unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 Directory.Move(fullPathTo.Replace("~", Directory.GetCurrentDirectory()),
                             fullPathFrom.Replace("~", Directory.GetCurrentDirectory()));

@@ -59,22 +59,21 @@
     <Compile Include="Servicies\DirectoryService.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainModel\NetMastery.Lab05.FileManager.Domain.csproj">
-      <Project>{D6B4138F-8BEE-491A-BF19-3DE08114EA30}</Project>
-      <Name>NetMastery.Lab05.FileManager.Domain</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.Dto.csproj">
-      <Project>{5d4e6f56-c45c-48f0-b01f-b4d5b7c5ffd7}</Project>
-      <Name>NetMastery.Lab05.FileManager.Dto</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
       <Project>{F720039F-B67D-4D0B-8448-D9698879F546}</Project>
       <Name>NetMastery.Lab05.FileManager.DAL</Name>
     </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.Domain\NetMastery.Lab05.FileManager.Domain.csproj">
+      <Project>{D6B4138F-8BEE-491A-BF19-3DE08114EA30}</Project>
+      <Name>NetMastery.Lab05.FileManager.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.Dto\NetMastery.Lab05.FileManager.Dto.csproj">
+      <Project>{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}</Project>
+      <Name>NetMastery.Lab05.FileManager.Dto</Name>
+    </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

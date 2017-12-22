@@ -1,9 +1,9 @@
 namespace NetMastery.Lab05.FileManager.DAL.Migrations
 {
-    using NetMastery.Lab05.FileManager.DAL.Entities;
+    using NetMastery.Lab05.FileManager.Domain;
     using System;
     using System.Data.Entity.Migrations;
-    using System.IO;
+
 
     internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDbContext>
     {

@@ -1,11 +1,10 @@
 ﻿using NetMastery.FileManeger.Bl.Interfaces;
 using System;
 using System.Linq;
-using NetMastery.Lab05.FileManager.BLModel.DtoClasses;
-using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using AutoMapper;
-using NetMastery.Lab05.FileManager.DAL.Entities;
-using NetMastery.Lab05.FileManager.BL.Dto;
+using NetMastery.Lab05.FileManager.DAL.Interfacies;
+using NetMastery.Lab05.FileManager.Dto;
+using NetMastery.Lab05.FileManager.Domain;
 
 namespace NetMastery.FileManeger.Bl.Servicies
 {

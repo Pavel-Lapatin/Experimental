@@ -3,19 +3,19 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager", "FileManager\NetMastery.Lab05.FileManager.csproj", "{288EB39E-009C-4839-87F5-FA5B20036103}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager", "NetMastery.Lab05.FileManager\NetMastery.Lab05.FileManager.csproj", "{288EB39E-009C-4839-87F5-FA5B20036103}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.DAL", "NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj", "{F720039F-B67D-4D0B-8448-D9698879F546}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Bl", "NetMastery.Lab05.FileManager.Bl\NetMastery.Lab05.FileManager.Bl.csproj", "{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Domain", "DomainModel\NetMastery.Lab05.FileManager.Domain.csproj", "{D6B4138F-8BEE-491A-BF19-3DE08114EA30}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Domain", "NetMastery.Lab05.FileManager.Domain\NetMastery.Lab05.FileManager.Domain.csproj", "{D6B4138F-8BEE-491A-BF19-3DE08114EA30}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Dto", "NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.Dto.csproj", "{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.Dto", "NetMastery.Lab05.FileManager.Dto\NetMastery.Lab05.FileManager.Dto.csproj", "{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.UI", "UI\NetMastery.Lab05.FileManager.UI.csproj", "{B0912E97-0C69-4A3C-8DFF-CB6291F48DF1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.UI", "NetMastery.Lab05.FileManager.UI\NetMastery.Lab05.FileManager.UI.csproj", "{B0912E97-0C69-4A3C-8DFF-CB6291F48DF1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompositionRoot", "CompositionRoot\CompositionRoot.csproj", "{C00A4263-D0E8-43E9-AEA1-F380BC299BE1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.Lab05.FileManager.CompositionRoot", "NetMastery.Lab05.FileManager.CompositionRoot\NetMastery.Lab05.FileManager.CompositionRoot.csproj", "{C00A4263-D0E8-43E9-AEA1-F380BC299BE1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

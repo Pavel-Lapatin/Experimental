@@ -81,7 +81,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DomainModel\NetMastery.Lab05.FileManager.Domain.csproj">
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.Domain\NetMastery.Lab05.FileManager.Domain.csproj">
       <Project>{d6b4138f-8bee-491a-bf19-3de08114ea30}</Project>
       <Name>NetMastery.Lab05.FileManager.Domain</Name>
     </ProjectReference>
