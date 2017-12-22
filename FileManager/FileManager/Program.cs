@@ -1,51 +1,40 @@
-﻿using NetMastery.Lab05.FileManager.DAL.Entities;
-using System;
+﻿using System;
+using NetMastery.Lab05.FileManager.CompositionRoot;
+using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping;
 using Microsoft.Extensions.CommandLineUtils;
-using AutoMapper;
-using NetMastery.FileManeger.Controller;
-using NetMastery.Lab05.FileManager.BL;
+using NetMastery.Lab05.FileManager.ViewModels;
 
 namespace NetMastery.Lab05.FileManager
 {
    
     class Program
     {
-
-        static Program()
-        {
-            InitialiseMapper();
-        }
-
         static void Main()
         {
-            CommandLineApplication cmd = new CommandLineApplication();
-            FileManagerModel model = new FileManagerModel();
-            CommandLineOptions.AddCommands(cmd, model);
-
-            while (true)
-            {
-                try
+            try
+            { 
+                var container = ContainerConfiguration.Configurate();
+                AutoMapperInitializer.Initialize();
+                DirectoryInitializer.SetCurrentDirectory();
+                var appViewModel = new AppViewModel();
+                var cmd = new CommandLineApplication();
+                while (true)
                 {
-                    Console.Write("command->");
-                    var args = Console.ReadLine();
-                    if (args == null) throw new NullReferenceException();
-                    cmd.Execute(ParseArguemts(args.Trim(' ')));
+                    try
+                    {
+                        Console.Write(appViewModel.QueryLineView);
+                        var arguments = Console.ReadLine();
+                        if (arguments == null) throw new NullReferenceException();
+                        var args = ParseArguemts(arguments);
+                        cmd.Execute(args);
+                    }
+                    catch (NullReferenceException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
                 }
-                catch (NullReferenceException e)
-                {
-                    Console.WriteLine(e.Message);
-                }
-            }      
-        }
-
-        public static void InitialiseMapper()
-        {
-            Mapper.Initialize(cfg =>
-            {
-                cfg.CreateMap<AccountDto, Account>();
-                cfg.CreateMap<StorageDto, DirectoryInfo>();
-
-            });
+            }
+            catch(Exception e) { }
         }
 
         private static string[] ParseArguemts(string arguments)
@@ -54,7 +43,5 @@ namespace NetMastery.Lab05.FileManager
             return arguments.Split(separators);
 
         }
-
-
     }
 }

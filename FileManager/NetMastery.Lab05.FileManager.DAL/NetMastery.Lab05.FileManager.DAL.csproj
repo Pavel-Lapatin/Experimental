@@ -48,46 +48,51 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configurations\AccountsMap.cs" />
-    <Compile Include="Configurations\FileMap.cs" />
-    <Compile Include="Configurations\FileTypeMap.cs" />
-    <Compile Include="Configurations\StorageMap.cs" />
-    <Compile Include="Entities\Account.cs" />
-    <Compile Include="Entities\DirectoryInfo.cs" />
-    <Compile Include="Entities\FileInfo.cs" />
-    <Compile Include="Entities\FileType.cs" />
-    <Compile Include="Entities\Rights.cs" />
     <Compile Include="FileManagerDBContext.cs" />
-    <Compile Include="FileManegerInitializer.cs" />
     <Compile Include="Interfacies\IAccountRepository.cs" />
+    <Compile Include="Interfacies\IFileRepository.cs" />
     <Compile Include="Interfacies\IRepository.cs" />
     <Compile Include="Interfacies\IRoleRepository.cs" />
     <Compile Include="Interfacies\IDirectoryRepository.cs" />
-    <Compile Include="Interfacies\IUnitOfWork.cs" />
-    <Compile Include="Migrations\201712132151169_InitialFileManagerDB.cs" />
-    <Compile Include="Migrations\201712132151169_InitialFileManagerDB.Designer.cs">
-      <DependentUpon>201712132151169_InitialFileManagerDB.cs</DependentUpon>
+    <Compile Include="UnitOfWork\Factory\AbstractUnitOfWorkFactory.cs" />
+    <Compile Include="UnitOfWork\Factory\UnitOfWorkFactory.cs" />
+    <Compile Include="UnitOfWork\Factory\UnitOfWorkFactoryGeneric.cs" />
+    <Compile Include="UnitOfWork\GenericUnitOfWorkWithOneRepo\IUnitOfWork.cs" />
+    <Compile Include="Migrations\201712170945302_v1.0.0.cs" />
+    <Compile Include="Migrations\201712170945302_v1.0.0.Designer.cs">
+      <DependentUpon>201712170945302_v1.0.0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201712172306041_v.1.0.1.cs" />
+    <Compile Include="Migrations\201712172306041_v.1.0.1.Designer.cs">
+      <DependentUpon>201712172306041_v.1.0.1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Entities\Role.cs" />
-    <Compile Include="Entities\User.cs" />
     <Compile Include="Repository\AccountRepository.cs" />
+    <Compile Include="Repository\FileRepository.cs" />
     <Compile Include="Repository\Repository.cs" />
     <Compile Include="Repository\DirectoryRepository.cs" />
-    <Compile Include="Repository\UnitOfWork.cs" />
+    <Compile Include="UnitOfWork\GenericUnitOfWorkWithOneRepo\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201712132151169_InitialFileManagerDB.resx">
-      <DependentUpon>201712132151169_InitialFileManagerDB.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\DomainModel\NetMastery.Lab05.FileManager.Domain.csproj">
+      <Project>{d6b4138f-8bee-491a-bf19-3de08114ea30}</Project>
+      <Name>NetMastery.Lab05.FileManager.Domain</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Helpers\" />
+    <EmbeddedResource Include="Migrations\201712170945302_v1.0.0.resx">
+      <DependentUpon>201712170945302_v1.0.0.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712172306041_v.1.0.1.resx">
+      <DependentUpon>201712172306041_v.1.0.1.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

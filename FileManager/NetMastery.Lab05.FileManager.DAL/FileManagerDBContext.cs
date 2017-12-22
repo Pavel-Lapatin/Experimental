@@ -8,22 +8,21 @@ namespace NetMastery.Lab05.FileManager.DAL
     {
         public FileManagerDbContext() : base("name=FileManagerDB")
         {
-            Database.SetInitializer(new FileManegerInitializer());
         }
 
         public DbSet<Account> Accounts { get; set; }
-        public DbSet<DirectoryInfo> Storages { get; set; }
-        public DbSet<FileInfo> Files { get; set; }
-        public DbSet<FileType> FileTyped { get; set; }
+        public DbSet<DirectoryStructure> Directories { get; set; }
+        public DbSet<FileStructure> Files { get; set; }
+
 
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
 
             modelBuilder.Configurations.Add(new AccountsMap());
-            modelBuilder.Configurations.Add(new FileMap());
-            modelBuilder.Configurations.Add(new StorageMap());
-            modelBuilder.Configurations.Add(new FileTypeMap());
+            modelBuilder.Configurations.Add(new FileStructMap());
+            modelBuilder.Configurations.Add(new DirectoryStructMap());
+
         }
     }
 }

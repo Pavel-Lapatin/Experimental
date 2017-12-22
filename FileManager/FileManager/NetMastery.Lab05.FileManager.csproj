@@ -32,8 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
-      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    <Reference Include="Autofac, Version=4.6.2.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
+      <HintPath>..\packages\Autofac.4.6.2\lib\net45\Autofac.dll</HintPath>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
@@ -46,7 +46,11 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.Numerics" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -56,17 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineNames.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CommandLineNames.resx</DependentUpon>
-    </Compile>
-    <Compile Include="CommandLineOptions.cs" />
-    <Compile Include="EnglishLocalisation.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>EnglishLocalisation.resx</DependentUpon>
-    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -75,24 +68,23 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommandLineNames.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommandLineNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EnglishLocalisation.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManeger.Bl.csproj">
-      <Project>{0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851}</Project>
-      <Name>NetMastery.Lab05.FileManeger.Bl</Name>
+    <ProjectReference Include="..\CompositionRoot\CompositionRoot.csproj">
+      <Project>{C00A4263-D0E8-43E9-AEA1-F380BC299BE1}</Project>
+      <Name>CompositionRoot</Name>
     </ProjectReference>
-    <ProjectReference Include="..\NetMastery.Lab05.FileManager.DAL\NetMastery.Lab05.FileManager.DAL.csproj">
-      <Project>{f720039f-b67d-4d0b-8448-d9698879f546}</Project>
-      <Name>NetMastery.Lab05.FileManager.DAL</Name>
+    <ProjectReference Include="..\NetMastery.FileManeger.Controller\NetMastery.Lab05.FileManager.Bl.csproj">
+      <Project>{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}</Project>
+      <Name>NetMastery.Lab05.FileManager.Bl</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.Lab05.FileManager.BLModel\NetMastery.Lab05.FileManager.Dto.csproj">
+      <Project>{5D4E6F56-C45C-48F0-B01F-B4D5B7C5FFD7}</Project>
+      <Name>NetMastery.Lab05.FileManager.Dto</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UI\NetMastery.Lab05.FileManager.UI.csproj">
+      <Project>{B0912E97-0C69-4A3C-8DFF-CB6291F48DF1}</Project>
+      <Name>NetMastery.Lab05.FileManager.UI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
