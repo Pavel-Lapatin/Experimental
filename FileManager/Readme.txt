@@ -62,9 +62,9 @@ Curent path is presented at the begining of command line.
 All relative pathes are created using curent path if additional path begin: 
 .\  (current directory)
 ..\ - (previous directory)
-if there is no reference on the perent directories the path is obsolute.
-For working with virtual directories in database using absolete pathes they should start with ~\ at the begining,
-if not this path was related to the OS file system (shold starts with Disk:\....);
+if there is no reference on the parent directories the path is absolute.
+For working with virtual directories in database using absolute pathes they should start with ~\ at the begining,
+if this path are related to the OS file system (shold starts with Disk:\....);
  
 	directory  -i | --info <path> - shows info about directory;
 	directory  create <path> <name> - create a directory;
@@ -107,7 +107,11 @@ if not this path was related to the OS file system (shold starts with Disk:\....
 	directory cd .\delete1
 
 	#move directory
+	directory move .\admin-Dir1-Lvl1 .\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2
+
 	directory move .\admin-Dir1-Lvl1 .\admin
+	
+	
 
 
 	#Search by pattern in directory
