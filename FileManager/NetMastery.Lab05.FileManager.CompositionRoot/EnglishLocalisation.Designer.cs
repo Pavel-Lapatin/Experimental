@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetMastery.Lab05.FileManagerCompositionRoot {
+namespace NetMastery.Lab05.FileManager.CompositionRoot {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManagerCompositionRoot.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManager.CompositionRoot.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
+using System.Linq.Expressions;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
@@ -28,6 +29,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         public IEnumerable<TEntity> Find(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().Where(predicate);
+        }
+
+        public IEnumerable<TEntity> EagerFind(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, ICollection<TEntity>>> predicate2)
+        {
+            return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
         }
 
         public TEntity Get(int id)

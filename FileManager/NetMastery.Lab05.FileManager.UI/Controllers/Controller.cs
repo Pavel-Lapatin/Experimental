@@ -1,9 +1,7 @@
-﻿using NetMastery.Lab05.FileManager.ViewModels;
+﻿using NetMastery.Lab05.FileManager.UI.ViewModel;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
@@ -12,8 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         protected AppViewModel Model { get; set; }
 
         public Controller(AppViewModel model)
-        {
-           
+        {  
             Model = model;
         }
 
@@ -33,13 +30,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         protected string CreatePath(string newPath)
         {
             string[] pathParts = newPath.Split('\\');
+            var directoryLvl = Model.CurrentPath.Split('\\').Length;
             var path = new StringBuilder();
-            foreach (var partName in pathParts)
+            foreach (var partName in pathParts.Where(x=>!string.IsNullOrEmpty(x)))
             {
                 switch (partName)
                 {
                     case "..":
-                        if (path.Length == 0) path.Append(Model.CurrentPath);
+                        if (path.Length == 0 ) path.Append(Model.CurrentPath);
+                        if (directoryLvl <= 2)  break;
                         var index = path.ToString().LastIndexOf("\\");
                         path = path.Remove(index, path.Length - index);
                         break;
@@ -61,6 +60,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                         }
                         if (!string.IsNullOrEmpty(partName))
                         {
+                            path.Append("\\");
                             path.Append(partName);
                         }
                         break;

@@ -2,15 +2,15 @@
 using System.Linq;
 using AutoMapper;
 using System.Collections.Generic;
-using System.Text;
 using System.IO;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
+using NetMastery.FileManager.Bl.Interfaces;
 
-namespace NetMastery.Lab05.FileManager.BL.Servicies
+namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
-    public class DirectoryService : IDisposable
+    public class DirectoryService : IDirectoryService, IDisposable
     {
         IUnitOfWork _unitOfWork;
 
@@ -26,10 +26,10 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
 
         public void Add(string path, string name)
         {
-            var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
+            var currentDirectory = _unitOfWork
                 .Repository<DirectoryStructure>()
                 .Find(x=>x.FullPath == path)
-                .FirstOrDefault());
+                .FirstOrDefault();
 
             if (currentDirectory != null)
             {
@@ -38,14 +38,18 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                     Name = name,
                     CreationDate = DateTime.Now,
                     ModificationDate = DateTime.Now,
-                    ParentDirectory = currentDirectory,
+                    FullPath = path + "\\" + name,
                 };
-                var newDirInfo = Directory.CreateDirectory(path.Replace("~", Directory.GetCurrentDirectory())+"\\"+"name");
+                if (_unitOfWork.Repository<DirectoryStructure>()
+                        .Find(x => x.FullPath == newDirectory.FullPath).FirstOrDefault() != null)
+                    throw new ArgumentException("This directory already exists");
+                var newDirInfo = Directory.CreateDirectory(newDirectory.FullPath.Replace("~", Directory.GetCurrentDirectory()));
                 try
                 {
+                   var newDir = Mapper.Instance.Map<DirectoryStructure>(newDirectory);
+                    newDir.ParentDirectory = currentDirectory;
                     _unitOfWork.Repository<DirectoryStructure>()
-                        .Add(Mapper.Map<DirectoryStructure>(newDirectory));
-
+                        .Add(newDir);
                     _unitOfWork.Commit();
                 }
                 catch (Exception)
@@ -60,42 +64,56 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
 
         public void Move(string pathFrom, string pathTo)
         {
-            var currentDirectoryFrom = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
+            var currentDirectoryFrom = _unitOfWork
                 .Repository<DirectoryStructure>()
                 .Find(x => x.FullPath == pathFrom)
-                .FirstOrDefault());
+                .FirstOrDefault();
 
-            var currentDirectoryTo = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
+            var currentDirectoryTo = _unitOfWork
                 .Repository<DirectoryStructure>()
                 .Find(x => x.FullPath == pathTo)
-                .FirstOrDefault());
+                .FirstOrDefault();
 
-            if (currentDirectoryFrom != null && currentDirectoryTo != null)
+            if (currentDirectoryFrom == null || currentDirectoryTo == null)
             {
-                currentDirectoryFrom.ParentDirectory = currentDirectoryTo;
-                currentDirectoryTo.ChildrenDirectories.Add(currentDirectoryFrom);
-                currentDirectoryFrom.FullPath = currentDirectoryTo.FullPath + "\\" + currentDirectoryFrom.Name;
-                currentDirectoryFrom.ModificationDate = DateTime.Now;
+                throw new NullReferenceException("Directory doesn't exist");
+            } 
+            if(currentDirectoryTo.FullPath.Contains(currentDirectoryFrom.FullPath))
+            {
+                throw new NullReferenceException("Distanation directory is subfolder of source directory");
             }
-            Directory.Move(pathFrom.Replace("~", Directory.GetCurrentDirectory()),
-                            pathTo.Replace("~", Directory.GetCurrentDirectory()));
-            try
-            {
-                _unitOfWork.Repository<DirectoryStructure>().AddRange(new[] { Mapper.Instance.Map<DirectoryStructure>(currentDirectoryFrom), Mapper.Instance.Map<DirectoryStructure>(currentDirectoryTo) });
-                _unitOfWork.Commit();
-            }
-            catch (Exception)
-            {
-                Directory.Move(pathTo.Replace("~", Directory.GetCurrentDirectory()),
-                            pathFrom.Replace("~", Directory.GetCurrentDirectory()));
-                throw;
+            currentDirectoryFrom.ParentDirectory = currentDirectoryTo;
+            currentDirectoryFrom.FullPath = currentDirectoryTo.FullPath + "\\" + currentDirectoryFrom.Name;
+            currentDirectoryFrom.ModificationDate = DateTime.Now;
+            var source = pathFrom.Replace("~", Directory.GetCurrentDirectory());
+            var destination = pathTo.Replace("~", Directory.GetCurrentDirectory()) + '\\' + currentDirectoryFrom.Name;
+            if (Directory.Exists(source))
+            { 
+                if(Directory.Exists(destination))
+                {
+                    throw new ArgumentException("There is already folder with the exact name as soource folder");
+                }
+                Directory.Move(source, destination);
+                try
+                {
+                    _unitOfWork.Repository<DirectoryStructure>().Add(currentDirectoryFrom);
+                    _unitOfWork.Commit();
+                }
+                catch (Exception)
+                {
+                    Directory.Move(destination, source);
+                    throw;
+                }
             }
         }
     
 
-        public void RemoveDirectory(string path)
+        public void Remove(string path)
         {
-            var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork.Repository<DirectoryStructure>().Find(x => x.FullPath == fullPath).FirstOrDefault());
+            var currentDirectory = _unitOfWork
+                .Repository<DirectoryStructure>()
+                .EagerFind((x => x.FullPath == path), x=>x.ChildrenDirectories).FirstOrDefault(); 
+
             if (currentDirectory != null)
             {
                 RecursiveRemove(currentDirectory);
@@ -106,11 +124,12 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
                 throw new ArgumentException("Directory doesn't exist");
         }
 
-        public IEnumerable<string> Search(string pattern, string path)
+
+        public IEnumerable<string> Search(string path, string pattern)
         {
             var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find(x => x.FullPath == path)
+                .EagerFind((x => x.FullPath == path), x=>x.ChildrenDirectories)
                 .FirstOrDefault());
 
             IList<string> results = new List<string>();
@@ -176,20 +195,23 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             }
         }
 
-        private void RecursiveRemove(DirectoryStructureDto rootDirectory)
+        private void RecursiveRemove(DirectoryStructure rootDirectory)
         {
-           if (rootDirectory.ChildrenDirectories != null || rootDirectory.ChildrenDirectories.Count != 0)
+            if (rootDirectory.ChildrenDirectories != null || rootDirectory.ChildrenDirectories.Count != 0)
             {
-                foreach (var child in rootDirectory.ChildrenDirectories)
+                var children = rootDirectory.ChildrenDirectories.ToList();
+                for (int i = 0; i < children.Count; i++)
                 {
-                    RecursiveRemove(child);
+                    RecursiveRemove(children[i]);
                 }
             }
-            if (rootDirectory.Files != null)
+            if (rootDirectory.Files != null || rootDirectory.Files.Count != 0)
             {
-                _unitOfWork.Repository<FileStructure>().RemoveRange(rootDirectory.Files.Select(x => Mapper.Instance.Map<FileStructure>(x)));
+                _unitOfWork.Repository<FileStructure>().RemoveRange(rootDirectory.Files);
+                _unitOfWork.Repository<DirectoryStructure>().Remove(rootDirectory);
+
             }
-            _unitOfWork.Repository<DirectoryStructure>().Remove(Mapper.Instance.Map<DirectoryStructure>(rootDirectory));
+
         }
 
         public void Dispose()
@@ -197,5 +219,7 @@ namespace NetMastery.Lab05.FileManager.BL.Servicies
             _unitOfWork.Dispose();
 
         }
+
+       
     }
 }

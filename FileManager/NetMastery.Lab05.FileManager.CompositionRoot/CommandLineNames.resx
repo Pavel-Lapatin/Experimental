@@ -148,7 +148,7 @@
     <value>rd</value>
   </data>
   <data name="RemoveRoleCommand" xml:space="preserve">
-    <value />
+    <value>remove</value>
   </data>
   <data name="userOption" xml:space="preserve">
     <value>-u | --user &lt;value&gt;</value>
@@ -173,8 +173,8 @@
   <data name="DirectoryCommand" xml:space="preserve">
     <value>directory</value>
   </data>
-  <data name="CreateOption" xml:space="preserve">
-    <value>-cr|--create &lt;value&gt;</value>
+  <data name="CreateCommand" xml:space="preserve">
+    <value>create</value>
   </data>
   <data name="InfoOption" xml:space="preserve">
     <value>-i|--info &lt;value&gt;</value>
@@ -185,8 +185,8 @@
   <data name="MoveOption" xml:space="preserve">
     <value>-mv|--move &lt;value&gt;</value>
   </data>
-  <data name="RemoveOption" xml:space="preserve">
-    <value>-rm|--remove &lt;value&gt;</value>
+  <data name="RemoveCommand" xml:space="preserve">
+    <value>remove</value>
   </data>
   <data name="SearchOption" xml:space="preserve">
     <value>-sr|--search &lt;value&gt;</value>
@@ -203,10 +203,25 @@
   <data name="SingupCommand" xml:space="preserve">
     <value>singup</value>
   </data>
-  <data name="ChangeDirectoryOption" xml:space="preserve">
+  <data name="ChangeDirectoryCommand" xml:space="preserve">
     <value>cd</value>
   </data>
   <data name="InfoCommand" xml:space="preserve">
     <value>info</value>
+  </data>
+  <data name="LogoffCommand" xml:space="preserve">
+    <value>logoff</value>
+  </data>
+  <data name="MoveCommand" xml:space="preserve">
+    <value>move</value>
+  </data>
+  <data name="SearchCommand" xml:space="preserve">
+    <value>search</value>
+  </data>
+  <data name="ListCommand" xml:space="preserve">
+    <value>list</value>
+  </data>
+  <data name="ExitCommand" xml:space="preserve">
+    <value>exit</value>
   </data>
 </root>

@@ -1,6 +1,6 @@
 ﻿using NetMastery.Lab05.FileManager.Dto;
 
-namespace NetMastery.FileManeger.Bl.Interfaces
+namespace NetMastery.FileManager.Bl.Interfaces
 {
     public interface IUserService
     {

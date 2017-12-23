@@ -1,5 +1,6 @@
-﻿using NetMastery.FileManeger.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.ViewModels;
+﻿using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Dto;
+using NetMastery.Lab05.FileManager.UI.ViewModel;
 using System;
 using System.Collections.Generic;
 
@@ -54,7 +55,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null)
             {
-                _directoryService.Remove(CreatePath(path));
+                _fileService.Remove(CreatePath(path));
             }
             else
             {
@@ -62,35 +63,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public IEnumerable<string> Search(string pattern, string path)
-        {
-            if (path != null)
-            {
-                return _directoryService.Search(pattern, path);
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't be found");
-            }
-        }
+        
 
-        public void ChangeWorkingDirectory(string path, string currentPath)
-        {
-            if (path != null)
-            {
-                _directoryService.ChangeWorkDirectory(currentPath, path);
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't be found");
-            }
-        }
+        
 
-        public DirectoryStructureDto GetDirectoryByPath(string path)
+        public FileStructureDto GetFileByPath(string path)
         {
             if (path != null)
             {
-                return _directoryService.GetInfoByCurrentPath(path);
+                return _fileService.GetFileByPath(path);
             }
             {
                 throw new NullReferenceException("The path of the directory couldn't be found");

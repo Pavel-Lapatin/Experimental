@@ -1,38 +1,34 @@
-﻿using NetMastery.FileManeger.Bl.Interfaces;
+﻿using NetMastery.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.Dto;
+using NetMastery.Lab05.FileManager.UI.ViewModel;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
     public class UserController : AuthenticateController
     {
-        private readonly IAuthenticationService _authenticationService;
         private readonly IUserService _userService;
 
-        public UserController(IAuthenticationService authenticationService, IUserService userService, )
+        public UserController(IUserService userService, AppViewModel model ) : base(model)
         {
-            _authenticationService = authenticationService;
             _userService = userService;
         }
 
-
-        public void Singup(string login, string password)
+        public void GetUserInfo()
         {
-            if (login == null || password == null)
-            {
-                throw new NullReferenceException();
-            }
-            _authenticationService.Singup(login, password);
-        }
-
-        public UserInfo GetUserInfo()
-        {
-            if (login == null)
-                throw new NullReferenceException("user hasn't been registred yet");
-            var userInfo = _userService.GetInfoByLogin(login);
+            var userInfo = _userService.GetInfoByLogin(Model.AuthenticatedLogin);
             if (userInfo == null)
-                throw new NullReferenceException($"There is no user with login: {login}");
-            return userInfo;
+                throw new NullReferenceException($"There is no user with login: {Model.AuthenticatedLogin}");
+            else
+            {
+                Console.WriteLine();
+                Console.WriteLine("Login: " + userInfo.Login);
+                Console.WriteLine("Creation date: " + userInfo.CreationDate.ToString("yy-MM-dd"));
+                Console.WriteLine("Used disk space: " + userInfo.CurentStorageSize + " kB");
+                Console.WriteLine("Max disk space: " + userInfo.MaxStorageSize +" kB");
+                Console.WriteLine("Root directory path: " + userInfo.RootDirectory.FullPath);
+                Console.WriteLine();
+            }
         }
     }
 }

@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetMastery.Lab05.FileManagerCompositionRoot {
+namespace NetMastery.Lab05.FileManager.CompositionRoot {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManagerCompositionRoot.CommandLineNames", typeof(CommandLineNames).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManager.CompositionRoot.CommandLineNames", typeof(CommandLineNames).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -72,9 +72,9 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         /// <summary>
         ///   Looks up a localized string similar to cd.
         /// </summary>
-        internal static string ChangeDirectoryOption {
+        internal static string ChangeDirectoryCommand {
             get {
-                return ResourceManager.GetString("ChangeDirectoryOption", resourceCulture);
+                return ResourceManager.GetString("ChangeDirectoryCommand", resourceCulture);
             }
         }
         
@@ -88,11 +88,11 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -cr|--create &lt;value&gt;.
+        ///   Looks up a localized string similar to create.
         /// </summary>
-        internal static string CreateOption {
+        internal static string CreateCommand {
             get {
-                return ResourceManager.GetString("CreateOption", resourceCulture);
+                return ResourceManager.GetString("CreateCommand", resourceCulture);
             }
         }
         
@@ -129,6 +129,15 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         internal static string DownloadOption {
             get {
                 return ResourceManager.GetString("DownloadOption", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to exit.
+        /// </summary>
+        internal static string ExitCommand {
+            get {
+                return ResourceManager.GetString("ExitCommand", resourceCulture);
             }
         }
         
@@ -178,6 +187,15 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to list.
+        /// </summary>
+        internal static string ListCommand {
+            get {
+                return ResourceManager.GetString("ListCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to -ls|--list &lt;value&gt;.
         /// </summary>
         internal static string ListOption {
@@ -205,6 +223,15 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to logoff.
+        /// </summary>
+        internal static string LogoffCommand {
+            get {
+                return ResourceManager.GetString("LogoffCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ls.
         /// </summary>
         internal static string LsCommand {
@@ -219,6 +246,15 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         internal static string MdCommand {
             get {
                 return ResourceManager.GetString("MdCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to move.
+        /// </summary>
+        internal static string MoveCommand {
+            get {
+                return ResourceManager.GetString("MoveCommand", resourceCulture);
             }
         }
         
@@ -250,20 +286,29 @@ namespace NetMastery.Lab05.FileManagerCompositionRoot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -rm|--remove &lt;value&gt;.
+        ///   Looks up a localized string similar to remove.
         /// </summary>
-        internal static string RemoveOption {
+        internal static string RemoveCommand {
             get {
-                return ResourceManager.GetString("RemoveOption", resourceCulture);
+                return ResourceManager.GetString("RemoveCommand", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to .
+        ///   Looks up a localized string similar to remove.
         /// </summary>
         internal static string RemoveRoleCommand {
             get {
                 return ResourceManager.GetString("RemoveRoleCommand", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to search.
+        /// </summary>
+        internal static string SearchCommand {
+            get {
+                return ResourceManager.GetString("SearchCommand", resourceCulture);
             }
         }
         

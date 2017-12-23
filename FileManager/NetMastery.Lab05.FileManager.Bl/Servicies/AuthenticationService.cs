@@ -1,4 +1,4 @@
-﻿using NetMastery.FileManeger.Bl.Interfaces;
+﻿using NetMastery.FileManager.Bl.Interfaces;
 using System;
 using System.Linq;
 using AutoMapper;
@@ -6,7 +6,7 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
 
-namespace NetMastery.FileManeger.Bl.Servicies
+namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
     public class AuthenticationService : IAuthenticationService
     {
@@ -19,6 +19,7 @@ namespace NetMastery.FileManeger.Bl.Servicies
             _unitOfWork = unitOfWork;
         }
 
+
         #endregion
 
         public UserInfo Signin(string login, string password)
@@ -28,17 +29,24 @@ namespace NetMastery.FileManeger.Bl.Servicies
                 throw new NullReferenceException("Login and password must not be null or empty");
             }
             var account = Mapper.Instance.Map<AccountDto>(_unitOfWork.Repository<Account>().Find(x => x.Login == login).FirstOrDefault());
-            if (BCrypt.Net.BCrypt.Verify(password, account.Password))
+            if (account != null)
             {
-                return account;
+                if (BCrypt.Net.BCrypt.Verify(password, account.Password))
+                {
+                    return account;
+                }
+                else
+                {
+                    throw new ArgumentException("Password is wrong");
+                }
             }
             else
             {
-                throw new NullReferenceException("Account with such password doesn't exist");
+                throw new NullReferenceException("Account with such login doesn't exist");
             }
         }
 
-        public UserInfo Singup(string login, string password)
+        public void Singup(string login, string password)
         {
             if (password == null || login == null)
             {
@@ -62,8 +70,7 @@ namespace NetMastery.FileManeger.Bl.Servicies
                     }
                 };
                 _unitOfWork.Repository<Account>().Add(Mapper.Instance.Map<Account>(newAccount));
-                _unitOfWork.Commit();
-                return newAccount;
+                _unitOfWork.Commit(); 
             }
         }
     }

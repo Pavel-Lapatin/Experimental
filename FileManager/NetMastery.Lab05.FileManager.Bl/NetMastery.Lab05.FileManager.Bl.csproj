@@ -7,8 +7,8 @@
     <ProjectGuid>{0AF6AFE3-9E6C-4C0C-BC0C-6A05C1D40851}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetMastery.Lab05.FileManeger.Bl</RootNamespace>
-    <AssemblyName>NetMastery.Lab05.FileManeger.Bl</AssemblyName>
+    <RootNamespace>NetMastery.Lab05.FileManager.Bl</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManager.Bl</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>

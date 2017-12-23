@@ -54,6 +54,10 @@
     <Compile Include="Interfacies\IRepository.cs" />
     <Compile Include="Interfacies\IRoleRepository.cs" />
     <Compile Include="Interfacies\IDirectoryRepository.cs" />
+    <Compile Include="Migrations\201712231751169_UniqueFullPath.cs" />
+    <Compile Include="Migrations\201712231751169_UniqueFullPath.Designer.cs">
+      <DependentUpon>201712231751169_UniqueFullPath.cs</DependentUpon>
+    </Compile>
     <Compile Include="UnitOfWork\Factory\AbstractUnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWork\Factory\UnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWork\Factory\UnitOfWorkFactoryGeneric.cs" />
@@ -92,6 +96,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201712172306041_v.1.0.1.resx">
       <DependentUpon>201712172306041_v.1.0.1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201712231751169_UniqueFullPath.resx">
+      <DependentUpon>201712231751169_UniqueFullPath.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

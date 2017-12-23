@@ -17,6 +17,8 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
             Property(p => p.CreationDate).IsRequired();
             Property(p => p.ModificationDate).IsRequired();
             Property(p => p.Name).IsRequired().HasMaxLength(255);
+            Property(p => p.FullPath).IsRequired().HasMaxLength(255);
+            HasIndex(x => x.FullPath).IsUnique();
 
 
 

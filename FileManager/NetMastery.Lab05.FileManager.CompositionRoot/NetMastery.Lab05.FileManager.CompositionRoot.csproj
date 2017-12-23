@@ -7,8 +7,8 @@
     <ProjectGuid>{C00A4263-D0E8-43E9-AEA1-F380BC299BE1}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>NetMastery.Lab05.FileManagerCompositionRoot</RootNamespace>
-    <AssemblyName>NetMastery.Lab05.FileManagerCompositionRoot</AssemblyName>
+    <RootNamespace>NetMastery.Lab05.FileManager.CompositionRoot</RootNamespace>
+    <AssemblyName>NetMastery.Lab05.FileManager.CompositionRoot</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -60,27 +60,32 @@
     <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
     <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
-    <Compile Include="CommandLineCommands\AddDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\ChangeWorkDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\AuthenticateCommand\Exit.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\AddDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\ChangeWorkDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\CommandLineCommand.cs" />
-    <Compile Include="CommandLineCommands\DownloadFileCommand.cs" />
-    <Compile Include="CommandLineCommands\InfoDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\InfoFileCommand.cs" />
-    <Compile Include="CommandLineCommands\LoginCommand.cs" />
-    <Compile Include="CommandLineCommands\MoveDirrectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\MoveFileCommand.cs" />
-    <Compile Include="CommandLineCommands\RemoveDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\RemoveFileCommand.cs" />
-    <Compile Include="CommandLineCommands\Search.cs" />
-    <Compile Include="CommandLineCommands\UploadFileCommand.cs" />
-    <Compile Include="CommandLineCommands\UserInfoCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\SearchDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\ListDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\DirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\DownloadFileCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\InfoDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\InfoFileCommand.cs" />
+    <Compile Include="CommandLineCommands\AuthenticateCommand\LoginCommand.cs" />
+    <Compile Include="CommandLineCommands\AuthenticateCommand\LogoffCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\MoveDirrectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\MoveFileCommand.cs" />
+    <Compile Include="CommandLineCommands\DirectoryCommand\RemoveDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\RemoveFileCommand.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\Search.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\UploadFileCommand.cs" />
+    <Compile Include="CommandLineCommands\UserCommand\UserInfoCommand.cs" />
     <Compile Include="CommandLineInitializer.cs" />
     <Compile Include="CommandLineNames.Designer.cs">
       <DependentUpon>CommandLineNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
-    <Compile Include="ContainerConfiguration.cs" />
+    <Compile Include="ContainerConfig.cs" />
     <Compile Include="DirectoryInitializer.cs" />
     <Compile Include="EnglishLocalisation.Designer.cs">
       <DependentUpon>EnglishLocalisation.resx</DependentUpon>
@@ -124,5 +129,6 @@
       <Name>NetMastery.Lab05.FileManager.UI</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

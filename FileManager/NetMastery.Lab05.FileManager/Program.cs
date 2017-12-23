@@ -2,8 +2,8 @@
 using NetMastery.Lab05.FileManager.CompositionRoot;
 using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping;
 using Microsoft.Extensions.CommandLineUtils;
-using NetMastery.Lab05.FileManager.ViewModels;
-using System.IO;
+using NetMastery.Lab05.FileManager.UI.ViewModel;
+using Autofac;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -14,30 +14,59 @@ namespace NetMastery.Lab05.FileManager
         {
             try
             { 
-                var container = ContainerConfiguration.Configurate();
+                var container = ContainerConfiguration.Config();
                 AutoMapperInitializer.Initialize();
-                Console.WriteLine(Directory.GetCurrentDirectory());
                 DirectoryInitializer.SetCurrentDirectory();
-                Console.WriteLine(Directory.GetCurrentDirectory());
-                var appViewModel = new AppViewModel();
-                var cmd = new CommandLineApplication();
+
+                var arguments = "login -l admin -p admin";
+                if (arguments == null) throw new NullReferenceException();
+                var cmd = CommandLineInitializer.Initialize(new CommandLineApplication(), container);
+                var args = ParseArguemts(arguments);
+                cmd.Execute(args);
+
                 while (true)
                 {
                     try
                     {
-                        Console.Write(appViewModel.QueryLineView);
-                        var arguments = Console.ReadLine();
+                        var model = container.Resolve<AppViewModel>();
+                        if(model.AuthenticatedLogin == null)
+                        {
+                            Console.Clear();
+                            Console.WriteLine("Please signin in the system");
+                        }
+
+                        cmd = CommandLineInitializer.Initialize(new CommandLineApplication(), container);
+                        Console.Write(container.Resolve<AppViewModel>().QueryLineView);
+                        arguments = Console.ReadLine().Trim();
                         if (arguments == null) throw new NullReferenceException();
-                        var args = ParseArguemts(arguments);
+                        args = ParseArguemts(arguments);
                         cmd.Execute(args);
+                        continue;
                     }
                     catch (NullReferenceException e)
                     {
                         Console.WriteLine(e.Message);
                     }
+                    catch (UnauthorizedAccessException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    catch(CommandParsingException e)
+                    {
+                        e.Command.ShowHelp();
+                    }
+                    catch (ArgumentException e)
+                    {
+                        Console.WriteLine(e.Message);
+                    }
+                    
+
+                    Console.WriteLine();
+                    Console.WriteLine("Please press any button for continue ...");
+                    Console.ReadKey();
                 }
             }
-            catch(Exception) { }
+            catch(Exception e) { Console.WriteLine(e.Message); Console.ReadKey(); }
         }
 
         private static string[] ParseArguemts(string arguments)

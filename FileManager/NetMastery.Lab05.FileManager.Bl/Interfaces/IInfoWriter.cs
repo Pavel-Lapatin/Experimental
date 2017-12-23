@@ -1,6 +1,6 @@
 ﻿
 
-namespace NetMastery.FileManeger.Bl.Interfaces
+namespace NetMastery.FileManager.Bl.Interfaces
 {
     public interface IInfoWriter<T> where T : class
     {
