@@ -1,15 +1,14 @@
 ﻿using Autofac;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.AuthenticateCommand
 {
 
-    public class LogoffCommand : CommandLineCommand
+    public class LogoffCommand : CommandLine
     {
         public LogoffCommand(IContainer container) : base(container)
         {
             Name = CommandLineNames.LogoffCommand;
-
             HelpOption(CommandLineNames.HelpOption);
 
 

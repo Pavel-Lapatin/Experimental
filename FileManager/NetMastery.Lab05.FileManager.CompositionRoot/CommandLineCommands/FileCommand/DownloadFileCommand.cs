@@ -1,27 +1,24 @@
 ﻿using Autofac;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
+using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines
 {
-    public class DownloadFileCommand : CommandLineCommand
+    public class DownloadFileCommand : CommandLine
     {
         public DownloadFileCommand(IContainer container) : base(container)
         {
-            Name = CommandLineNames.FileCommand;
+            Name = CommandLineNames.DownloadCommand;
 
-            Command(CommandLineNames.DownloadOption, c =>
+            var arguments = Argument("arguments", EnglishLocalisation.FileDownloadOptionNote, true);
+            OnExecute(() =>
             {
-                var arguments = c.Argument("arguments", EnglishLocalisation.FileDownloadOptionNote, true);
-                c.OnExecute(() =>
+                using (var scope = _container.BeginLifetimeScope())
                 {
-                    using (var scope = _container.BeginLifetimeScope())
-                    {
-                        container.Resolve<FileController>()
-                        .Download(arguments.Values[0], arguments.Values[1]);
-                    }
-                    return 0;
-                });
+                    container.Resolve<FileController>()
+                    .Download(arguments.Values[0], arguments.Values[1]);
+                }
+                return 0;
             });
         }
     }

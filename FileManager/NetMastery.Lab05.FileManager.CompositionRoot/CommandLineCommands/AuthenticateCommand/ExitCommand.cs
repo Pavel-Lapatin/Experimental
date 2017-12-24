@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.AuthenticateCommand
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.AuthenticateCommand
 {
     public class ExitCommand : CommandLineApplication
     {

@@ -41,15 +41,17 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                     FullPath = path + "\\" + name,
                 };
                 if (_unitOfWork.Repository<DirectoryStructure>()
-                        .Find(x => x.FullPath == newDirectory.FullPath).FirstOrDefault() != null)
+                        .Find(x => x.FullPath == newDirectory.FullPath)
+                        .FirstOrDefault() != null)
+                {
                     throw new ArgumentException("This directory already exists");
+                }   
                 var newDirInfo = Directory.CreateDirectory(newDirectory.FullPath.Replace("~", Directory.GetCurrentDirectory()));
                 try
                 {
-                   var newDir = Mapper.Instance.Map<DirectoryStructure>(newDirectory);
+                    var newDir = Mapper.Instance.Map<DirectoryStructure>(newDirectory);
                     newDir.ParentDirectory = currentDirectory;
-                    _unitOfWork.Repository<DirectoryStructure>()
-                        .Add(newDir);
+                    _unitOfWork.Repository<DirectoryStructure>().Add(newDir);
                     _unitOfWork.Commit();
                 }
                 catch (Exception)
@@ -59,7 +61,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 }
             }
             else
-                throw new ArgumentException();
+            {
+                throw new ArgumentException("Directory doesn't exist");
+            }
+                
         }
 
         public void Move(string pathFrom, string pathTo)

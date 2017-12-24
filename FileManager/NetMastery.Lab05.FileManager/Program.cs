@@ -4,6 +4,8 @@ using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping;
 using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.ViewModel;
 using Autofac;
+using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
+using System.Collections.Generic;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -17,29 +19,23 @@ namespace NetMastery.Lab05.FileManager
                 var container = ContainerConfiguration.Config();
                 AutoMapperInitializer.Initialize();
                 DirectoryInitializer.SetCurrentDirectory();
-
-                var arguments = "login -l admin -p admin";
-                if (arguments == null) throw new NullReferenceException();
-                var cmd = CommandLineInitializer.Initialize(new CommandLineApplication(), container);
-                var args = ParseArguemts(arguments);
-                cmd.Execute(args);
+                var cmd = new CommandLineRoot(container);
+                var model = container.Resolve<AppViewModel>();
 
                 while (true)
                 {
                     try
                     {
-                        var model = container.Resolve<AppViewModel>();
                         if(model.AuthenticatedLogin == null)
                         {
                             Console.Clear();
                             Console.WriteLine("Please signin in the system");
                         }
 
-                        cmd = CommandLineInitializer.Initialize(new CommandLineApplication(), container);
-                        Console.Write(container.Resolve<AppViewModel>().QueryLineView);
-                        arguments = Console.ReadLine().Trim();
+                        Console.Write(model.QueryLineView);
+                        var arguments = Console.ReadLine().Trim();
                         if (arguments == null) throw new NullReferenceException();
-                        args = ParseArguemts(arguments);
+                        var args = ParseArguemts(arguments);
                         cmd.Execute(args);
                         continue;
                     }
@@ -59,8 +55,6 @@ namespace NetMastery.Lab05.FileManager
                     {
                         Console.WriteLine(e.Message);
                     }
-                    
-
                     Console.WriteLine();
                     Console.WriteLine("Please press any button for continue ...");
                     Console.ReadKey();
@@ -71,8 +65,23 @@ namespace NetMastery.Lab05.FileManager
 
         private static string[] ParseArguemts(string arguments)
         {
-            var separators = new char[] { ' ' };
-            return arguments.Split(separators);
+
+            var strs = arguments.Trim('\"').Split('\"');
+            List<string> args = new List<string>();
+            int i = 1;
+            foreach (var item in strs)
+            {
+                if(i%2 != 0)
+                {
+                    args.AddRange(item.Trim().Split(' '));
+                }
+                else
+                {
+                    args.Add(item);
+                }
+                i++;
+            }
+            return args.ToArray();
 
         }
     }

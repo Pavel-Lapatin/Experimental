@@ -37,6 +37,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             if (Model.AuthenticatedLogin != null)
             {
                 Model.AuthenticatedLogin = null;
+                Model.CurrentPath = "~\\";
                 Console.WriteLine("Goodbye!!!");
                 Console.WriteLine();
                 Console.WriteLine("Press any button for continue");

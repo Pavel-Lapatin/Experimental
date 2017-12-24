@@ -20,9 +20,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         public void Add(string path, string name)
         {
             if(path != null && name != null )
-            {
-                
+            {    
                 _directoryService.Add(CreatePath(path), name);
+                Console.WriteLine("Directorry created successfully");
             }
             else
             {

@@ -14,6 +14,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping
                 cfg.AddProfile(new DirectoryMapping());
                 cfg.AddProfile(new FileMapping());
                 cfg.AddProfile(new DirectoryOnDirectoryInfoMapping());
+                cfg.AddProfile(new FileStructureOnFileInfoMapping());
             });
         }
     }

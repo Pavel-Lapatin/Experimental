@@ -35,6 +35,10 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
         }
+        public IEnumerable<TEntity> EagerFind<TCollectionEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, ICollection<TCollectionEntity>>> predicate2) where TCollectionEntity : class
+        {
+            return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
+        }
 
         public TEntity Get(int id)
         {

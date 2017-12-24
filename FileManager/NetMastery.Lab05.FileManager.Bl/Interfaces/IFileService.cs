@@ -5,12 +5,10 @@ namespace NetMastery.FileManager.Bl.Interfaces
 {
     public interface IFileService
     {
-        void Upload(string path, string name);
-        void Download(string pathFrom, string pathTo);
-        void Move(string pathFrom, string pathTo);
+        void Upload(string pathToFile, string pathToStorage);
+        void Download(string pathFromStorage, string pathToFile);
+        void Move(string pathFromStorage, string pathToStorage);
         void Remove(string path);
-        IEnumerable<string> Search(string pattern, string path);
-
         FileStructureDto GetFileByPath(string path);
     }
 }

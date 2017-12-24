@@ -18,7 +18,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
 
             builder.RegisterType<LoginController>();
             builder.RegisterType<DirectoryController>();
-            //builder.RegisterType<FileController>();
+            builder.RegisterType<FileController>();
             builder.RegisterType<UserController>();
 
             var model = new AppViewModel();
@@ -31,12 +31,12 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                        typeof(AppViewModel),
                        model));
 
-            //builder.RegisterType<FileService>()
-            //       .As<IFileService>()
-            //       .InstancePerLifetimeScope()
-            //       .WithParameter(new TypedParameter(
-            //           typeof(AppViewModel),
-            //           model));
+            builder.RegisterType<FileService>()
+                   .As<IFileService>()
+                   .InstancePerLifetimeScope()
+                   .WithParameter(new TypedParameter(
+                       typeof(AppViewModel),
+                       model));
 
             builder.RegisterType<UserService>()
                    .As<IUserService>()
@@ -64,11 +64,6 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                    .As(typeof(IInfoWriter<>))
                    .InstancePerLifetimeScope();
 
-
-
-            //    builder.RegisterGeneric(typeof(Repository<>))
-            //          .As(typeof(IRepository<>))
-            //           .InstancePerLifetimeScope();
             return builder.Build();
         }
     }

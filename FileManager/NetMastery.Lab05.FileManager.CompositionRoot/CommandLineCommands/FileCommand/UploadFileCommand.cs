@@ -1,27 +1,24 @@
 ﻿using Autofac;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
+using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines
 {
-    public class UploadFileCommand : CommandLineCommand
+    public class UploadFileCommand : CommandLine
     {
         public UploadFileCommand(IContainer container) : base(container)
         {
-            Name = CommandLineNames.FileCommand;
+            Name = CommandLineNames.UploadCommand;
 
-            Command(CommandLineNames.CreateCommand, c =>
+            var arguments = Argument("path", EnglishLocalisation.FileUploadOptionNote, true);
+            OnExecute(() =>
             {
-                var arguments = c.Argument("path", EnglishLocalisation.FileUploadOptionNote, true);
-                c.OnExecute(() =>
+                using (var scope = _container.BeginLifetimeScope())
                 {
-                    using (var scope = _container.BeginLifetimeScope())
-                    {
-                        container.Resolve<FileController>()
-                        .Upload(arguments.Values[0], arguments.Values[1]);
-                    }
-                    return 0;
-                });
+                    container.Resolve<FileController>()
+                    .Upload(arguments.Values[0], arguments.Values[1]);
+                }
+                return 0;
             });
         }
     }

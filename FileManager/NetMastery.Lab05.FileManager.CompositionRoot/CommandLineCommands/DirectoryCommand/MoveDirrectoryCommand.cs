@@ -1,12 +1,12 @@
 ﻿using Autofac;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
+using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.CompositionRoot;
 
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.DirectoryCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand
 {
-    public class MoveDirectoryCommand : CommandLineCommand
+    public class MoveDirectoryCommand : CommandLine
     {
         public MoveDirectoryCommand(IContainer container) : base(container)
         {
@@ -17,8 +17,9 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.Direc
                 using (var scope = _container.BeginLifetimeScope())
                 {
                     container.Resolve<DirectoryController>()
-                    .Move(arguments.Values[0], arguments.Values[1]);
+                    .Move(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
                 }
+                arguments.Values.Clear();
                 return 0;
             });
         }

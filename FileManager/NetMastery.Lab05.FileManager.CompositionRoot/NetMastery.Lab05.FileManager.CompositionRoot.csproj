@@ -60,15 +60,18 @@
     <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
     <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
-    <Compile Include="CommandLineCommands\AuthenticateCommand\Exit.cs" />
+    <Compile Include="AutoMapping\Configuration\FileStructureOnFileInfoMapping.cs" />
+    <Compile Include="CommandLineCommands\AuthenticateCommand\ExitCommand.cs" />
+    <Compile Include="CommandLineCommands\CommandLineRootcs.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\AddDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\ChangeWorkDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\CommandLineCommand.cs" />
+    <Compile Include="CommandLineCommands\CommandLine.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\SearchDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\ListDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\DirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\DownloadFileCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\InfoDirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\FileCommand\FileCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\InfoFileCommand.cs" />
     <Compile Include="CommandLineCommands\AuthenticateCommand\LoginCommand.cs" />
     <Compile Include="CommandLineCommands\AuthenticateCommand\LogoffCommand.cs" />
@@ -76,10 +79,9 @@
     <Compile Include="CommandLineCommands\FileCommand\MoveFileCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\RemoveDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\RemoveFileCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\Search.cs" />
     <Compile Include="CommandLineCommands\FileCommand\UploadFileCommand.cs" />
-    <Compile Include="CommandLineCommands\UserCommand\UserInfoCommand.cs" />
-    <Compile Include="CommandLineInitializer.cs" />
+    <Compile Include="CommandLineCommands\UserCommand\InfoUserCommand.cs" />
+    <Compile Include="CommandLineCommands\UserCommand\UserCommand.cs" />
     <Compile Include="CommandLineNames.Designer.cs">
       <DependentUpon>CommandLineNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>

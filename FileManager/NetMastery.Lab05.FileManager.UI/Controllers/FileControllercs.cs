@@ -9,6 +9,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class FileController : AuthenticateController
     {
         private readonly IFileService _fileService;
+
         public FileController(IFileService fileService, AppViewModel model) : base(model)
         {
             _fileService = fileService;
@@ -18,12 +19,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null && externFilePath != null)
             {
-
-                _fileService.Upload(CreatePath(path), externFilePath);
+                _fileService.Upload(CreatePath(path), CreatePath(externFilePath));
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path mustn't be empty string");
             }
         }
 

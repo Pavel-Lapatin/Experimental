@@ -1,32 +1,26 @@
 ﻿using Autofac;
 using NetMastery.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
+using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines
 {
-    public class InfoFileCommand : CommandLineCommand
+    public class InfoFileCommand : CommandLine
     {
         public InfoFileCommand(IContainer container) : base(container)
         {
-            Name = CommandLineNames.UserCommand;
+            Name = CommandLineNames.InfoCommand;
 
-            Command(CommandLineNames.InfoCommand, c =>
+            var arguments = Argument("path", EnglishLocalisation.DirectoryCreateOptionNote, false);
+            OnExecute(() =>
             {
-                var arguments = c.Argument("path", EnglishLocalisation.DirectoryCreateOptionNote, false);
-                c.OnExecute(() =>
+                using (var scope = _container.BeginLifetimeScope())
                 {
-                    using (var scope = _container.BeginLifetimeScope())
-                    {
-                        var fileService = container.Resolve<FileController>();
-                        var writer = container.Resolve<IInfoWriter<FileStructureDto>>();
-                        writer.WriteInfo(fileService.GetFileByPath(arguments.Value));
-                    }
-                    return 0;
-                });
+                    var fileService = container.Resolve<FileController>();
+                }
+                return 0;
             });
-
         }
     }
 }

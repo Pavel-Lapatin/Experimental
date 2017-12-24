@@ -117,51 +117,12 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AddRoleCommand" xml:space="preserve">
-    <value />
-  </data>
-  <data name="CopyCommand" xml:space="preserve">
-    <value>copy</value>
-  </data>
-  <data name="CreateRoleCommand" xml:space="preserve">
-    <value>createrole</value>
-  </data>
-  <data name="DeleteRoleCommand" xml:space="preserve">
-    <value>deleterole</value>
-  </data>
-  <data name="getCommand" xml:space="preserve">
-    <value>get</value>
-  </data>
   <data name="HelpOption" xml:space="preserve">
     <value>-?|-h|--help</value>
     <comment>Show help</comment>
   </data>
-  <data name="LsCommand" xml:space="preserve">
-    <value>ls</value>
-    <comment>Show all files in current directory</comment>
-  </data>
-  <data name="MdCommand" xml:space="preserve">
-    <value>md</value>
-    <comment>Create directory</comment>
-  </data>
-  <data name="RdCommand" xml:space="preserve">
-    <value>rd</value>
-  </data>
-  <data name="RemoveRoleCommand" xml:space="preserve">
-    <value>remove</value>
-  </data>
-  <data name="userOption" xml:space="preserve">
-    <value>-u | --user &lt;value&gt;</value>
-  </data>
-  <data name="WhoAmICommand" xml:space="preserve">
-    <value>whoami</value>
-  </data>
   <data name="LoginCommand" xml:space="preserve">
     <value>login</value>
-  </data>
-  <data name="LoginOption" xml:space="preserve">
-    <value>-l|--login &lt;value&gt;</value>
-    <comment>Input login for your account</comment>
   </data>
   <data name="PasswordOption" xml:space="preserve">
     <value>-p|--password &lt;value&gt;</value>
@@ -176,32 +137,14 @@
   <data name="CreateCommand" xml:space="preserve">
     <value>create</value>
   </data>
-  <data name="InfoOption" xml:space="preserve">
-    <value>-i|--info &lt;value&gt;</value>
-  </data>
-  <data name="ListOption" xml:space="preserve">
-    <value>-ls|--list &lt;value&gt;</value>
-  </data>
-  <data name="MoveOption" xml:space="preserve">
-    <value>-mv|--move &lt;value&gt;</value>
-  </data>
   <data name="RemoveCommand" xml:space="preserve">
     <value>remove</value>
   </data>
-  <data name="SearchOption" xml:space="preserve">
-    <value>-sr|--search &lt;value&gt;</value>
-  </data>
-  <data name="DownloadOption" xml:space="preserve">
-    <value>-d|--download &lt;value&gt;</value>
+  <data name="DownloadCommand" xml:space="preserve">
+    <value>download</value>
   </data>
   <data name="FileCommand" xml:space="preserve">
     <value>file</value>
-  </data>
-  <data name="UploadOption" xml:space="preserve">
-    <value>-u|--upload &lt;value&gt;</value>
-  </data>
-  <data name="SingupCommand" xml:space="preserve">
-    <value>singup</value>
   </data>
   <data name="ChangeDirectoryCommand" xml:space="preserve">
     <value>cd</value>
@@ -223,5 +166,12 @@
   </data>
   <data name="ExitCommand" xml:space="preserve">
     <value>exit</value>
+  </data>
+  <data name="LoginOption" xml:space="preserve">
+    <value>-l|--login &lt;value&gt;</value>
+    <comment>Input login for your account</comment>
+  </data>
+  <data name="UploadCommand" xml:space="preserve">
+    <value>upload</value>
   </data>
 </root>

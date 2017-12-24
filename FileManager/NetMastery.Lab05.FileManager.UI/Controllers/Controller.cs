@@ -1,5 +1,6 @@
 ﻿using NetMastery.Lab05.FileManager.UI.ViewModel;
 using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -29,16 +30,31 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
         protected string CreatePath(string newPath)
         {
-            string[] pathParts = newPath.Split('\\');
-            var directoryLvl = Model.CurrentPath.Split('\\').Length;
             var path = new StringBuilder();
-            foreach (var partName in pathParts.Where(x=>!string.IsNullOrEmpty(x)))
+            var disk = newPath.Trim().Split(':');
+            if (disk.Length > 2)
+            {
+                throw new ArgumentException("There is could be only one \":\" in the path");
+            }
+            else if(disk.Length == 2)
+            {
+                path.Append(disk[0]);
+                path.Append(":");
+                newPath = disk[1];
+            }
+            var pathParts = newPath.Trim('\\').Split('\\');
+            
+            if (pathParts[0] == "~")
+            {
+                path.Append("~");
+                pathParts = pathParts.Skip(1).ToArray();
+            }
+            foreach (var partName in pathParts.Where(x => !string.IsNullOrEmpty(x)))
             {
                 switch (partName)
                 {
                     case "..":
-                        if (path.Length == 0 ) path.Append(Model.CurrentPath);
-                        if (directoryLvl <= 2)  break;
+                        if (path.Length == 0) path.Append(Model.CurrentPath);
                         var index = path.ToString().LastIndexOf("\\");
                         path = path.Remove(index, path.Length - index);
                         break;
@@ -65,8 +81,32 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                         }
                         break;
                 }
+
             }
-            return path.ToString();
+            var virtualPath = path.ToString();
+            if (virtualPath[0] != '~')
+            {
+                var curDir = Directory.GetCurrentDirectory();
+                if(virtualPath.Contains(curDir))
+                {
+                    virtualPath = virtualPath.Replace(curDir, "~");
+                }
+                else
+                {
+                    return virtualPath;
+                }
+            }
+            var newRootFolder = virtualPath.Trim().Split('\\');
+            var currentRootFolder = Model.CurrentPath.Split('\\');
+            if (newRootFolder.Length >= 2 && newRootFolder[1] == currentRootFolder[1])
+            { 
+                return path.ToString();
+            }
+            else
+            {
+                throw new UnauthorizedAccessException("Access is denied");
+            }
+          
         }
     }
 }

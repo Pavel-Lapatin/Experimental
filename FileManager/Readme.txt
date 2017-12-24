@@ -120,4 +120,6 @@ if this path are related to the OS file system (shold starts with Disk:\....);
 	#List by pattern in directory
 	directory list .\ 
 
+directory cd .\Downloads
+file upload E:\TestFileManager.ZIP .\
 

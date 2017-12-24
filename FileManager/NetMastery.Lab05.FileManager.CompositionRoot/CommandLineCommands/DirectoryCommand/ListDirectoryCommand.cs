@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.DirectoryCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand
 {
 
-    public class ListDirectoryCommand : CommandLineCommand
+    public class ListDirectoryCommand : CommandLine
     {
         public ListDirectoryCommand(IContainer container) : base(container)
         {
@@ -20,8 +20,9 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.Direc
                 using (var scope = _container.BeginLifetimeScope())
                 {
                     container.Resolve<DirectoryController>()
-                    .List(arguments.Value);
+                    .List(arguments.Values[arguments.Values.Count-1]);
                 }
+                arguments.Values.Clear();
                 return 0;
             });
         }

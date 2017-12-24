@@ -1,9 +1,9 @@
 ﻿using Autofac;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.DirectoryCommands
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand
 {
-    public class InfoDirectoryCommand : CommandLineCommand
+    public class InfoDirectoryCommand : CommandLine
     {
         public InfoDirectoryCommand(IContainer container) : base(container)
         {
@@ -13,7 +13,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands.Direc
             {
                 using (var scope = _container.BeginLifetimeScope())
                 {
-                   container.Resolve<DirectoryController>().GetDirectoryInfo(arguments.Value); 
+                   container.Resolve<DirectoryController>().GetDirectoryInfo(arguments.Values[arguments.Values.Count-1]); 
                 }
                 return 0;
             });

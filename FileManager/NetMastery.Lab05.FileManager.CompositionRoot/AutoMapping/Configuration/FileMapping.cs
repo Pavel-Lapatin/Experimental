@@ -4,7 +4,7 @@ using NetMastery.Lab05.FileManager.Dto;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
 {
-    public class FileMapping : Profile
+    class FileMapping : Profile
     {
         public FileMapping()
         {
