@@ -37,10 +37,23 @@
     <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
       <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
     </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.CommandLineUtils.1.1.1\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.6.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
+    <Reference Include="Serilog.Sinks.File, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.Sinks.File.4.0.0\lib\net45\Serilog.Sinks.File.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -61,42 +74,48 @@
     <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileStructureOnFileInfoMapping.cs" />
-    <Compile Include="CommandLineCommands\AuthenticateCommand\ExitCommand.cs" />
-    <Compile Include="CommandLineCommands\CommandLineRootcs.cs" />
+    <Compile Include="CommandLineCommands\RootCommandChildren\ExitCommand.cs" />
+    <Compile Include="CommandLineCommands\CommandLineInitializator.cs" />
+    <Compile Include="CommandLineCommands\CommandLineRoot.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\AddDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\ChangeWorkDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\CommandLine.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\SearchDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\ListDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\DirectoryCommand.cs" />
+    <Compile Include="CommandLineCommands\RootCommandChildren\DirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\DownloadFileCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\InfoDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\FileCommand.cs" />
+    <Compile Include="CommandLineCommands\RootCommandChildren\FileCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\InfoFileCommand.cs" />
-    <Compile Include="CommandLineCommands\AuthenticateCommand\LoginCommand.cs" />
-    <Compile Include="CommandLineCommands\AuthenticateCommand\LogoffCommand.cs" />
+    <Compile Include="CommandLineCommands\RootCommandChildren\LoginCommand.cs" />
+    <Compile Include="CommandLineCommands\RootCommandChildren\LogoffCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\MoveDirrectoryCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\MoveFileCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\RemoveDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\RemoveFileCommand.cs" />
     <Compile Include="CommandLineCommands\FileCommand\UploadFileCommand.cs" />
     <Compile Include="CommandLineCommands\UserCommand\InfoUserCommand.cs" />
-    <Compile Include="CommandLineCommands\UserCommand\UserCommand.cs" />
+    <Compile Include="CommandLineCommands\RootCommandChildren\UserCommand.cs" />
     <Compile Include="CommandLineNames.Designer.cs">
       <DependentUpon>CommandLineNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="CompRoot.cs" />
     <Compile Include="ContainerConfig.cs" />
+    <Compile Include="Database\DatabaseInitializer.cs" />
     <Compile Include="DirectoryInitializer.cs" />
     <Compile Include="EnglishLocalisation.Designer.cs">
       <DependentUpon>EnglishLocalisation.resx</DependentUpon>
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Logger\LoggerConfiguration.cs" />
+    <Compile Include="Logger\ProcessIdEnriacher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

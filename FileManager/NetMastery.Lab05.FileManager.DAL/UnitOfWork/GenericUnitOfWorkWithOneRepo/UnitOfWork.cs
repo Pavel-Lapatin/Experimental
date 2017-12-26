@@ -40,7 +40,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IRepository<T> Repository<T>() where T : class
+        public IDBRepository<T> Repository<T>() where T : class
         {
             if (repositories == null)
             {
@@ -51,11 +51,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
 
             if (!repositories.ContainsKey(type))
             {
-                var repositoryType = typeof(Repository<>);
+                var repositoryType = typeof(DBRepository<>);
                 var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
                 repositories.Add(type, repositoryInstance);
             }
-            return (Repository<T>)repositories[type];
+            return (DBRepository<T>)repositories[type];
         }
     }
 }

@@ -1,19 +1,21 @@
 ﻿using Autofac;
+using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using System;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.UserCommand
 {
-    class InfoUserCommand : CommandLine
+    class InfoUserCommand : CommandLineApplication
     {
-        public InfoUserCommand(IContainer container) : base(container)
+        public Func<UserController> Controller;
+
+        public InfoUserCommand(Func<UserController> getController)
         {
+            Controller = getController;
             Name = CommandLineNames.InfoCommand;
             OnExecute(() =>
             {
-                using (var scope = _container.BeginLifetimeScope())
-                {
-                    container.Resolve<UserController>().GetUserInfo(); ;
-                }
+                Controller().GetUserInfo();
                 return 0;
             });
         }

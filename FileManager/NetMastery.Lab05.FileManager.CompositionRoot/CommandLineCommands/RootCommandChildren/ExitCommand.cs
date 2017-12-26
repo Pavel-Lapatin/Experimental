@@ -6,11 +6,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.AuthenticateCommand
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.RootCommandChildren
 {
-    public class ExitCommand : CommandLineApplication
+    public class ExitRootChildCommand : CommandLineApplication
     {
-        public ExitCommand()
+        public ExitRootChildCommand()
         {
             Name = CommandLineNames.ExitCommand;
 

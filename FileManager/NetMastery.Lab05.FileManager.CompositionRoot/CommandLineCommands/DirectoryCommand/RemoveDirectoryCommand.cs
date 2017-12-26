@@ -2,23 +2,25 @@
 using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.CompositionRoot;
-
+using Microsoft.Extensions.CommandLineUtils;
+using System;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand
 {
-    public class RemoveDirectoryCommand : CommandLine
+    public class RemoveDirectoryChildCommand : CommandLineApplication
     {
-        public RemoveDirectoryCommand(IContainer container) : base(container)
+        public Func<DirectoryController> Controller;
+        public RemoveDirectoryChildCommand(Func<DirectoryController> getController)
         {
+            Controller = getController;
             Name = CommandLineNames.RemoveCommand;
             var arguments = Argument("path", EnglishLocalisation.DirectoryMoveOptionNote, true);
             OnExecute(() =>
             {
-                using (var scope = _container.BeginLifetimeScope())
-                {
-                    container.Resolve<DirectoryController>()
-                    .Remove(arguments.Values[arguments.Values.Count - 1]);
-                }
+
+                Controller()
+                .Remove(arguments.Values[arguments.Values.Count - 1]);
+                
                 arguments.Values.Clear();
                 return 0;
             });

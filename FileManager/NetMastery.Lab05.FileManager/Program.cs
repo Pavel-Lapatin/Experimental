@@ -1,11 +1,9 @@
 ﻿using System;
 using NetMastery.Lab05.FileManager.CompositionRoot;
-using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping;
 using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.ViewModel;
-using Autofac;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
 using System.Collections.Generic;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 
 namespace NetMastery.Lab05.FileManager
 {
@@ -15,28 +13,17 @@ namespace NetMastery.Lab05.FileManager
         static void Main()
         {
             try
-            { 
-                var container = ContainerConfiguration.Config();
-                AutoMapperInitializer.Initialize();
-                DirectoryInitializer.SetCurrentDirectory();
-                var cmd = new CommandLineRoot(container);
-                var model = container.Resolve<AppViewModel>();
-
+            {
+                CompositionRoot.CompRoot.Initialize();
                 while (true)
                 {
                     try
                     {
-                        if(model.AuthenticatedLogin == null)
-                        {
-                            Console.Clear();
-                            Console.WriteLine("Please signin in the system");
-                        }
-
-                        Console.Write(model.QueryLineView);
-                        var arguments = Console.ReadLine().Trim();
+                        
+                        var arguments = Console.ReadLine();
                         if (arguments == null) throw new NullReferenceException();
                         var args = ParseArguemts(arguments);
-                        cmd.Execute(args);
+                        CompositionRoot.CompRoot.cmd.Execute(args);
                         continue;
                     }
                     catch (NullReferenceException e)
@@ -60,7 +47,12 @@ namespace NetMastery.Lab05.FileManager
                     Console.ReadKey();
                 }
             }
-            catch(Exception e) { Console.WriteLine(e.Message); Console.ReadKey(); }
+            catch(Exception e)
+            {
+                
+                Console.WriteLine(e.Message);
+                Console.ReadKey();
+            }
         }
 
         private static string[] ParseArguemts(string arguments)

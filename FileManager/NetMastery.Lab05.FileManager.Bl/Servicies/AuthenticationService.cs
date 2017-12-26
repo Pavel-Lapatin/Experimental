@@ -5,6 +5,7 @@ using AutoMapper;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
+using Serilog;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -33,15 +34,18 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 if (BCrypt.Net.BCrypt.Verify(password, account.Password))
                 {
+                    Log.Logger.Information($"{login} registered in the system");
                     return account;
                 }
                 else
                 {
+                    Log.Logger.Information($"Unathorized acceess: login {login}");
                     throw new ArgumentException("Password is wrong");
                 }
             }
             else
             {
+                Log.Logger.Information($"Unathorized acceess. Login doesn't exist");
                 throw new NullReferenceException("Account with such login doesn't exist");
             }
         }
@@ -50,6 +54,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (password == null || login == null)
             {
+                Log.Logger.Information($"Empty input used, authentication controller");
                 throw new NullReferenceException("Login and password must not be null or empty");
             }
             else
@@ -70,7 +75,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                     }
                 };
                 _unitOfWork.Repository<Account>().Add(Mapper.Instance.Map<Account>(newAccount));
-                _unitOfWork.Commit(); 
+                _unitOfWork.Commit();
+                Log.Logger.Information($"Create new account: {login}");
             }
         }
     }

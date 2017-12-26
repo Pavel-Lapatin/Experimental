@@ -1,7 +1,5 @@
 ﻿using Autofac;
 using Microsoft.Extensions.CommandLineUtils;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.AuthenticateCommand;
-using System.Collections.Generic;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines
 {

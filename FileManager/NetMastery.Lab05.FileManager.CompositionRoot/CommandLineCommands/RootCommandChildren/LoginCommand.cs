@@ -1,16 +1,21 @@
 ﻿using Autofac;
 using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.ViewModels;
+using System;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.AuthenticateCommand
+namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.RootCommandChildren
 {
 
-    public class LoginCommand : CommandLine
+    public class LoginRootChildCommand : CommandLineApplication
     {
-        public LoginCommand(IContainer container) : base(container)
-        {
-            Name = CommandLineNames.LoginCommand;
+        public Func<LoginViewModel, LoginController> Controller;
 
+        public LoginRootChildCommand(Func<LoginViewModel, LoginController> getController)
+        {
+            Controller = getController;
+
+            Name = CommandLineNames.LoginCommand;
             HelpOption(CommandLineNames.HelpOption);
 
             var login = Option(CommandLineNames.LoginOption,
@@ -23,11 +28,9 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.Authenticate
 
             OnExecute(() =>
             {
-                using (var scope = _container.BeginLifetimeScope())
-                {
-                    var contr = container.Resolve<LoginController>();
-                    contr.Singin(login.Value(), password.Value());
-                }
+                var loginVM = new LoginViewModel(login.Value(), password.Value());
+                var controller = Controller(loginVM); //as LoginController;
+                controller.Singin();
                 Options[1].Values.Clear();
                 Options[2].Values.Clear();
                 return 0;

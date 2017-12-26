@@ -2,22 +2,25 @@
 using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.CompositionRoot;
+using System;
+using Microsoft.Extensions.CommandLineUtils;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand
 {
-    public class ChangeWorkDirectoryCommand : CommandLine
+    public class ChangeWorkDirectoryChildCommand : CommandLineApplication
     {
-        public ChangeWorkDirectoryCommand(IContainer container) : base(container)
+        public Func<DirectoryController> Controller;
+
+        public ChangeWorkDirectoryChildCommand(Func<DirectoryController> getController)
         {
+            Controller = getController;
             Name = CommandLineNames.ChangeDirectoryCommand;
             var arguments = Argument("path", EnglishLocalisation.ChangeDirectoryOptionNote, true);
             OnExecute(() =>
             {
-                using (var scope = _container.BeginLifetimeScope())
-                {
-                    container.Resolve<DirectoryController>()
-                    .ChangeWorkingDirectory(arguments.Values[arguments.Values.Count-1]);
-                }
+
+                Controller()
+                .ChangeWorkingDirectory(arguments.Values[arguments.Values.Count-1]);
                 return 0;
             });
         }

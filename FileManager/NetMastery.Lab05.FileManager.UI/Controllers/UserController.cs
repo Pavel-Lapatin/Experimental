@@ -5,20 +5,21 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
-    public class UserController : AuthenticateController
+    public class UserController : Controller
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService, AppViewModel model ) : base(model)
+
+        public UserController(IUserService userService, IUserContext context) : base(context)
         {
             _userService = userService;
         }
 
         public void GetUserInfo()
         {
-            var userInfo = _userService.GetInfoByLogin(Model.AuthenticatedLogin);
+            var userInfo = _userService.GetInfoByLogin(_userContext.Login);
             if (userInfo == null)
-                throw new NullReferenceException($"There is no user with login: {Model.AuthenticatedLogin}");
+                throw new NullReferenceException($"There is no user with login: {_userContext.Login}");
             else
             {
                 Console.WriteLine();

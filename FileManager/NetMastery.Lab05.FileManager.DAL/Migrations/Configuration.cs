@@ -6,7 +6,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System.IO;
     using System.Reflection;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDbContext>
+    public sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDbContext>
     {
         public Configuration()
         {

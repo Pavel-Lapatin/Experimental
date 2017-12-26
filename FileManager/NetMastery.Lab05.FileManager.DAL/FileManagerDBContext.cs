@@ -10,6 +10,10 @@ namespace NetMastery.Lab05.FileManager.DAL
         {
         }
 
+        public FileManagerDbContext(string connectionString) : base(connectionString)
+        {
+        }
+
         public DbSet<Account> Accounts { get; set; }
         public DbSet<DirectoryStructure> Directories { get; set; }
         public DbSet<FileStructure> Files { get; set; }

@@ -6,11 +6,11 @@ using System.Collections.Generic;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
-    public class FileController : AuthenticateController
+    public class FileController : Controller
     {
         private readonly IFileService _fileService;
 
-        public FileController(IFileService fileService, AppViewModel model) : base(model)
+        public FileController(IFileService fileService, IUserContext context) : base(context)
         {
             _fileService = fileService;
         }

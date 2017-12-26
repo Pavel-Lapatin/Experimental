@@ -36,6 +36,9 @@
     <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="Serilog, Version=2.0.0.0, Culture=neutral, PublicKeyToken=24c2f752a8e58a10, processorArchitecture=MSIL">
+      <HintPath>..\packages\Serilog.2.6.0\lib\net46\Serilog.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -49,11 +52,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="FileManagerDBContext.cs" />
-    <Compile Include="Interfacies\IRepository.cs" />
+    <Compile Include="Interfacies\IFSRepository.cs" />
+    <Compile Include="Interfacies\IDBRepository.cs" />
     <Compile Include="Migrations\201712231751169_UniqueFullPath.cs" />
     <Compile Include="Migrations\201712231751169_UniqueFullPath.Designer.cs">
       <DependentUpon>201712231751169_UniqueFullPath.cs</DependentUpon>
     </Compile>
+    <Compile Include="Repository\FSRepsitory.cs" />
     <Compile Include="UnitOfWork\Factory\AbstractUnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWork\Factory\UnitOfWorkFactory.cs" />
     <Compile Include="UnitOfWork\Factory\UnitOfWorkFactoryGeneric.cs" />
@@ -68,7 +73,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repository\Repository.cs" />
+    <Compile Include="Repository\DBRepository.cs" />
     <Compile Include="UnitOfWork\GenericUnitOfWorkWithOneRepo\UnitOfWork.cs" />
   </ItemGroup>
   <ItemGroup>

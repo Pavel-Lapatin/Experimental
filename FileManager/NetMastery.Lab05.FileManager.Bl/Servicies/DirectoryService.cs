@@ -7,6 +7,7 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
 using NetMastery.FileManager.Bl.Interfaces;
+using Serilog;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -101,8 +102,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 Directory.Move(source, destination);
                 try
                 {
-                    _unitOfWork.Repository<DirectoryStructure>().Add(currentDirectoryFrom);
                     _unitOfWork.Commit();
+                    Log.Logger.Information($"Folder move");
                 }
                 catch (Exception)
                 {
@@ -112,7 +113,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
         }
     
-
         public void Remove(string path)
         {
             var currentDirectory = _unitOfWork
@@ -134,7 +134,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
                 .Repository<DirectoryStructure>()
-                .EagerFind((x => x.FullPath == path), x=>x.ChildrenDirectories)
+                .Find((x => x.FullPath == path))
                 .FirstOrDefault());
 
             IList<string> results = new List<string>();

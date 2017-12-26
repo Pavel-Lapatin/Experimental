@@ -7,11 +7,11 @@ using System.Collections.Generic;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
-    public class DirectoryController : AuthenticateController
+    public class DirectoryController : Controller
     {
         private readonly IDirectoryService _directoryService;
 
-        public DirectoryController(IDirectoryService directoryService, AppViewModel model) : base(model)
+        public DirectoryController(IDirectoryService directoryService, IUserContext context) : base(context)
         {
             _directoryService = directoryService;
             
@@ -19,14 +19,16 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
         public void Add(string path, string name)
         {
-            if(path != null && name != null )
+            if(string.IsNullOrEmpty(path) || string.IsNullOrEmpty(name))
             {    
                 _directoryService.Add(CreatePath(path), name);
+                Console.WriteLine();
                 Console.WriteLine("Directorry created successfully");
+                Console.WriteLine();
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
 
@@ -37,87 +39,101 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 Console.WriteLine();
                 var directory = _directoryService.GetInfoByPath(CreatePath(path));
 
-                Console.WriteLine("Directories:");
+                Console.WriteLine("<---Directories:--->");
                 foreach (var item in directory.ChildrenDirectories)
                 {
                     Console.WriteLine(item.Name);
                 }
                 Console.WriteLine();
-                Console.WriteLine("Files");
+                Console.WriteLine("<---Files:--->");
                 foreach (var item in directory.Files)
                 {
-                    Console.WriteLine(item.Name);
+                    Console.WriteLine(item.Name+item.Extension);
                 }
                 Console.WriteLine();
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
 
         public void Move(string pathFrom, string pathTo)
         {
-            if (pathFrom != null && pathTo != null)
+            if (string.IsNullOrEmpty(pathFrom) || string.IsNullOrEmpty(pathTo))
             {
                 _directoryService.Move(CreatePath(pathFrom), CreatePath(pathTo));
+                Console.WriteLine();
+                Console.WriteLine("Directorry moved successfully");
+                Console.WriteLine();
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
 
         public void Remove(string path)
         {
-            if (path != null)
+            if (string.IsNullOrEmpty(path))
             {
                 _directoryService.Remove(CreatePath(path));
+                Console.WriteLine();
+                Console.WriteLine("Directorry removed successfully");
+                Console.WriteLine();
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
 
         
         public void ChangeWorkingDirectory(string path)
         {
-            if (path != null)
+            if (string.IsNullOrEmpty(path))
             {
-                Model.CurrentPath = _directoryService.ChangeWorkDirectory(CreatePath(path));
+                _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(CreatePath(path));
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
 
         public void GetDirectoryInfo(string path)
         {
-            var directoryInfo = _directoryService.GetInfoByPath(CreatePath(path));
-            if (directoryInfo != null)
+            if (string.IsNullOrEmpty(path))
             {
+                var directoryInfo = _directoryService.GetInfoByPath(CreatePath(path));
+                if (directoryInfo != null)
+                {
 
-                Console.WriteLine();
-                Console.WriteLine("Login: " + Model.AuthenticatedLogin);
-                Console.WriteLine("Path: " + directoryInfo.FullPath);
-                Console.WriteLine("CreationDate: " + directoryInfo.CreationDate.ToString("yy-MM-dd"));
-                Console.WriteLine("ModificationDate: " + directoryInfo.ModificationDate.ToString("yy-MM-dd"));
-                Console.WriteLine("Size: " + directoryInfo.DirectorySize + " kB");
-                Console.WriteLine();
+                    Console.WriteLine();
+                    Console.WriteLine("Login: " + _userContext.Login);
+                    Console.WriteLine("Path: " + directoryInfo.FullPath);
+                    Console.WriteLine("CreationDate: " + directoryInfo.CreationDate.ToString("yy-MM-dd"));
+                    Console.WriteLine("ModificationDate: " + directoryInfo.ModificationDate.ToString("yy-MM-dd"));
+                    Console.WriteLine("Size: " + directoryInfo.DirectorySize + " kB");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    throw new NullReferenceException($"There is no such folder");
+                }
             }
             else
             {
-                throw new NullReferenceException($"There is no such folder");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
 
         public void Search(string path, string pattern)
         {
-            if (path != null)
+            if (string.IsNullOrEmpty(path))
             {
                 Console.WriteLine();
+                Console.WriteLine($"There are following results for pattern {pattern}:");
                 foreach (var item in _directoryService.Search(CreatePath(path), pattern))
                 {
                     Console.WriteLine(item);
@@ -126,7 +142,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
             else
             {
-                throw new NullReferenceException("The path of the directory couldn't be found");
+                throw new NullReferenceException("The path of the directory couldn't empty string");
             }
         }
     }

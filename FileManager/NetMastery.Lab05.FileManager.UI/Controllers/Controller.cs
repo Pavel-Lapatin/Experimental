@@ -8,25 +8,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
     public abstract class Controller
     {
-        protected AppViewModel Model { get; set; }
+        protected IUserContext _userContext;
 
-        public Controller(AppViewModel model)
-        {  
-            Model = model;
-        }
-
-
-        protected bool IsAuthenticate()
+        public Controller(IUserContext userContext)
         {
-            if (Model.AuthenticatedLogin != null)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            _userContext = userContext;
         }
+
+
+        
 
         protected string CreatePath(string newPath)
         {
@@ -54,12 +44,12 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 switch (partName)
                 {
                     case "..":
-                        if (path.Length == 0) path.Append(Model.CurrentPath);
+                        if (path.Length == 0) path.Append(_userContext.CurrentPath);
                         var index = path.ToString().LastIndexOf("\\");
                         path = path.Remove(index, path.Length - index);
                         break;
                     case ".":
-                        if (path.Length == 0) path.Append(Model.CurrentPath);
+                        if (path.Length == 0) path.Append(_userContext.CurrentPath);
                         break;
                     default:
                         if (partName.Any(x => x == '/'
@@ -97,7 +87,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 }
             }
             var newRootFolder = virtualPath.Trim().Split('\\');
-            var currentRootFolder = Model.CurrentPath.Split('\\');
+            var currentRootFolder = _userContext.CurrentPath.Split('\\');
             if (newRootFolder.Length >= 2 && newRootFolder[1] == currentRootFolder[1])
             { 
                 return path.ToString();

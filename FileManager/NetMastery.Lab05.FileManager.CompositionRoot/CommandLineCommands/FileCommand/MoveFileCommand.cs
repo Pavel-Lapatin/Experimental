@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using System;
@@ -9,19 +10,20 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines
 {
-    class MoveFileCommand : CommandLine
+    class MoveFileCommand : CommandLineApplication
     {
-        public MoveFileCommand(IContainer container) : base(container)
+        public Func<FileController> Controller;
+
+        public MoveFileCommand(Func<FileController> getController) 
         {
+            Controller = getController;
+
             Name = CommandLineNames.InfoCommand;
 
             var arguments = Argument("path", EnglishLocalisation.DirectoryCreateOptionNote, false);
             OnExecute(() =>
             {
-                using (var scope = _container.BeginLifetimeScope())
-                {
-                    var fileService = container.Resolve<FileController>();
-                }
+                getController().Move(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

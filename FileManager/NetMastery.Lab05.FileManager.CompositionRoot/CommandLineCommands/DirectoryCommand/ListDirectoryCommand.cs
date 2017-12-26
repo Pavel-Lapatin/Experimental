@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using System;
 using System.Collections.Generic;
@@ -9,19 +10,21 @@ using System.Threading.Tasks;
 namespace NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand
 {
 
-    public class ListDirectoryCommand : CommandLine
+    public class ListDirectoryChildCommand : CommandLineApplication
     {
-        public ListDirectoryCommand(IContainer container) : base(container)
+        public Func<DirectoryController> Controller;
+
+        public ListDirectoryChildCommand(Func<DirectoryController> getController) 
         {
+            Controller = getController;
+
             Name = CommandLineNames.ListCommand;
             var arguments = Argument("path", EnglishLocalisation.DirectoryMoveOptionNote, false);
             OnExecute(() =>
             {
-                using (var scope = _container.BeginLifetimeScope())
-                {
-                    container.Resolve<DirectoryController>()
-                    .List(arguments.Values[arguments.Values.Count-1]);
-                }
+                   Controller()
+                   .List(arguments.Values[arguments.Values.Count-1]);
+
                 arguments.Values.Clear();
                 return 0;
             });

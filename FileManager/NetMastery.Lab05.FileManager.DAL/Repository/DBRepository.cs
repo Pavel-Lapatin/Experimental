@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
-    public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
+    public class DBRepository<TEntity> : IDBRepository<TEntity> where TEntity : class
     {
-        protected readonly DbContext Context;
+        protected readonly FileManagerDbContext Context;
 
-        public Repository(DbContext context)
+        public DBRepository(FileManagerDbContext context)
         {
             Context = context;
         }

@@ -2,21 +2,23 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IRepository<TEntity> where TEntity : class
+    public interface IFSRepository<TEntity>
     {
         TEntity Get(int id);
         IEnumerable<TEntity> GetAll();
         IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
-        IEnumerable<TEntity> EagerFind(Expression<Func<TEntity, bool>> predicate, 
+        IEnumerable<TEntity> EagerFind(Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, ICollection<TEntity>>> predicate2);
 
         IEnumerable<TEntity> EagerFind<TCollectionEntity>(Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, ICollection<TCollectionEntity>>> predicate2)
             where TCollectionEntity : class;
-        
+
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
 

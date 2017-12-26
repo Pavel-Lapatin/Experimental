@@ -1,5 +1,6 @@
 ﻿using NetMastery.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.UI.ViewModel;
+using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
 
 
@@ -8,36 +9,45 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class LoginController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
-        public LoginController(IAuthenticationService authenticationService, AppViewModel model) : base(model)
+        private LoginViewModel _loginVM;
+
+        public LoginController(IAuthenticationService authenticationService,  
+            LoginViewModel model,
+            IUserContext userContext) : base(userContext)
         {
             _authenticationService = authenticationService;
+            _loginVM = model;
+            if(_loginVM.Login == _userContext.Login)
+            {
+                _loginVM.Errors.Add("This user is in the system now");
+            }
         }
 
-        public void Singin(string login, string password)
+        public void Singin()
         {
-            if (login == null || password == null)
+            if (_loginVM.IsValid)
             {
-                throw new NullReferenceException("Login and password are required");
-            }
-            var newUser = _authenticationService.Signin(login, password);
-            if(Model.AuthenticatedLogin == newUser.Login)
-            {
-                Console.WriteLine("You are user of the system already");
+                var newUser = _authenticationService.Signin(_loginVM.Login, _loginVM.Password);
+                _userContext.Login = newUser.Login;
+                _userContext.CurrentPath = newUser.RootDirectory.FullPath;
             }
             else
             {
-                Model.AuthenticatedLogin = newUser.Login;
-                Model.CurrentPath = newUser.RootDirectory.FullPath;
-                Console.WriteLine("Hi, " + Model.AuthenticatedLogin);
+                _loginVM.RenderErrors();
             }
+        }
+
+        public string SigninGet
+        {
+            
         }
 
         public void Signoff()
         {
-            if (Model.AuthenticatedLogin != null)
+            if (_userContext.Login != null)
             {
-                Model.AuthenticatedLogin = null;
-                Model.CurrentPath = "~\\";
+                _userContext.Login = null;
+                _userContext.CurrentPath = "~\\";
                 Console.WriteLine("Goodbye!!!");
                 Console.WriteLine();
                 Console.WriteLine("Press any button for continue");
