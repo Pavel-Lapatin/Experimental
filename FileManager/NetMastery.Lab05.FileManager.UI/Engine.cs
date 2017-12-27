@@ -1,4 +1,5 @@
-﻿using NetMastery.Lab05.FileManager.Helpers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using Serilog;
@@ -31,7 +32,16 @@ namespace NetMastery.Lab05.FileManager.UI
                 if(arguments != null)
                 {
                     var args = UIHelpers.ParseArguemts(arguments);
-                    _cmd.Execute(args);
+                    try
+                    {
+                        _cmd.Execute(args);
+                    }
+                    catch(CommandParsingException e)
+                    {
+                        Log.Logger.Information($"Wrong command input: {arguments}");
+                        e.Command.ShowHelp();
+                        Redirect(typeof(CommandController), "CommandGet", null);
+                    }
                 }
             }
         }
@@ -40,8 +50,10 @@ namespace NetMastery.Lab05.FileManager.UI
 
         public string ExecuteControllerMethod()
         {
-            _cmd.Redirect.Redirected += RedirecteRedirectEventHandler;
-            var method = _controller.GetMethod(_method);
+            _cmd.Redirected.Redirected += RedirecteRedirectEventHandler;
+            var method = _parameters == null 
+                ? _controller.GetMethod(_method) 
+                : _controller.GetMethod(_method, _parameters.Select(x=>x.GetType()).ToArray());
             if(method != null)
             {
                 var Controller = _getController(_controller);
@@ -54,6 +66,7 @@ namespace NetMastery.Lab05.FileManager.UI
                 Redirect(typeof(CommandController), "GetCommand", null);
                 return null;
             }
+                  
         }
 
         private void Redirect(Type controller, string method, object[] parameters)

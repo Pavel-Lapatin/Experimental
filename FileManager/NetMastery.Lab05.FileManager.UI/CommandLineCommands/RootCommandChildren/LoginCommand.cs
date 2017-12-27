@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
 
@@ -9,7 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     {
         public Func<LoginViewModel, LoginController> Controller;
 
-        public LoginCommand(Func<LoginViewModel, LoginController> getController)
+        public LoginCommand(Func<LoginViewModel, LoginController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
         {
             Controller = getController;
 

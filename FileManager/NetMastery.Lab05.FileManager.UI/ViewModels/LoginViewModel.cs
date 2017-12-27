@@ -67,6 +67,13 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
 
             Console.Write("login -l ");
         }
+        public void RenderSignoff()
+        {
+            Console.WriteLine("Goodbye!!!");
+            Console.WriteLine();
+            Console.WriteLine("Press any button for continue");
+            Console.ReadKey();
+        }
 
         public string Registre(string currentPath)
         {

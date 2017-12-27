@@ -38,36 +38,22 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             {
                 _loginVM.RenderErrors();
             }
-            Redirect.OnRedirect(this, new RedirectEventArgs
-            {
-                ControllerType = typeof(CommandController),
-                Method = "GetCommand",
-                Parameters = null
-            });
+            GetCommandRedirect();
         }
 
         public string SigninGet()
         {
             _loginVM.RenderGet();
             var command = Console.ReadLine();
-
             return "login -l " + command;
-
         }
         public void Signoff()
         {
-            if (_userContext.Login != null)
+            if (IsAthenticated())
             {
-                _userContext.Login = null;
-                _userContext.CurrentPath = "~\\";
-                Console.WriteLine("Goodbye!!!");
-                Console.WriteLine();
-                Console.WriteLine("Press any button for continue");
-                Console.ReadKey();
-            } 
-            else
-            {
-                Console.WriteLine("Nobady is registered in the system");
+               _loginVM.RenderSignoff();
+                _userContext.Clear();
+                LoginGetRedirect();
             }
         }
 

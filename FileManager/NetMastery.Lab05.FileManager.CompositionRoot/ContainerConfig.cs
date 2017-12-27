@@ -8,6 +8,7 @@ using NetMastery.Lab05.FileManager.DAL.Repository;
 using NetMastery.Lab05.FileManager.UI;
 using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Implementation;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System.Linq;
@@ -61,8 +62,17 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                        typeof(FileManagerDbContext),
                        new FileManagerDbContext()));
 
+            var rerdirectEvent = new RedirectEvent();
+
+            builder.RegisterInstance(rerdirectEvent)
+               .SingleInstance();
+
+            builder.RegisterType<CommandLine>()
+                .WithParameter(new TypedParameter(typeof(RedirectEvent), rerdirectEvent));
+
 
             builder.Register(c => new FileCommand(
+                rerdirectEvent,
                 c.Resolve<AddDirectoryCommand>(),
                 c.Resolve<ChangeWorkDirectoryCommand>(),
                 c.Resolve<InfoDirectoryCommand>(),
@@ -74,6 +84,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
 
 
             builder.Register(c => new DirectoryCommand(
+                rerdirectEvent,
                 c.Resolve<AddDirectoryCommand>(),
                 c.Resolve<ChangeWorkDirectoryCommand>(),
                 c.Resolve<InfoDirectoryCommand>(),
@@ -84,6 +95,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
 
 
             builder.Register(c => new CommandLineRoot(
+                rerdirectEvent,
                 c.Resolve<LoginCommand>(),
                 c.Resolve<FileCommand>(),
                 c.Resolve<DirectoryCommand>(),

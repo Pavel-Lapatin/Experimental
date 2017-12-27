@@ -1,6 +1,7 @@
 ﻿using NetMastery.Lab05.FileManager.UI.Controllers;
 using Microsoft.Extensions.CommandLineUtils;
 using System;
+using NetMastery.Lab05.FileManager.UI.events;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
@@ -8,7 +9,7 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     {
         public Func<DirectoryController> Controller;
 
-        public AddDirectoryCommand(Func<DirectoryController> getController)
+        public AddDirectoryCommand(Func<DirectoryController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
         {
             Controller = getController;
 

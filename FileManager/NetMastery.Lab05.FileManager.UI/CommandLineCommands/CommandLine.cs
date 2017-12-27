@@ -11,11 +11,14 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
 {
     public class CommandLine  : CommandLineApplication
     {
-        public RedirectEvent Redirect = new RedirectEvent();
-
+        public RedirectEvent Redirected;
+        public CommandLine(RedirectEvent redirectEvent)
+        {
+            Redirected = redirectEvent;
+        }
         public void RedirecteRedirectEventHandler(object sender, RedirectEventArgs e)
         {
-            Redirect.OnRedirect(this, e);
+            Redirected.OnRedirect(this, e);
         }
     }
 }

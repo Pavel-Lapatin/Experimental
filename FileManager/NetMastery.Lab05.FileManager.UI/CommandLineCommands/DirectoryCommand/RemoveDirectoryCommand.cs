@@ -1,13 +1,14 @@
 ﻿using NetMastery.Lab05.FileManager.UI.Controllers;
 using Microsoft.Extensions.CommandLineUtils;
 using System;
+using NetMastery.Lab05.FileManager.UI.events;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
     public class RemoveDirectoryCommand : CommandLine
     {
         public Func<DirectoryController> Controller;
-        public RemoveDirectoryCommand(Func<DirectoryController> getController)
+        public RemoveDirectoryCommand(Func<DirectoryController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
         {
             Controller = getController;
             Name = CommandLineNames.RemoveCommand;

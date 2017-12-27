@@ -1,5 +1,7 @@
 ﻿
 
+using System.Collections.Generic;
+
 namespace NetMastery.Lab05.FileManager.UI
 {
     public interface IUserContext
@@ -9,5 +11,7 @@ namespace NetMastery.Lab05.FileManager.UI
         string CurrentPath { get; set; }
         bool IsAuthenticated { get; }
         string Role { get; set; }
+        void Clear();
+        void RenderError();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.events;
 using System;
 
 
@@ -9,7 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     { 
         public Func<FileController> Controller;
 
-        public MoveFileCommand(Func<FileController> getController) 
+        public MoveFileCommand(Func<FileController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
         {
             Controller = getController;
 

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.events;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
@@ -8,13 +9,11 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     {
         public Func<LoginController> Controller;
 
-        public LogoffCommand(Func<LoginController> getController)
+        public LogoffCommand(Func<LoginController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
         {
             Controller = getController;
             Name = CommandLineNames.LogoffCommand;
             HelpOption(CommandLineNames.HelpOption);
-
-
             OnExecute(() =>
             {
                Controller().Signoff();
