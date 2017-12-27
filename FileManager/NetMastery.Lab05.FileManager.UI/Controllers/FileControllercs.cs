@@ -1,8 +1,7 @@
 ﻿using NetMastery.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.Dto;
-using NetMastery.Lab05.FileManager.UI.ViewModel;
+using NetMastery.Lab05.FileManager.Helpers;
 using System;
-using System.Collections.Generic;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
@@ -19,7 +18,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null && externFilePath != null)
             {
-                _fileService.Upload(CreatePath(path), CreatePath(externFilePath));
+                _fileService.Upload(UIHelpers.CreatePath(path, _userContext.CurrentPath), UIHelpers.CreatePath(externFilePath, _userContext.CurrentPath));
             }
             else
             {
@@ -31,7 +30,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null && externFilePath != null)
             {
-                _fileService.Upload(CreatePath(path), CreatePath(externFilePath));
+                _fileService.Upload(UIHelpers.CreatePath(path, _userContext.CurrentPath), UIHelpers.CreatePath(externFilePath, _userContext.CurrentPath));
             }
             else
             {
@@ -43,7 +42,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (pathFrom != null && pathTo != null)
             {
-                _fileService.Move(CreatePath(pathFrom), CreatePath(pathTo));
+                _fileService.Move(UIHelpers.CreatePath(pathFrom, _userContext.CurrentPath), UIHelpers.CreatePath(pathTo, _userContext.CurrentPath));
             }
             else
             {
@@ -55,7 +54,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (path != null)
             {
-                _fileService.Remove(CreatePath(path));
+                _fileService.Remove(UIHelpers.CreatePath(path, _userContext.CurrentPath));
             }
             else
             {

@@ -15,7 +15,16 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             _userContext = userContext;
             _commandVM = model;
-            
+
+            if (_userContext.Login == null)
+            {
+                Redirect.OnRedirect(this, new RedirectEventArgs
+                {
+                    ControllerType = typeof(LoginController),
+                    Method = "SignInGet",
+                    Parameters = null
+                });
+            }
         }
 
         public string GetCommand()

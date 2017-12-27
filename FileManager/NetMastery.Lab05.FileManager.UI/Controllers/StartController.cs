@@ -19,7 +19,13 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         public void Start()
         {
             StartViewModel.Render();
-
+            var e = new RedirectEventArgs
+            {
+                ControllerType = typeof(LoginController),
+                Method = "SigninGet",
+                Parameters = null
+            };
+            Redirect.OnRedirect(this, e);
         }
 
     }

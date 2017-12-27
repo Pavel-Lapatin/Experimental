@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.UI.ViewModels
 {
-    public class StartViewModel
+    public class StartViewModel : ViewModel
     {
         const string WelcomeNote = "Welcome to File Manager v.1.0.0";
         const string ContactInformation = "Contact informations: e-mail - plapatin@gmail.com";

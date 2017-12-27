@@ -1,8 +1,6 @@
 ﻿using NetMastery.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.Dto;
-using NetMastery.Lab05.FileManager.UI.ViewModel;
+using NetMastery.Lab05.FileManager.Helpers;
 using System;
-using System.Collections.Generic;
 
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -21,7 +19,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if(string.IsNullOrEmpty(path) || string.IsNullOrEmpty(name))
             {    
-                _directoryService.Add(CreatePath(path), name);
+                _directoryService.Add(UIHelpers.CreatePath(path, _userContext.CurrentPath), name);
                 Console.WriteLine();
                 Console.WriteLine("Directorry created successfully");
                 Console.WriteLine();
@@ -37,7 +35,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             if (path != null)
             {
                 Console.WriteLine();
-                var directory = _directoryService.GetInfoByPath(CreatePath(path));
+                var directory = _directoryService.GetInfoByPath(UIHelpers.CreatePath(path, _userContext.CurrentPath));
 
                 Console.WriteLine("<---Directories:--->");
                 foreach (var item in directory.ChildrenDirectories)
@@ -62,7 +60,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (string.IsNullOrEmpty(pathFrom) || string.IsNullOrEmpty(pathTo))
             {
-                _directoryService.Move(CreatePath(pathFrom), CreatePath(pathTo));
+                _directoryService.Move(UIHelpers.CreatePath(pathFrom, _userContext.CurrentPath), UIHelpers.CreatePath(pathTo, _userContext.CurrentPath));
                 Console.WriteLine();
                 Console.WriteLine("Directorry moved successfully");
                 Console.WriteLine();
@@ -77,7 +75,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (string.IsNullOrEmpty(path))
             {
-                _directoryService.Remove(CreatePath(path));
+                _directoryService.Remove(UIHelpers.CreatePath(path, _userContext.CurrentPath));
                 Console.WriteLine();
                 Console.WriteLine("Directorry removed successfully");
                 Console.WriteLine();
@@ -93,7 +91,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (string.IsNullOrEmpty(path))
             {
-                _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(CreatePath(path));
+                _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(UIHelpers.CreatePath(path, _userContext.CurrentPath));
             }
             else
             {
@@ -105,7 +103,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (string.IsNullOrEmpty(path))
             {
-                var directoryInfo = _directoryService.GetInfoByPath(CreatePath(path));
+                var directoryInfo = _directoryService.GetInfoByPath(UIHelpers.CreatePath(path, _userContext.CurrentPath));
                 if (directoryInfo != null)
                 {
 
@@ -134,7 +132,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             {
                 Console.WriteLine();
                 Console.WriteLine($"There are following results for pattern {pattern}:");
-                foreach (var item in _directoryService.Search(CreatePath(path), pattern))
+                foreach (var item in _directoryService.Search(UIHelpers.CreatePath(path, _userContext.CurrentPath), pattern))
                 {
                     Console.WriteLine(item);
                 }

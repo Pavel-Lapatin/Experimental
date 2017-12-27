@@ -74,28 +74,6 @@
     <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileStructureOnFileInfoMapping.cs" />
-    <Compile Include="CommandLineCommands\RootCommandChildren\ExitCommand.cs" />
-    <Compile Include="CommandLineCommands\CommandLineInitializator.cs" />
-    <Compile Include="CommandLineCommands\CommandLineRoot.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\AddDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\ChangeWorkDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\CommandLine.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\SearchDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\ListDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\RootCommandChildren\DirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\DownloadFileCommand.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\InfoDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\RootCommandChildren\FileCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\InfoFileCommand.cs" />
-    <Compile Include="CommandLineCommands\RootCommandChildren\LoginCommand.cs" />
-    <Compile Include="CommandLineCommands\RootCommandChildren\LogoffCommand.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\MoveDirrectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\MoveFileCommand.cs" />
-    <Compile Include="CommandLineCommands\DirectoryCommand\RemoveDirectoryCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\RemoveFileCommand.cs" />
-    <Compile Include="CommandLineCommands\FileCommand\UploadFileCommand.cs" />
-    <Compile Include="CommandLineCommands\UserCommand\InfoUserCommand.cs" />
-    <Compile Include="CommandLineCommands\RootCommandChildren\UserCommand.cs" />
     <Compile Include="CommandLineNames.Designer.cs">
       <DependentUpon>CommandLineNames.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -105,6 +83,7 @@
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Database\DatabaseInitializer.cs" />
     <Compile Include="DirectoryInitializer.cs" />
+    <Compile Include="Engine.cs" />
     <Compile Include="EnglishLocalisation.Designer.cs">
       <DependentUpon>EnglishLocalisation.resx</DependentUpon>
       <AutoGen>True</AutoGen>

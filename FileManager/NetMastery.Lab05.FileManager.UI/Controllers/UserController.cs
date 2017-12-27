@@ -1,6 +1,4 @@
 ﻿using NetMastery.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.Dto;
-using NetMastery.Lab05.FileManager.UI.ViewModel;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers

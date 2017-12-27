@@ -117,73 +117,61 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AutenticationException" xml:space="preserve">
-    <value>Please, login in the system</value>
+  <data name="HelpOption" xml:space="preserve">
+    <value>-?|-h|--help</value>
+    <comment>Show help</comment>
   </data>
-  <data name="CreateUserNote" xml:space="preserve">
-    <value> was added into database</value>
+  <data name="LoginCommand" xml:space="preserve">
+    <value>login</value>
   </data>
-  <data name="DirectoryCreateOptionNote" xml:space="preserve">
-    <value />
+  <data name="PasswordOption" xml:space="preserve">
+    <value>-p|--password &lt;value&gt;</value>
+    <comment>Input password for your account</comment>
   </data>
-  <data name="DirectoryInfoOptionNote" xml:space="preserve">
-    <value />
+  <data name="UserCommand" xml:space="preserve">
+    <value>user</value>
   </data>
-  <data name="DirectoryListOptionNote" xml:space="preserve">
-    <value />
+  <data name="DirectoryCommand" xml:space="preserve">
+    <value>directory</value>
   </data>
-  <data name="DirectoryMoveOptionNote" xml:space="preserve">
-    <value />
+  <data name="CreateCommand" xml:space="preserve">
+    <value>create</value>
   </data>
-  <data name="DirectoryRemoveOptionNote" xml:space="preserve">
-    <value />
+  <data name="RemoveCommand" xml:space="preserve">
+    <value>remove</value>
   </data>
-  <data name="DirectorySearchOptionNote" xml:space="preserve">
-    <value />
+  <data name="DownloadCommand" xml:space="preserve">
+    <value>download</value>
   </data>
-  <data name="FailedAuthenticationNote" xml:space="preserve">
-    <value>Sorry, password is incorrect</value>
+  <data name="FileCommand" xml:space="preserve">
+    <value>file</value>
   </data>
-  <data name="FailedIdentificationNote" xml:space="preserve">
-    <value>Sorry, trere is no user with login </value>
+  <data name="ChangeDirectoryCommand" xml:space="preserve">
+    <value>cd</value>
   </data>
-  <data name="LoginNote" xml:space="preserve">
-    <value>Hi stranger. Please login for using this service.</value>
+  <data name="InfoCommand" xml:space="preserve">
+    <value>info</value>
   </data>
-  <data name="LoginNullReferenceException" xml:space="preserve">
-    <value>Login or password are required</value>
+  <data name="LogoffCommand" xml:space="preserve">
+    <value>logoff</value>
   </data>
-  <data name="LoginOptionHelpNote" xml:space="preserve">
-    <value>Login  is required</value>
+  <data name="MoveCommand" xml:space="preserve">
+    <value>move</value>
   </data>
-  <data name="PasswordOptionHelpNote" xml:space="preserve">
-    <value>Password is required</value>
+  <data name="SearchCommand" xml:space="preserve">
+    <value>search</value>
   </data>
-  <data name="UserInfoCmdOutputaMaxStorageSize" xml:space="preserve">
-    <value>storage max:</value>
+  <data name="ListCommand" xml:space="preserve">
+    <value>list</value>
   </data>
-  <data name="UserInfoCmdOutputCreationDate" xml:space="preserve">
-    <value>creation date: </value>
+  <data name="ExitCommand" xml:space="preserve">
+    <value>exit</value>
   </data>
-  <data name="UserInfoCmdOutputLogin" xml:space="preserve">
-    <value>login: </value>
+  <data name="LoginOption" xml:space="preserve">
+    <value>-l|--login &lt;value&gt;</value>
+    <comment>Input login for your account</comment>
   </data>
-  <data name="UserInfoCmdOutputStorageSize" xml:space="preserve">
-    <value>storage used: </value>
-  </data>
-  <data name="WelcomeNote" xml:space="preserve">
-    <value>Hi, </value>
-  </data>
-  <data name="DirectoryNotExistArgumenException" xml:space="preserve">
-    <value>Shuch directory doesn't exist</value>
-  </data>
-  <data name="ChangeDirectoryOptionNote" xml:space="preserve">
-    <value>Enter the path to change default directory</value>
-  </data>
-  <data name="FileUploadOptionNote" xml:space="preserve">
-    <value>Please check Paths for directory and file</value>
-  </data>
-  <data name="FileDownloadOptionNote" xml:space="preserve">
-    <value>Please check Paths for directory and file</value>
+  <data name="UploadCommand" xml:space="preserve">
+    <value>upload</value>
   </data>
 </root>

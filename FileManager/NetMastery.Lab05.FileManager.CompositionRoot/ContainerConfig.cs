@@ -2,21 +2,14 @@
 using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.Bl.Servicies;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLineCommands;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.DirectoryCommand;
-using NetMastery.Lab05.FileManager.CompositionRoot.CommandLines.RootCommandChildren;
-using NetMastery.Lab05.FileManager.CompositionRoot.Database;
 using NetMastery.Lab05.FileManager.DAL;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
-using NetMastery.Lab05.FileManager.DAL.Migrations;
 using NetMastery.Lab05.FileManager.DAL.Repository;
-using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI;
+using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Implementation;
-using NetMastery.Lab05.FileManager.UI.ViewModel;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
-using System.Data.Entity;
 using System.Linq;
 using System.Reflection;
 
@@ -31,51 +24,19 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             var uiAssembly = Assembly.GetAssembly(typeof(Controller));
             var compositionBaseAssembly = Assembly.GetExecutingAssembly();
 
-            
-           // var dbcontextType = 
-            
-            //var directoryCommandTypes = compositionBaseAssembly.GetTypes()
-            //    .Where(t => t.Name.Contains("DirectoryChild") 
-            //    && t.IsSubclassOf(typeof(CommandLineApplication)));
-
-            //var fileCommandTypes = compositionBaseAssembly.GetTypes()
-            //    .Where(t => t.Namespace.Contains("FileCommand") 
-            //    && t.IsSubclassOf(typeof(CommandLineApplication)));
-
-            //var rootCommandTypes = compositionBaseAssembly.GetTypes()
-            //.Where(t => t.Name.Contains("RootChild")
-            //    && t.IsSubclassOf(typeof(CommandLineApplication)));
-
-
-
-
-
-
-
-
-            //builder.RegisterType<CommandLineRoot>().
-            //    UsingConstructor(rootCommandTypes.ToArray());
-
-
-
-            builder.RegisterAssemblyTypes(uiAssembly)
-                .Where(t => t.IsSubclassOf(typeof(Controller)));
-
-            builder.RegisterAssemblyTypes(compositionBaseAssembly)
-            .Where(t => t.IsSubclassOf(typeof(CommandLineApplication)));
-
             builder.RegisterType<UserContext>().As<IUserContext>()
                 .SingleInstance();
 
             var userContext = new UserContext();
             builder.RegisterInstance(userContext);
 
-            //builder.RegisterType<CommandLineRoot>()
-            //    .WithParameter(new TypedParameter(
-            //           typeof(CommandLineApplication),
-            //           new LoginCommand()));
-            ;
+            builder.RegisterAssemblyTypes(uiAssembly)
+                .Where(t => t.IsSubclassOf(typeof(Controller)) 
+                || t.IsSubclassOf(typeof(ViewModel))
+                || t.IsSubclassOf(typeof(CommandLineApplication)));
 
+            builder.RegisterAssemblyTypes(compositionBaseAssembly)
+            .Where(t => t.IsSubclassOf(typeof(CommandLineApplication)));
 
             builder.RegisterType<AuthenticationService>()
                    .As<IAuthenticationService>()
@@ -101,39 +62,34 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                        new FileManagerDbContext()));
 
 
-            builder.RegisterGeneric(typeof(ConsoleWriter<>))
-                   .As(typeof(IInfoWriter<>))
-                   .InstancePerLifetimeScope();
-
-
-            builder.Register(c => new FileRootChildCommand(
-                c.Resolve<AddDirectoryChildCommand>(),
-                c.Resolve<ChangeWorkDirectoryChildCommand>(),
-                c.Resolve<InfoDirectoryChildCommand>(),
-                c.Resolve<MoveDirectoryChildCommand>(),
-                c.Resolve<RemoveDirectoryChildCommand>(),
-                c.Resolve<SearchDirectoryChildCommand>(),
-                c.Resolve<ListDirectoryChildCommand>()));
+            builder.Register(c => new FileCommand(
+                c.Resolve<AddDirectoryCommand>(),
+                c.Resolve<ChangeWorkDirectoryCommand>(),
+                c.Resolve<InfoDirectoryCommand>(),
+                c.Resolve<MoveDirectoryCommand>(),
+                c.Resolve<RemoveDirectoryCommand>(),
+                c.Resolve<SearchDirectoryCommand>(),
+                c.Resolve<ListDirectoryCommand>()));
 
 
 
-            builder.Register(c => new DirectoryRootChildCommand(
-                c.Resolve<AddDirectoryChildCommand>(),
-                c.Resolve<ChangeWorkDirectoryChildCommand>(),
-                c.Resolve<InfoDirectoryChildCommand>(),
-                c.Resolve<MoveDirectoryChildCommand>(),
-                c.Resolve<RemoveDirectoryChildCommand>(),
-                c.Resolve<SearchDirectoryChildCommand>(),
-                c.Resolve<ListDirectoryChildCommand>()));
+            builder.Register(c => new DirectoryCommand(
+                c.Resolve<AddDirectoryCommand>(),
+                c.Resolve<ChangeWorkDirectoryCommand>(),
+                c.Resolve<InfoDirectoryCommand>(),
+                c.Resolve<MoveDirectoryCommand>(),
+                c.Resolve<RemoveDirectoryCommand>(),
+                c.Resolve<SearchDirectoryCommand>(),
+                c.Resolve<ListDirectoryCommand>()));
 
 
             builder.Register(c => new CommandLineRoot(
-            c.Resolve<LoginRootChildCommand>(),
-            c.Resolve<FileRootChildCommand>(),
-            c.Resolve<DirectoryRootChildCommand>(),
-            c.Resolve<ExitRootChildCommand>(),
-            c.Resolve<LogoffRootChildCommand>(),
-            c.Resolve<UserRootChildCommand>()));
+                c.Resolve<LoginCommand>(),
+                c.Resolve<FileCommand>(),
+                c.Resolve<DirectoryCommand>(),
+                c.Resolve<ExitCommand>(),
+                c.Resolve<LogoffCommand>(),
+                c.Resolve<UserCommand>()));
 
             return builder.Build();
         }
