@@ -2,6 +2,7 @@
 using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using Serilog;
 using System;
 using System.Linq;
@@ -13,12 +14,12 @@ namespace NetMastery.Lab05.FileManager.UI
     {
         Type _controller = typeof(StartController);
         string _method = "Start";
-        object[] _parameters = null;
+        object[] _parameters = new object[] { new StartForm() };
 
         public Func<Type, Controller> _getController;
-        CommandLine _cmd;
+        CommandLineApplication _cmd;
 
-        public Engine(Func<Type, Controller> getController, CommandLine cmd)
+        public Engine(Func<Type, Controller> getController, CommandLineApplication cmd)
         {
             _getController = getController;
             _cmd = cmd;
@@ -42,6 +43,17 @@ namespace NetMastery.Lab05.FileManager.UI
                         e.Command.ShowHelp();
                         Redirect(typeof(CommandController), "CommandGet", null);
                     }
+                   
+                    catch (NullReferenceException e)
+                    {
+                        Log.Logger.Debug(e.Message);
+                        Console.WriteLine(e.Message);
+                    }
+                    catch (ArgumentException e)
+                    {
+                        Log.Logger.Debug(e.Message);
+                        Console.WriteLine(e.Message);
+                    }
                 }
             }
         }
@@ -50,14 +62,12 @@ namespace NetMastery.Lab05.FileManager.UI
 
         public string ExecuteControllerMethod()
         {
-            _cmd.Redirected.Redirected += RedirecteRedirectEventHandler;
             var method = _parameters == null 
                 ? _controller.GetMethod(_method) 
                 : _controller.GetMethod(_method, _parameters.Select(x=>x.GetType()).ToArray());
             if(method != null)
             {
                 var Controller = _getController(_controller);
-                Controller.Redirect.Redirected += RedirecteRedirectEventHandler;
                 var parametrsType = _parameters?.Select(x => x.GetType()).ToArray();
                 return method.Invoke(Controller, _parameters) as string;
             }

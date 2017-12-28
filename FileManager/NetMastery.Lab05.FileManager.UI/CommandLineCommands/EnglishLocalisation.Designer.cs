@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace NetMastery.Lab05.FileManager.UI.CommandLineCommands {
+namespace NetMastery.Lab05.FileManager.UI.CommandLineApplicationCommands {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace NetMastery.Lab05.FileManager.UI.CommandLineCommands {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManager.UI.CommandLineCommands.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("NetMastery.Lab05.FileManager.UI.CommandLineApplicationCommands.EnglishLocalisation", typeof(EnglishLocalisation).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

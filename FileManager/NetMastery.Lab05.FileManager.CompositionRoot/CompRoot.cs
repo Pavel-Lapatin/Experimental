@@ -10,13 +10,13 @@ using NetMastery.Lab05.FileManager.UI.Controllers;
 using Serilog;
 using System;
 using System.IO;
+using NetMastery.Lab05.FileManager.UI.events;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot
 {
     public static class CompRoot
     {
-        public static CommandLineApplication cmd;
-
+        
         public static Engine Initialize()
         {
             Logger.LoggerConfig();
@@ -33,10 +33,16 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             Log.Logger.Information("Create or updating database ...");
             new DatabaseInitialiser<FileManagerDbContext, Configuration>().InitializeDatabase(new FileManagerDbContext());
             Log.Logger.Information("Successfully");
-            cmd = container.Resolve<CommandLineRoot>();
-            Log.Logger.Information("User Interface initializing ...");
+            var cmd = container.Resolve<CommandLineApplicationRoot>();
+            Log.Logger.Information("Factory initializing ...");
             Func<Type, Controller> controllerFactory = t => container.Resolve(t) as Controller;
-            return new Engine(controllerFactory, (CommandLineRoot)cmd);
+            Log.Logger.Information("Successfully");
+            Log.Logger.Information("Redirecting initializing ...");
+            var engine = new Engine(controllerFactory, (CommandLineApplicationRoot)cmd);
+            var redirectEvent = container.Resolve<RedirectEvent>();
+            redirectEvent.Redirected += engine.RedirecteRedirectEventHandler;
+            Log.Logger.Information("Successfully");
+            return engine;
         }
     }
 }

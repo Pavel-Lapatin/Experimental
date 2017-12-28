@@ -1,25 +1,27 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    class MoveFileCommand : CommandLine
+    class MoveFileCommand : CommandLineApplication
     { 
         public Func<FileController> Controller;
 
-        public MoveFileCommand(Func<FileController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
+        public MoveFileCommand(Func<FileController> getController)
         {
             Controller = getController;
 
-            Name = CommandLineNames.InfoCommand;
+            Name ="move";
 
             var arguments = Argument("path", "Paths to source and destination files", false);
             OnExecute(() =>
             {
-                getController().Move(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
+                var form = new TwoPathForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
+               Controller().Move(form);
                 return 0;
             });
         }

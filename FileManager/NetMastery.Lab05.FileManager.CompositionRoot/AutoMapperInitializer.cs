@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration;
-
+using System.Linq;
+using System.Reflection;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping
 {
@@ -8,13 +9,11 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping
     {
         public static void Initialize()
         {
+            var assembly = Assembly.GetExecutingAssembly();
+            var types = assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Profile)));
             Mapper.Initialize(cfg =>
             {
-                cfg.AddProfile(new AccountMapping());
-                cfg.AddProfile(new DirectoryMapping());
-                cfg.AddProfile(new FileMapping());
-                cfg.AddProfile(new DirectoryOnDirectoryInfoMapping());
-                cfg.AddProfile(new FileStructureOnFileInfoMapping());
+                cfg.AddProfiles(types);
             });
         }
     }

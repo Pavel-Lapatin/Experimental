@@ -1,26 +1,32 @@
 ﻿using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
+using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
-{
-    
-    
+{   
     public abstract class Controller
     {
-        public RedirectEvent Redirect = new RedirectEvent();
+        public RedirectEvent Redirect;
 
         protected IUserContext _userContext;
+        private IUserContext userContext;
+
+        public Controller(IUserContext userContext, RedirectEvent redirect)
+        {
+            _userContext = userContext;
+            Redirect = redirect;
+        }
 
         public Controller(IUserContext userContext)
         {
-            _userContext = userContext;
+            this.userContext = userContext;
         }
 
         public bool IsAthenticated()
         {
-            if(_userContext.Login == null )
+            if(!_userContext.IsAuthenticated)
             {
-                _userContext.RenderError();
-                
+                LoginGetRedirect();
                 return false;
             }
             return true;
@@ -32,7 +38,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             {
                 ControllerType = typeof(LoginController),
                 Method = "SigninGet",
-                Parameters = null
+                Parameters = new[] { new LoginForm() }
             });
         }
 
@@ -44,6 +50,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 Method = "GetCommand",
                 Parameters = null
             });
+        }
+
+        protected string GetCurrentPath()
+        {
+            if (_userContext.CurrentPath != null)
+            {
+                return _userContext.CurrentPath;
+            }
+            throw new NullReferenceException();
         }
     }
 }

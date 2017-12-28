@@ -4,14 +4,14 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    class InfoUserCommand : CommandLineApplication
+    public class InfoUserCommand : CommandLineApplication
     {
         public Func<UserController> Controller;
 
         public InfoUserCommand(Func<UserController> getController)
         {
             Controller = getController;
-            Name = CommandLineNames.InfoCommand;
+            Name = "info";
             OnExecute(() =>
             {
                 Controller().GetUserInfo();

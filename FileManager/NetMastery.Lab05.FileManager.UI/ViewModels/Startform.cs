@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetMastery.Lab05.FileManager.UI.ViewModels
+namespace NetMastery.Lab05.FileManager.UI.Forms
 {
-    public class StartViewModel : ViewModel
+    public class StartForm : Form
     {
         const string WelcomeNote = "Welcome to File Manager v.1.0.0";
         const string ContactInformation = "Contact informations: e-mail - plapatin@gmail.com";

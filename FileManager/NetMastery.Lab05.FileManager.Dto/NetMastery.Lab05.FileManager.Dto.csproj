@@ -47,7 +47,6 @@
     <Compile Include="DtoClasses\AccountDto.cs" />
     <Compile Include="DtoClasses\DirectoryStructureDto.cs" />
     <Compile Include="DtoClasses\FileStructureDto.cs" />
-    <Compile Include="DtoClasses\UserInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

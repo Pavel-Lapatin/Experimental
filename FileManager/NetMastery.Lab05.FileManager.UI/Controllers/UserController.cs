@@ -1,4 +1,7 @@
-﻿using NetMastery.FileManager.Bl.Interfaces;
+﻿using AutoMapper;
+using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -8,26 +11,19 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         private readonly IUserService _userService;
 
 
-        public UserController(IUserService userService, IUserContext context) : base(context)
+        public UserController(IUserService userService, IUserContext context, RedirectEvent redirect) : base(context, redirect)
         {
             _userService = userService;
         }
 
         public void GetUserInfo()
         {
-            var userInfo = _userService.GetInfoByLogin(_userContext.Login);
-            if (userInfo == null)
-                throw new NullReferenceException($"There is no user with login: {_userContext.Login}");
-            else
+            if(IsAthenticated())
             {
-                Console.WriteLine();
-                Console.WriteLine("Login: " + userInfo.Login);
-                Console.WriteLine("Creation date: " + userInfo.CreationDate.ToString("yy-MM-dd"));
-                Console.WriteLine("Used disk space: " + userInfo.CurentStorageSize + " kB");
-                Console.WriteLine("Max disk space: " + userInfo.MaxStorageSize +" kB");
-                Console.WriteLine("Root directory path: " + userInfo.RootDirectory.FullPath);
-                Console.WriteLine();
-            }
+                var model = Mapper.Instance.Map<InfoUserViewModel>(_userService.GetInfoByLogin(_userContext.Login));
+                if (model == null) throw new NullReferenceException();
+                model.RenderViewModel();
+            } 
         }
     }
 }

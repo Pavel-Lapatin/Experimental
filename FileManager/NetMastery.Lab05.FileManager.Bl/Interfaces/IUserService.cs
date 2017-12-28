@@ -4,6 +4,6 @@ namespace NetMastery.FileManager.Bl.Interfaces
 {
     public interface IUserService
     {
-        UserInfo GetInfoByLogin(string login);
+        AccountDto GetInfoByLogin(string login);
     }
 }

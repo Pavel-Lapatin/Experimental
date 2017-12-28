@@ -5,13 +5,13 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class ExitCommand : CommandLine
+    public class ExitCommand : CommandLineApplication
     {
-        public ExitCommand(RedirectEvent redirectEvent) : base(redirectEvent)
+        public ExitCommand()
         {
-            Name = CommandLineNames.ExitCommand;
+            Name = "exit";
 
-            HelpOption(CommandLineNames.HelpOption);
+            HelpOption("-?|-h|--help");
 
             OnExecute(() =>
             {

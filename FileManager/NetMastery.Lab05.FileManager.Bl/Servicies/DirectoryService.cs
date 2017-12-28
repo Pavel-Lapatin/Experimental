@@ -20,7 +20,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         public DirectoryService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-        }        
+        }
         #endregion
 
         #region DirectoryServiceAPI
@@ -29,7 +29,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             var currentDirectory = _unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find(x=>x.FullPath == path)
+                .Find(x => x.FullPath == path)
                 .FirstOrDefault();
 
             if (currentDirectory != null)
@@ -46,7 +46,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                         .FirstOrDefault() != null)
                 {
                     throw new ArgumentException("This directory already exists");
-                }   
+                }
                 var newDirInfo = Directory.CreateDirectory(newDirectory.FullPath.Replace("~", Directory.GetCurrentDirectory()));
                 try
                 {
@@ -65,7 +65,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 throw new ArgumentException("Directory doesn't exist");
             }
-                
+
         }
 
         public void Move(string pathFrom, string pathTo)
@@ -83,8 +83,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (currentDirectoryFrom == null || currentDirectoryTo == null)
             {
                 throw new NullReferenceException("Directory doesn't exist");
-            } 
-            if(currentDirectoryTo.FullPath.Contains(currentDirectoryFrom.FullPath))
+            }
+            if (currentDirectoryTo.FullPath.Contains(currentDirectoryFrom.FullPath))
             {
                 throw new NullReferenceException("Distanation directory is subfolder of source directory");
             }
@@ -94,8 +94,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             var source = pathFrom.Replace("~", Directory.GetCurrentDirectory());
             var destination = pathTo.Replace("~", Directory.GetCurrentDirectory()) + '\\' + currentDirectoryFrom.Name;
             if (Directory.Exists(source))
-            { 
-                if(Directory.Exists(destination))
+            {
+                if (Directory.Exists(destination))
                 {
                     throw new ArgumentException("There is already folder with the exact name as soource folder");
                 }
@@ -112,12 +112,12 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 }
             }
         }
-    
+
         public void Remove(string path)
         {
             var currentDirectory = _unitOfWork
                 .Repository<DirectoryStructure>()
-                .EagerFind((x => x.FullPath == path), x=>x.ChildrenDirectories).FirstOrDefault(); 
+                .EagerFind((x => x.FullPath == path), x => x.ChildrenDirectories).FirstOrDefault();
 
             if (currentDirectory != null)
             {
@@ -132,10 +132,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
         public IEnumerable<string> Search(string path, string pattern)
         {
-            var currentDirectory = Mapper.Instance.Map<DirectoryStructureDto>(_unitOfWork
+            var currentDirectory = _unitOfWork
                 .Repository<DirectoryStructure>()
-                .Find((x => x.FullPath == path))
-                .FirstOrDefault());
+                .EagerFind(x => x.FullPath == path, x => x.ChildrenDirectories, x => x.Files)
+                .FirstOrDefault();
 
             IList<string> results = new List<string>();
 
@@ -146,6 +146,17 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
             else
                 throw new ArgumentException("Directory doesn't exist");
+        }
+        public IEnumerable<string> List(string path)
+        {
+            var directory = _unitOfWork.Repository<DirectoryStructure>().EagerFind(x => x.FullPath == path, x => x.Files).FirstOrDefault();
+            if (directory == null) throw new NullReferenceException();
+            var result = new List<string>();
+            var files = directory.Files.Select(x => x.Name + x.Extension).ToList();
+            var directories = directory.ChildrenDirectories.Select(x => x.Name).ToArray();
+            result.AddRange(directories);
+            result.AddRange(files);
+            return result;
         }
 
         public string ChangeWorkDirectory(string path)
@@ -175,7 +186,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         }
 
 
-        private void RecursiveSearch(string pattern, IList<string> results, DirectoryStructureDto directory)
+        private void RecursiveSearch(string pattern, IList<string> results, DirectoryStructure directory)
         {          
             if (directory.ChildrenDirectories != null && directory.ChildrenDirectories.Count != 0)
             {
@@ -199,6 +210,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 }
             }
         }
+
 
         private void RecursiveRemove(DirectoryStructure rootDirectory)
         {

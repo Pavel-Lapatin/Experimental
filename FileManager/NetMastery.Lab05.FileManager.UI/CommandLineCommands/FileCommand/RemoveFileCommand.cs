@@ -1,23 +1,25 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class RemoveFileCommand : CommandLine
+    public class RemoveFileCommand : CommandLineApplication
     {
         public Func<FileController> Controller;
 
-        public RemoveFileCommand(Func<FileController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
+        public RemoveFileCommand(Func<FileController> getController)
         {
             Controller = getController;
-            Name = CommandLineNames.RemoveCommand;
+            Name = "remove";
 
             var arguments = Argument("path", "Path to remove file", false);
             OnExecute(() =>
             {
-                Controller().Remove(arguments.Values[arguments.Values.Count - 1]);
+                var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
+                Controller().Remove(form);
                 return 0;
             });
         }

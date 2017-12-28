@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetMastery.Lab05.FileManager.UI.ViewModels
+namespace NetMastery.Lab05.FileManager.UI.Forms
 {
-    public class LoginViewModel : ViewModel
+    public class LoginForm : Form
     {
         private string login;
 
@@ -46,40 +46,25 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             }
         }
 
-        public LoginViewModel()
+        public LoginForm()
         {
             Login = null;
             Password = null;
         }
 
-        public LoginViewModel(string login, string password)
+        public LoginForm(string login, string password)
         {
             Login = login;
             Password = password;
         }
 
-        public void RenderGet()
+        public override void RenderForm()
         {
             Console.WriteLine();
             Console.WriteLine("Please, signin in the system");
             Console.WriteLine("Command: login -l <userName> -p <password>");
             Console.WriteLine();
-
             Console.Write("login -l ");
-        }
-        public void RenderSignoff()
-        {
-            Console.WriteLine("Goodbye!!!");
-            Console.WriteLine();
-            Console.WriteLine("Press any button for continue");
-            Console.ReadKey();
-        }
-
-        public string Registre(string currentPath)
-        {
-            Console.Write(currentPath + "--> login");
-            var arguments = Console.ReadLine();
-            return ("login -l"  + arguments);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using NetMastery.Lab05.FileManager.UI.ViewModels;
+﻿using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,18 +10,21 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
     public class CommandController : Controller
     {
-        CommandViewModel _commandVM;
-
-        public CommandController(IUserContext userContext, CommandViewModel model) : base(userContext)
+        public CommandController(IUserContext userContext, RedirectEvent redirect) : base(userContext, redirect)
         {
         }
 
         public string GetCommand()
         {
-            if(IsAthenticated())
+            if(_userContext.IsAuthenticated)
             {
-                _commandVM.Render(_userContext.CurrentPath);
+                var form = new CommandForm { CurrentPath = _userContext.CurrentPath};
+                form.RenderForm();
                 return Console.ReadLine();
+            }
+            else
+            {
+                LoginGetRedirect();
             }
             return null;
         }

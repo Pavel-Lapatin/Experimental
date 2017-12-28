@@ -10,7 +10,7 @@ using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Implementation;
-using NetMastery.Lab05.FileManager.UI.ViewModels;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using System.Linq;
 using System.Reflection;
 
@@ -23,21 +23,31 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             var builder = new ContainerBuilder();
 
             var uiAssembly = Assembly.GetAssembly(typeof(Controller));
+
             var compositionBaseAssembly = Assembly.GetExecutingAssembly();
 
             builder.RegisterType<UserContext>().As<IUserContext>()
                 .SingleInstance();
 
             var userContext = new UserContext();
+
             builder.RegisterInstance(userContext);
 
+            var rerdirectEvent = new RedirectEvent();
+
+            builder.RegisterInstance(rerdirectEvent)
+               .SingleInstance();
+
+
             builder.RegisterAssemblyTypes(uiAssembly)
-                .Where(t => t.IsSubclassOf(typeof(Controller)) 
-                || t.IsSubclassOf(typeof(ViewModel))
+                .Where(t=> t.IsSubclassOf(typeof(Form))
                 || t.IsSubclassOf(typeof(CommandLineApplication)));
 
-            builder.RegisterAssemblyTypes(compositionBaseAssembly)
-            .Where(t => t.IsSubclassOf(typeof(CommandLineApplication)));
+            builder.RegisterAssemblyTypes(uiAssembly)
+                .Where(t => t.IsSubclassOf(typeof(Controller)))
+                .WithParameter(new TypedParameter(typeof(RedirectEvent), rerdirectEvent));
+
+
 
             builder.RegisterType<AuthenticationService>()
                    .As<IAuthenticationService>()
@@ -62,17 +72,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                        typeof(FileManagerDbContext),
                        new FileManagerDbContext()));
 
-            var rerdirectEvent = new RedirectEvent();
-
-            builder.RegisterInstance(rerdirectEvent)
-               .SingleInstance();
-
-            builder.RegisterType<CommandLine>()
-                .WithParameter(new TypedParameter(typeof(RedirectEvent), rerdirectEvent));
-
-
             builder.Register(c => new FileCommand(
-                rerdirectEvent,
                 c.Resolve<AddDirectoryCommand>(),
                 c.Resolve<ChangeWorkDirectoryCommand>(),
                 c.Resolve<InfoDirectoryCommand>(),
@@ -81,10 +81,11 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 c.Resolve<SearchDirectoryCommand>(),
                 c.Resolve<ListDirectoryCommand>()));
 
+            builder.Register(c => new UserCommand(
+                c.Resolve<InfoUserCommand>()));
 
 
             builder.Register(c => new DirectoryCommand(
-                rerdirectEvent,
                 c.Resolve<AddDirectoryCommand>(),
                 c.Resolve<ChangeWorkDirectoryCommand>(),
                 c.Resolve<InfoDirectoryCommand>(),
@@ -94,8 +95,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 c.Resolve<ListDirectoryCommand>()));
 
 
-            builder.Register(c => new CommandLineRoot(
-                rerdirectEvent,
+            builder.Register(c => new CommandLineApplicationRoot(
                 c.Resolve<LoginCommand>(),
                 c.Resolve<FileCommand>(),
                 c.Resolve<DirectoryCommand>(),

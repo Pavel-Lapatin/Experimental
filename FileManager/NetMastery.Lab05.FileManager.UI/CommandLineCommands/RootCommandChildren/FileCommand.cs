@@ -3,11 +3,11 @@ using NetMastery.Lab05.FileManager.UI.events;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class FileCommand : CommandLine
+    public class FileCommand : CommandLineApplication
     {
-        public FileCommand(RedirectEvent redirectEvent, params CommandLine[] commands) : base(redirectEvent)
-        {
-            Name = CommandLineNames.FileCommand;
+        public FileCommand(params CommandLineApplication[] commands)
+        { 
+            Name = "file";
             Commands.AddRange(commands);
         }
 

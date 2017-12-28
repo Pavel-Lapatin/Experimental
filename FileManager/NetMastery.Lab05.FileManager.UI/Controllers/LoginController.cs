@@ -1,4 +1,7 @@
-﻿using NetMastery.FileManager.Bl.Interfaces;
+﻿using AutoMapper;
+using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
 
@@ -8,60 +11,65 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class LoginController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
-        private LoginViewModel _loginVM;
 
         public LoginController(IAuthenticationService authenticationService,  
-            LoginViewModel model,
-            IUserContext userContext) : base(userContext)
+            IUserContext userContext, RedirectEvent redirect) : base(userContext, redirect)
         {
             _authenticationService = authenticationService;
-            _loginVM = model;
         }
 
-        public void Singin()
+        public void Singin(LoginForm form)
         {
-            if (_loginVM.IsValid)
+            if (form.IsValid)
             {
-                var newUser = _authenticationService.Signin(_loginVM.Login, _loginVM.Password);
-                if (IsExistingUser())
+                var accountViewModel = Mapper.Instance.Map<AccountViewModel>(_authenticationService.Signin(form.Login, form.Password));
+
+                if (!IsUser(accountViewModel))
                 {
-                    Console.WriteLine($"{ _loginVM.Login} is a current user of the system");
+                    _userContext.Login = accountViewModel.Login;
+                    _userContext.CurrentPath = accountViewModel.RootDirectory;
+                    accountViewModel.Messages.Add($"Welcome to the system, {accountViewModel.Login}");
                 }
-                else
-                {
-                    _userContext.Login = newUser.Login;
-                    _userContext.CurrentPath = newUser.RootDirectory.FullPath;
-                    Console.WriteLine($"Welcome to the system, { _loginVM.Login}");
-                }
+                accountViewModel.RenderMessages();
+                accountViewModel.RenderViewModel();
+                GetCommandRedirect();
             }
             else
             {
-                _loginVM.RenderErrors();
+                form.RenderErrors();
             }
-            GetCommandRedirect();
         }
 
-        public string SigninGet()
+        public string SigninGet(LoginForm form)
         {
-            _loginVM.RenderGet();
+            form.RenderForm();
             var command = Console.ReadLine();
             return "login -l " + command;
         }
+
+
         public void Signoff()
         {
-            if (IsAthenticated())
+            var accountViewModel = Mapper.Instance.Map<AccountViewModel>(_userContext);
+            
+            if (accountViewModel.Login != null)
             {
-               _loginVM.RenderSignoff();
+                accountViewModel.Messages.Add($"Goodbay {accountViewModel.Login}");
                 _userContext.Clear();
-                LoginGetRedirect();
             }
+            else
+            {
+                accountViewModel.Messages.Add($"There is no any registered user");
+            }
+            LoginGetRedirect();
+            accountViewModel.RenderMessages();
         }
 
-        public bool IsExistingUser()
+        public bool IsUser(AccountViewModel model)
         {
-            if (_loginVM.Login == _userContext.Login)
+            if (model.Login == _userContext.Login)
             {
-                Console.WriteLine($"{_loginVM.Login} is a current user of the system");
+                model.Messages.Add($"{model.Login} is a current user of the system");
                 return true;
             }
             return false;

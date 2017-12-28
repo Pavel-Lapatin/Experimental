@@ -2,9 +2,7 @@
 #Exit from the system exit command
 	exit
 
-#Database created and filled using migrations.
-
-	update-database -ProjectName NetMastery.Lab05.FileManager.DAL
+#Database created or updated during the start of application.
 
 #User authenticate commands:
 	login -l | --login <userLogin> -p | --password <userpassword> - register in the system

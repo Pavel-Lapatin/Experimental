@@ -1,147 +1,163 @@
-﻿using NetMastery.FileManager.Bl.Interfaces;
+﻿using AutoMapper;
+using NetMastery.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.Helpers;
+using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
+using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
-
+using System.Linq;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
     public class DirectoryController : Controller
     {
         private readonly IDirectoryService _directoryService;
+        
 
-        public DirectoryController(IDirectoryService directoryService, IUserContext context) : base(context)
+        public DirectoryController(IDirectoryService directoryService, IUserContext context, RedirectEvent redirect) : base(context, redirect)
         {
             _directoryService = directoryService;
             
         }
 
-        public void Add(string path, string name)
+        public void Add(AddDirectoryForm form)
         {
-            if(string.IsNullOrEmpty(path) || string.IsNullOrEmpty(name))
-            {    
-                _directoryService.Add(UIHelpers.CreatePath(path, _userContext.CurrentPath), name);
-                Console.WriteLine();
-                Console.WriteLine("Directorry created successfully");
-                Console.WriteLine();
-            }
-            else
+            if (IsAthenticated())
             {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
-            }
-        }
-
-        public void List(string path)
-        {
-            if (path != null)
-            {
-                Console.WriteLine();
-                var directory = _directoryService.GetInfoByPath(UIHelpers.CreatePath(path, _userContext.CurrentPath));
-
-                Console.WriteLine("<---Directories:--->");
-                foreach (var item in directory.ChildrenDirectories)
+                form.Currentpath = GetCurrentPath();
+                if(form.IsValid)
                 {
-                    Console.WriteLine(item.Name);
-                }
-                Console.WriteLine();
-                Console.WriteLine("<---Files:--->");
-                foreach (var item in directory.Files)
-                {
-                    Console.WriteLine(item.Name+item.Extension);
-                }
-                Console.WriteLine();
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
-            }
-        }
-
-        public void Move(string pathFrom, string pathTo)
-        {
-            if (string.IsNullOrEmpty(pathFrom) || string.IsNullOrEmpty(pathTo))
-            {
-                _directoryService.Move(UIHelpers.CreatePath(pathFrom, _userContext.CurrentPath), UIHelpers.CreatePath(pathTo, _userContext.CurrentPath));
-                Console.WriteLine();
-                Console.WriteLine("Directorry moved successfully");
-                Console.WriteLine();
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
-            }
-        }
-
-        public void Remove(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                _directoryService.Remove(UIHelpers.CreatePath(path, _userContext.CurrentPath));
-                Console.WriteLine();
-                Console.WriteLine("Directorry removed successfully");
-                Console.WriteLine();
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
-            }
-        }
-
-        
-        public void ChangeWorkingDirectory(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(UIHelpers.CreatePath(path, _userContext.CurrentPath));
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
-            }
-        }
-
-        public void GetDirectoryInfo(string path)
-        {
-            if (string.IsNullOrEmpty(path))
-            {
-                var directoryInfo = _directoryService.GetInfoByPath(UIHelpers.CreatePath(path, _userContext.CurrentPath));
-                if (directoryInfo != null)
-                {
-
+                    _directoryService.Add(form.DestinationPath, form.Name);
                     Console.WriteLine();
-                    Console.WriteLine("Login: " + _userContext.Login);
-                    Console.WriteLine("Path: " + directoryInfo.FullPath);
-                    Console.WriteLine("CreationDate: " + directoryInfo.CreationDate.ToString("yy-MM-dd"));
-                    Console.WriteLine("ModificationDate: " + directoryInfo.ModificationDate.ToString("yy-MM-dd"));
-                    Console.WriteLine("Size: " + directoryInfo.DirectorySize + " kB");
+                    Console.WriteLine("Directorry created successfully");
                     Console.WriteLine();
                 }
                 else
                 {
-                    throw new NullReferenceException($"There is no such folder");
+                    form.RenderErrors();
                 }
-            }
-            else
-            {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
+                GetCommandRedirect();
             }
         }
 
-        public void Search(string path, string pattern)
+        public void List(OnePathForm form)
         {
-            if (string.IsNullOrEmpty(path))
+            if (IsAthenticated())
             {
-                Console.WriteLine();
-                Console.WriteLine($"There are following results for pattern {pattern}:");
-                foreach (var item in _directoryService.Search(UIHelpers.CreatePath(path, _userContext.CurrentPath), pattern))
+                form.Currentpath = GetCurrentPath();
+                if (form.IsValid)
                 {
-                    Console.WriteLine(item);
+                    var result = _directoryService.List(form.DestinationPath).ToArray();
+                    if (result == null) throw new NullReferenceException();
+                    var model = new DirectoryListViewModel(result, form.Currentpath);
+                    model.RenderViewModel();
                 }
-                Console.WriteLine();
-            }
-            else
+                else
+                {
+                    form.RenderErrors();
+                }
+                GetCommandRedirect();
+            } 
+        }
+
+        public void Move(TwoPathForm form)
+        {
+            if (IsAthenticated())
             {
-                throw new NullReferenceException("The path of the directory couldn't empty string");
+                form.Currentpath = GetCurrentPath();
+                if (form.IsValid)
+                {
+                    _directoryService.Move(form.DestinationPath, form.SourcePath);
+                    Console.WriteLine();
+                    Console.WriteLine("Directorry moved successfully");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    form.RenderErrors();
+                }
+                GetCommandRedirect();
+            }       
+        }
+
+        public void Remove(OnePathForm form)
+        {
+            if (IsAthenticated())
+            {
+                form.Currentpath = GetCurrentPath();
+                if (form.IsValid)
+                {
+                    _directoryService.Remove(form.DestinationPath);
+                    Console.WriteLine();
+                    Console.WriteLine("Directorry removed successfully");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    form.RenderErrors();
+                }
+                GetCommandRedirect();
+            }         
+        }
+
+
+        
+        public void ChangeWorkingDirectory(OnePathForm form)
+        {
+            if (IsAthenticated())
+            {
+                form.Currentpath = GetCurrentPath();
+                if (form.IsValid)
+                {
+                    _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(form.DestinationPath); 
+                    Console.WriteLine();
+                    Console.WriteLine("Work directorry changed successfully");
+                    Console.WriteLine();
+                }
+                else
+                {
+                    form.RenderErrors();
+                }
+                GetCommandRedirect();
+            } 
+        }
+
+        public void GetDirectoryInfo(OnePathForm form)
+        {
+            if (IsAthenticated())
+            {
+                form.Currentpath = GetCurrentPath();
+                if (form.IsValid)
+                {
+                    var model = Mapper.Instance.Map<DirectoryInfoViewModel>(_directoryService.GetInfoByPath(form.DestinationPath));
+                    model.RenderViewModel();
+                }
+                else
+                {
+                    form.RenderErrors();
+                }
+                GetCommandRedirect();
             }
         }
+
+        public void Search(SearchDirectoryForm form)
+        {
+            if (IsAthenticated())
+            {
+                form.Currentpath = GetCurrentPath();
+                if (form.IsValid)
+                {
+                    var results =_directoryService.Search(form.DestinationPath, form.Pattern);
+                    if (results == null) throw new NullReferenceException();
+                    var model = new DirectorySearchVIewModel(results.ToArray());
+                    model.RenderViewModel();
+                }
+                else
+                {
+                    form.RenderErrors();
+                }
+                GetCommandRedirect();
+            }
+        }             
     }
 }

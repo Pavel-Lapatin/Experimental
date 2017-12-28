@@ -8,7 +8,8 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
     {
         public AccountMapping()
         {
-            CreateMap<Account, AccountDto>();
+            CreateMap<Account, AccountDto>()
+                .ForMember(m => m.RootDirectory, cfg => cfg.MapFrom(x => x.RootDirectory.FullPath));
         }
     }
 }

@@ -31,6 +31,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.2.2.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.2.2\lib\net45\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Extensions.CommandLineUtils, Version=1.1.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Extensions.CommandLineUtils.1.1.1\lib\net451\Microsoft.Extensions.CommandLineUtils.dll</HintPath>
     </Reference>
@@ -39,6 +42,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -47,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CommandLineCommands\CommandLine.cs" />
     <Compile Include="CommandLineCommands\CommandLineRoot.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\AddDirectoryCommand.cs" />
     <Compile Include="CommandLineCommands\DirectoryCommand\ChangeWorkDirectoryCommand.cs" />
@@ -85,6 +88,10 @@
     <Compile Include="Controllers\FileControllercs.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="events\RedirectEvent.cs" />
+    <Compile Include="Forms\AddDirectoryForm.cs" />
+    <Compile Include="Forms\SearchDirectoryForm.cs" />
+    <Compile Include="Forms\TwoPathForm.cs" />
+    <Compile Include="Forms\UploadDownloadFileForm.cs" />
     <Compile Include="Helpers\RedirectEventArgs.cs" />
     <Compile Include="Controllers\StartController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -94,9 +101,18 @@
     <Compile Include="Interfaces\ICommandLine.cs" />
     <Compile Include="Interfaces\IUserContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\CommandViewModel.cs" />
-    <Compile Include="ViewModels\LoginViewModel.cs" />
-    <Compile Include="ViewModels\StartViewModel.cs" />
+    <Compile Include="Forms\CommandForm.cs" />
+    <Compile Include="Forms\OnePathForm.cs" />
+    <Compile Include="Forms\LoginForm.cs" />
+    <Compile Include="ViewModels\DirectoryListViewModel.cs" />
+    <Compile Include="ViewModels\DirectoryInfoViewModel.cs" />
+    <Compile Include="ViewModels\DirectorySearchVIewModel.cs" />
+    <Compile Include="ViewModels\FileInfoVieModel.cs" />
+    <Compile Include="ViewModels\InfoUserViewModel.cs" />
+    <Compile Include="ViewModels\Startform.cs" />
+    <Compile Include="Forms\Form.cs" />
+    <Compile Include="ViewModels\AccountViewModel.cs" />
+    <Compile Include="ViewModels\StringListViewModel.cs" />
     <Compile Include="ViewModels\ViewModel.cs" />
   </ItemGroup>
   <ItemGroup>

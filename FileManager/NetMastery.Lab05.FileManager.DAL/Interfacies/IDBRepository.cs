@@ -16,7 +16,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Interfacies
         IEnumerable<TEntity> EagerFind<TCollectionEntity>(Expression<Func<TEntity, bool>> predicate,
             Expression<Func<TEntity, ICollection<TCollectionEntity>>> predicate2)
             where TCollectionEntity : class;
-        
+
+        IEnumerable<TEntity> EagerFind<TCollectionEntity, TCollectionEntity2>(Expression<Func<TEntity, bool>> predicate,
+            Expression<Func<TEntity, ICollection<TCollectionEntity>>> predicate2,
+            Expression<Func<TEntity, ICollection<TCollectionEntity2>>> predicate3)
+            where TCollectionEntity : class
+            where TCollectionEntity2 : class;
+
         void Add(TEntity entity);
         void AddRange(IEnumerable<TEntity> entities);
 

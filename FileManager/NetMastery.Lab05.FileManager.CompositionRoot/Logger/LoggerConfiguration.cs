@@ -15,7 +15,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                                  "(processId: {ProcessId}) " +
                                  "(threadId: {ThreadId}) " +
                                  "message lvl: [{Level:u3}] " +
-                                 "{NewLine}{Message:lj}")
+                                 "{NewLine}{Message:lj}{NewLine}")
                 .MinimumLevel.Debug()
                 .Enrich.With(new CommonLogEnricher())
                 .WriteTo.File("log-.txt",
@@ -24,7 +24,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                                  "threadId: {ThreadId} | " +
                                  "message lvl: [{Level:u3}] " +
                                  "{NewLine}stack trace: {StackTrace} " +
-                                 "{NewLine}{Message:lj}{NewLine}{Exception}")
+                                 "{NewLine}{Message:lj}{NewLine}{Exception}{NewLine}")
                 .CreateLogger();            
         }
     }

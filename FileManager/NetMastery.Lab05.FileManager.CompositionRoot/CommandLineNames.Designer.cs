@@ -115,7 +115,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to -?|-h|--help.
+        ///   Looks up a localized string similar to &quot;-?|-h|--help&quot;.
         /// </summary>
         internal static string HelpOption {
             get {

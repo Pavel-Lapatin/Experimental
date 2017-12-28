@@ -1,4 +1,5 @@
-﻿using NetMastery.Lab05.FileManager.UI.ViewModels;
+﻿using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,16 +10,14 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
     public class StartController : Controller
     {
-        StartViewModel StartViewModel { get; set; }
 
-        public StartController(StartViewModel model, IUserContext userContext) : base(userContext)
+        public StartController(IUserContext userContext, RedirectEvent redirect) : base(userContext, redirect)
         {
-            StartViewModel = model;
         }
 
-        public void Start()
+        public void Start(StartForm form)
         {
-            StartViewModel.Render();
+            form.Render();
             LoginGetRedirect();
         }
 

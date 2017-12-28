@@ -18,7 +18,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         }
         #endregion
 
-        public UserInfo GetInfoByLogin(string login)
+        public AccountDto GetInfoByLogin(string login)
         {
             return Mapper.Instance.Map<AccountDto>(_unitOfWork
                 .Repository<Account>().Find(x => x.Login == login).FirstOrDefault());

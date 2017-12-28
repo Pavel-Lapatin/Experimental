@@ -11,8 +11,9 @@ namespace NetMastery.Lab05.FileManager.Dto
         public long FileSize { get; set; }
         public int DownloadsNumber { get; set; }
         public string Extension { get; set; }
-        public virtual DirectoryStructureDto Directory { get; set; }
+        public string DirectoryPath { get; set; }
 
-        //public int FileHash { get; set; }
+
+
     }
 }

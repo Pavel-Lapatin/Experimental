@@ -1,38 +1,34 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.events;
-using NetMastery.Lab05.FileManager.UI.ViewModels;
+using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class LoginCommand : CommandLine
+    public class LoginCommand : CommandLineApplication
     {
-        public Func<LoginViewModel, LoginController> Controller;
+        public Func<LoginController> Controller;
 
-        public LoginCommand(Func<LoginViewModel, LoginController> getController, RedirectEvent redirectEvent) : base(redirectEvent)
+        public LoginCommand(Func<LoginController> getController) 
         {
             Controller = getController;
 
-            Name = CommandLineNames.LoginCommand;
-            HelpOption(CommandLineNames.HelpOption);
+            Name = "login";
+            HelpOption("-?|-h|--help");
 
-            var login = Option(CommandLineNames.LoginOption,
+            var login = Option("-l | --login<value>",
                 "Login  is required",
                 CommandOptionType.SingleValue);
-
-            var password = Option(CommandLineNames.PasswordOption,
+         
+            var password = Option("-p|--password <value>",
                 "Password is required",
                 CommandOptionType.SingleValue);
 
             OnExecute(() =>
             {
-                var loginVM = new LoginViewModel(login.Value(), password.Value());
-                var controller = Controller(loginVM);
-                controller.Redirect.Redirected += RedirecteRedirectEventHandler;
-                controller.Singin();
-                Options[1].Values.Clear();
-                Options[2].Values.Clear();
+                var form = new LoginForm(login.Values[0], password.Values[0]);
+                Controller().Singin(form);
                 return 0;
             });
 

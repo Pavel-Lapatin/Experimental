@@ -4,7 +4,7 @@ namespace NetMastery.FileManager.Bl.Interfaces
 {
     public interface IAuthenticationService
     {
-        UserInfo Signin(string login, string password);
+        AccountDto Signin(string login, string password);
         void Singup(string login, string password);
     }
 }

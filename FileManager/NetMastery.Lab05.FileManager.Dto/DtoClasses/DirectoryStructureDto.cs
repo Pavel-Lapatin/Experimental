@@ -12,11 +12,5 @@ namespace NetMastery.Lab05.FileManager.Dto
         public DateTime ModificationDate { get; set; }
         public long DirectorySize { get; set; }
         public string FullPath { get; set; }
-
-        public DirectoryStructureDto ParentDirectory { get; set; }
-
-        public ICollection<DirectoryStructureDto> ChildrenDirectories { get; set; }
-        public ICollection<FileStructureDto> Files { get; set; }
-
     }
 }

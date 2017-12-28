@@ -23,7 +23,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
         #endregion
 
-        public UserInfo Signin(string login, string password)
+        public AccountDto Signin(string login, string password)
         {
             if (password == null || login == null)
             {
@@ -55,17 +55,17 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (password == null || login == null)
             {
                 Log.Logger.Information($"Empty input used, authentication controller");
-                throw new NullReferenceException("Login and password must not be null or empty");
+                throw new NullReferenceException("");
             }
             else
             {
-                var newAccount = new AccountDto
+                var newAccount = new Account
                 {
                     AccountId = 0,
                     Login = login,
                     CreationDate = DateTime.Now,
                     Password = BCrypt.Net.BCrypt.HashPassword(password, BCrypt.Net.BCrypt.GenerateSalt()),
-                    RootDirectory = new DirectoryStructureDto
+                    RootDirectory = new DirectoryStructure
                     {
                         Name = login + "Root",
                         CreationDate = DateTime.Now,

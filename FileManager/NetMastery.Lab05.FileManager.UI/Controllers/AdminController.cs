@@ -1,10 +1,10 @@
-﻿//using NetMastery.Lab05.FileManager.ViewModels;
+﻿//using NetMastery.Lab05.FileManager.Forms;
 
 //namespace NetMastery.Lab05.FileManager.UI.Controllers
 //{
 //    public class AdminController : Controller
 //    {
-//        public AdminController(AppViewModel model) : base(model)
+//        public AdminController(AppForm model) : base(model)
 //        {
 //            if (Model.Role.Name != "Administrator")
 //            {
