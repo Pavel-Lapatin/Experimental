@@ -12,6 +12,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 
         public string Name
         {
+
             get { return name; }
             set
             {
@@ -24,7 +25,6 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 {
                     AddError(nameof(Name), "The characters: /,|,:,*,<,>,\\,~\" are not allowed");
                 }
-                
                 name = value;
             }
         }

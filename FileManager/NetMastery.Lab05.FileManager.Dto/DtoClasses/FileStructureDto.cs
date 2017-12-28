@@ -12,8 +12,5 @@ namespace NetMastery.Lab05.FileManager.Dto
         public int DownloadsNumber { get; set; }
         public string Extension { get; set; }
         public string DirectoryPath { get; set; }
-
-
-
     }
 }

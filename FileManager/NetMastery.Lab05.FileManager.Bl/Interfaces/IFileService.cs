@@ -1,7 +1,7 @@
 ﻿using NetMastery.Lab05.FileManager.Dto;
 using System.Collections.Generic;
 
-namespace NetMastery.FileManager.Bl.Interfaces
+namespace NetMastery.Lab05.FileManager.Bl.Interfaces
 {
     public interface IFileService
     {

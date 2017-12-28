@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using System;
@@ -13,7 +13,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
     {
         IUnitOfWork _unitOfWork;
         #region Constructors
-
         public FileService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;

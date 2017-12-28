@@ -9,12 +9,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class DownloadFileCommand : CommandLineApplication
     { 
         public Func<FileController> Controller;
-
         public DownloadFileCommand(Func<FileController> getController)
-        {
+        {  
             Controller = getController;
             Name = "download";
-
             var arguments = Argument("arguments", "Paths to download file and destination folder", true);
             OnExecute(() =>
             {

@@ -9,12 +9,12 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class UploadFileCommand : CommandLineApplication
     {
         public Func<FileController> Controller;
-
+        
         public UploadFileCommand(Func<FileController> getController)
         {
+            
             Controller = getController;
             Name = "upload";
-
             var arguments = Argument("path", "Paths", true);
             OnExecute(() =>
             {

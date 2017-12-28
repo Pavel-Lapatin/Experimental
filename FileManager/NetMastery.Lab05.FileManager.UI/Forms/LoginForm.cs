@@ -48,6 +48,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 
         public LoginForm()
         {
+            
             Login = null;
             Password = null;
         }

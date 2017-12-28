@@ -9,7 +9,6 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class ChangeWorkDirectoryCommand : CommandLineApplication
     {
         public Func<DirectoryController> Controller;
-
         public ChangeWorkDirectoryCommand(Func<DirectoryController> getController)
         {
             Controller = getController;

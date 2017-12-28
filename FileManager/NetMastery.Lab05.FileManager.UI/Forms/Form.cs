@@ -8,6 +8,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 {
     public abstract class Form
     {
+        public string CurrentPath { get; set; }
         public bool IsValid => Errors.Count == 0;
         public Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
         public virtual void RenderErrors()

@@ -9,9 +9,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class MoveDirectoryCommand : CommandLineApplication
     {
         public Func<DirectoryController> Controller;
-
+        
         public MoveDirectoryCommand(Func<DirectoryController> getController)
         {
+            
             Controller = getController;
             Name = "move";
             var arguments = Argument("path", "Paths for source and destination directories", true);

@@ -88,7 +88,6 @@
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Database\DatabaseInitializer.cs" />
     <Compile Include="DirectoryInitializer.cs" />
-    <Compile Include="Engine.cs" />
     <Compile Include="EnglishLocalisation.Designer.cs">
       <DependentUpon>EnglishLocalisation.resx</DependentUpon>
       <AutoGen>True</AutoGen>
@@ -106,10 +105,12 @@
     <EmbeddedResource Include="CommandLineNames.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>CommandLineNames.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="EnglishLocalisation.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

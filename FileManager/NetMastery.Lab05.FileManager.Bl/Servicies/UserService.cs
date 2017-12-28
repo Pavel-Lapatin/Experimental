@@ -3,7 +3,7 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using AutoMapper;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
-using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Bl.Interfaces;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -17,7 +17,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             _unitOfWork = unitOfWork;
         }
         #endregion
-
         public AccountDto GetInfoByLogin(string login)
         {
             return Mapper.Instance.Map<AccountDto>(_unitOfWork

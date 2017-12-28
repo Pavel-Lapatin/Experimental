@@ -20,6 +20,9 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 {
                     AddError(nameof(Pattern), "Pattern shouldn't be null or empty");
                 }
+                value = pattern;
+                
+
             }
         }
         public SearchDirectoryForm(string path, string pattern) : base(path)

@@ -9,12 +9,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class RemoveFileCommand : CommandLineApplication
     {
         public Func<FileController> Controller;
-
         public RemoveFileCommand(Func<FileController> getController)
         {
             Controller = getController;
             Name = "remove";
-
             var arguments = Argument("path", "Path to remove file", false);
             OnExecute(() =>
             {

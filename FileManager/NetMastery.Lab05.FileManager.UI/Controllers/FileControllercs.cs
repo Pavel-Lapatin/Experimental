@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Forms;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
@@ -20,7 +20,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     _fileService.Upload(form.SourcePath, form.DestinationPath);
@@ -40,7 +40,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     _fileService.Download(form.DestinationPath, form.SourcePath);
@@ -61,7 +61,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     _fileService.Move(form.DestinationPath, form.SourcePath);
@@ -81,7 +81,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     _fileService.Remove(form.DestinationPath);
@@ -101,7 +101,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     var model = Mapper.Instance.Map<FileInfoVieModel>(_fileService.GetFileByPath(form.DestinationPath));

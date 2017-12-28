@@ -8,7 +8,6 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class LogoffCommand : CommandLineApplication
     {
         public Func<LoginController> Controller;
-
         public LogoffCommand(Func<LoginController> getController)
         {
             Controller = getController;

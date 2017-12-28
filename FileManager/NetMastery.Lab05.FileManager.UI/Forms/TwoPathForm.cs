@@ -20,13 +20,18 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 {
                     AddError(nameof(SourcePath), "Source path shouldn't be null or empty");
                 }
-                value = CreatePath(value, Currentpath, nameof(SourcePath));
+                else
+                {
+                    value = CreatePath(value, CurrentPath, nameof(SourcePath));
+                }
                 sourcePath = value;
+
             }
         }
 
-        public TwoPathForm(string destinationPath, string sourcePath) : base(destinationPath)
+        public TwoPathForm(string destinationPath, string sourcePath) : base( destinationPath)
         {
+            SourcePath = sourcePath;
         }
     }
 }

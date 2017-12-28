@@ -1,4 +1,4 @@
-﻿using NetMastery.FileManager.Bl.Interfaces;
+﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using System;
 using System.Linq;
 using AutoMapper;
@@ -55,7 +55,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (password == null || login == null)
             {
                 Log.Logger.Information($"Empty input used, authentication controller");
-                throw new NullReferenceException("");
+                throw new NullReferenceException();
             }
             else
             {

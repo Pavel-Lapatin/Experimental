@@ -9,18 +9,16 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class AddDirectoryCommand : CommandLineApplication
     {
         public Func<DirectoryController> Controller;
-
+       
         public AddDirectoryCommand(Func<DirectoryController> getController)
-        { 
+        {
             Controller = getController;
-
             Name = "create";
             var arguments = Argument("path", "Path to new directory", true);
             OnExecute(() =>
             {
                 var form = new AddDirectoryForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
-                Controller()
-                .Add(form);
+                Controller().Add(form);
                 return 0;
             });
         }

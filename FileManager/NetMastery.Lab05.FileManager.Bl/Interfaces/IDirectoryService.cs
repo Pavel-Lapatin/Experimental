@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 
-namespace NetMastery.FileManager.Bl.Interfaces
+namespace NetMastery.Lab05.FileManager.Bl.Interfaces
 {
     public interface IDirectoryService
     {
@@ -12,7 +12,6 @@ namespace NetMastery.FileManager.Bl.Interfaces
         string ChangeWorkDirectory(string path);
         IEnumerable<string> Search(string path, string pattern);
         IEnumerable<string> List(string path);
-
         DirectoryStructureDto GetInfoByPath(string path);
     }
 }

@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Forms;
 using NetMastery.Lab05.FileManager.UI.ViewModels;

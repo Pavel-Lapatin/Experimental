@@ -17,6 +17,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
         public void Start(StartForm form)
         {
+            _userContext.CurrentPath = "test2";
             form.Render();
             LoginGetRedirect();
         }

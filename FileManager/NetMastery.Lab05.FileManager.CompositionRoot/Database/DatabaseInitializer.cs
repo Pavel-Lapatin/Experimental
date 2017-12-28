@@ -22,7 +22,6 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.Database
         {
             config = new TMigrationsConfiguration();
         }
-
         public void InitializeDatabase(TContext context)
         {
             if (context == null)

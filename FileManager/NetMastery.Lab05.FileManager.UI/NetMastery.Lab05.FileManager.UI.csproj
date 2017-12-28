@@ -76,11 +76,6 @@
     <Compile Include="CommandLineCommands\RootCommandChildren\LogoffCommand.cs" />
     <Compile Include="CommandLineCommands\RootCommandChildren\UserCommand.cs" />
     <Compile Include="CommandLineCommands\UserCommand\InfoUserCommand.cs" />
-    <Compile Include="CommandLineCommands\CommandLineNames.Designer.cs">
-      <DependentUpon>CommandLineNames.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\CommandController.cs" />
     <Compile Include="Controllers\Controller.cs" />
@@ -91,7 +86,6 @@
     <Compile Include="Forms\AddDirectoryForm.cs" />
     <Compile Include="Forms\SearchDirectoryForm.cs" />
     <Compile Include="Forms\TwoPathForm.cs" />
-    <Compile Include="Forms\UploadDownloadFileForm.cs" />
     <Compile Include="Helpers\RedirectEventArgs.cs" />
     <Compile Include="Controllers\StartController.cs" />
     <Compile Include="Controllers\UserController.cs" />
@@ -133,13 +127,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="CommandLineCommands\CommandLineNames.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommandLineNames.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
     <EmbeddedResource Include="CommandLineCommands\EnglishLocalisation.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup />

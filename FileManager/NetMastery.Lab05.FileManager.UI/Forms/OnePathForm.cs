@@ -10,9 +10,9 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 {
     public class OnePathForm : Form
     {
-        public string Currentpath { get; set; }
-
         public string destinationPath;
+
+        public string Test { get; set; }
 
         public string DestinationPath
         {
@@ -20,18 +20,16 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             set
             {
                 RemoveError(nameof(DestinationPath));
-                if(string.IsNullOrEmpty(destinationPath))
+                if(string.IsNullOrEmpty(value))
                 {
                     AddError(nameof(DestinationPath), "Destination path shouldn't be null or empty");
                 }
-                value = CreatePath(value, Currentpath, nameof(DestinationPath));
+                else
+                {
+                    value = CreatePath(value, CurrentPath, "Destination path");
+                }
                 destinationPath = value;
             }
-        }
-
-        public OnePathForm()
-        {
-            destinationPath = null;
         }
 
         public OnePathForm(string destinationPath)

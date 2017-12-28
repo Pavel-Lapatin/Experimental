@@ -15,7 +15,6 @@ namespace NetMastery.Lab05.FileManager.Domain
         public DateTime CreationDate { get; set; }
         public long MaxStorageSize { get; set; }
         public long CurentStorageSize { get; set; }
-
         public virtual DirectoryStructure RootDirectory { get; set; }
     }
 }

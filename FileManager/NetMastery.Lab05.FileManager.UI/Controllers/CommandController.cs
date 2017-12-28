@@ -18,7 +18,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if(_userContext.IsAuthenticated)
             {
-                var form = new CommandForm { CurrentPath = _userContext.CurrentPath};
+                var form = new CommandForm();
                 form.RenderForm();
                 return Console.ReadLine();
             }

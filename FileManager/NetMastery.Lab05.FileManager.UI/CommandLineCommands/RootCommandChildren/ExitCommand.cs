@@ -10,9 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
         public ExitCommand()
         {
             Name = "exit";
-
             HelpOption("-?|-h|--help");
-
             OnExecute(() =>
             {
                 Environment.Exit(0);

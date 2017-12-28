@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Forms;
@@ -24,7 +24,6 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
                 if(form.IsValid)
                 {
                     _directoryService.Add(form.DestinationPath, form.Name);
@@ -44,12 +43,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
                 if (form.IsValid)
                 {
                     var result = _directoryService.List(form.DestinationPath).ToArray();
                     if (result == null) throw new NullReferenceException();
-                    var model = new DirectoryListViewModel(result, form.Currentpath);
+                    var model = new DirectoryListViewModel(result, form.CurrentPath);
                     model.RenderViewModel();
                 }
                 else
@@ -64,7 +62,6 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
                 if (form.IsValid)
                 {
                     _directoryService.Move(form.DestinationPath, form.SourcePath);
@@ -84,7 +81,6 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
                 if (form.IsValid)
                 {
                     _directoryService.Remove(form.DestinationPath);
@@ -106,7 +102,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(form.DestinationPath); 
@@ -126,7 +122,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-                form.Currentpath = GetCurrentPath();
+                
                 if (form.IsValid)
                 {
                     var model = Mapper.Instance.Map<DirectoryInfoViewModel>(_directoryService.GetInfoByPath(form.DestinationPath));
@@ -143,10 +139,10 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         public void Search(SearchDirectoryForm form)
         {
             if (IsAthenticated())
-            {
-                form.Currentpath = GetCurrentPath();
+            {           
                 if (form.IsValid)
                 {
+                    
                     var results =_directoryService.Search(form.DestinationPath, form.Pattern);
                     if (results == null) throw new NullReferenceException();
                     var model = new DirectorySearchVIewModel(results.ToArray());

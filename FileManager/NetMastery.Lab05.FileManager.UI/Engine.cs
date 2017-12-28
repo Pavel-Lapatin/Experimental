@@ -58,8 +58,6 @@ namespace NetMastery.Lab05.FileManager.UI
             }
         }
 
-
-
         public string ExecuteControllerMethod()
         {
             var method = _parameters == null 

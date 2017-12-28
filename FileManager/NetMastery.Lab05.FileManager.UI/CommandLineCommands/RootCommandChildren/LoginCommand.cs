@@ -9,7 +9,6 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class LoginCommand : CommandLineApplication
     {
         public Func<LoginController> Controller;
-
         public LoginCommand(Func<LoginController> getController) 
         {
             Controller = getController;
@@ -27,7 +26,11 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
 
             OnExecute(() =>
             {
-                var form = new LoginForm(login.Values[0], password.Values[0]);
+                var l = login.Values[0];
+                var p = password.Values[0];
+                login.Values.Clear();
+                password.Values.Clear();
+                var form = new LoginForm(l, p);
                 Controller().Singin(form);
                 return 0;
             });

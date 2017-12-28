@@ -6,7 +6,7 @@ using System.IO;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
-using NetMastery.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using Serilog;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
@@ -185,7 +185,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 .Repository<DirectoryStructure>().Find(x => x.FullPath == path).FirstOrDefault());
         }
 
-
         private void RecursiveSearch(string pattern, IList<string> results, DirectoryStructure directory)
         {          
             if (directory.ChildrenDirectories != null && directory.ChildrenDirectories.Count != 0)
@@ -211,7 +210,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
         }
 
-
         private void RecursiveRemove(DirectoryStructure rootDirectory)
         {
             if (rootDirectory.ChildrenDirectories != null || rootDirectory.ChildrenDirectories.Count != 0)
@@ -230,13 +228,9 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
 
         }
-
         public void Dispose()
         {
             _unitOfWork.Dispose();
-
         }
-
-       
     }
 }
