@@ -27,7 +27,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (password == null || login == null)
             {
-                throw new NullReferenceException("Login and password must not be null or empty");
+                throw new ArgumentNullException("Login and password must not be null or empty");
             }
             var account = Mapper.Instance.Map<AccountDto>(_unitOfWork.Repository<Account>().Find(x => x.Login == login).FirstOrDefault());
             if (account != null)
@@ -46,7 +46,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             else
             {
                 Log.Logger.Information($"Unathorized acceess. Login doesn't exist");
-                throw new NullReferenceException("Account with such login doesn't exist");
+                throw new ArgumentNullException("Account with such login doesn't exist");
             }
         }
 
@@ -55,7 +55,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (password == null || login == null)
             {
                 Log.Logger.Information($"Empty input used, authentication controller");
-                throw new NullReferenceException();
+                throw new ArgumentNullException();
             }
             else
             {

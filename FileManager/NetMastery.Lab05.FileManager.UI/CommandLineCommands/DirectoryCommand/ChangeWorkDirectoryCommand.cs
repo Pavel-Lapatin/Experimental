@@ -16,8 +16,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to current directory", true);
             OnExecute(() =>
             {
-                var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
-                Controller().ChangeWorkingDirectory(form);
+                //var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
+                Controller().ChangeWorkingDirectory(arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

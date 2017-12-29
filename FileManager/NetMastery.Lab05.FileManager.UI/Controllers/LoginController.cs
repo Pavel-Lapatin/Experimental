@@ -18,8 +18,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             _authenticationService = authenticationService;
         }
 
-        public void Singin(LoginForm form)
+        public void Singin(string login, string password)
         {
+            var form = new LoginForm(_userContext.CurrentPath, login, password);
             if (form.IsValid)
             {
                 var accountViewModel = Mapper.Instance.Map<AccountViewModel>(_authenticationService.Signin(form.Login, form.Password));

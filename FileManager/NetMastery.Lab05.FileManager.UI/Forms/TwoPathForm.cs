@@ -22,14 +22,14 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 }
                 else
                 {
-                    value = CreatePath(value, CurrentPath, nameof(SourcePath));
+                    value = CreatePath(value, _currentPath, nameof(SourcePath));
                 }
                 sourcePath = value;
 
             }
         }
 
-        public TwoPathForm(string destinationPath, string sourcePath) : base( destinationPath)
+        public TwoPathForm(string currentPath, string destinationPath, string sourcePath) : base(currentPath, destinationPath)
         {
             SourcePath = sourcePath;
         }

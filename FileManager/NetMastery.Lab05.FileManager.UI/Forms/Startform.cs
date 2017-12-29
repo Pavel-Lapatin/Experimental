@@ -10,7 +10,9 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
     {
         const string WelcomeNote = "Welcome to File Manager v.1.0.0";
         const string ContactInformation = "Contact informations: e-mail - plapatin@gmail.com";
-
+        public StartForm(string currentPath) : base(currentPath)
+        {
+        }
         public void Render()
         {
             Console.WriteLine(WelcomeNote);

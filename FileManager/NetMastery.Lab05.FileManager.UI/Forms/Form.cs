@@ -8,13 +8,19 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 {
     public abstract class Form
     {
-        public string CurrentPath { get; set; }
+        protected string _currentPath { get; set; }
         public bool IsValid => Errors.Count == 0;
         public Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        protected Form(string currentPath)
+        {
+            _currentPath = currentPath;
+        }
+
         public virtual void RenderErrors()
         {
             foreach (var property in Errors)
             {
+                Console.WriteLine();
                 Console.WriteLine($"{property.Key} errors: ");
                 Console.WriteLine("----------------------");
                 foreach (var error in property.Value)
@@ -52,5 +58,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
         {
             Errors.Clear();
         }
+
+        
     }
 }

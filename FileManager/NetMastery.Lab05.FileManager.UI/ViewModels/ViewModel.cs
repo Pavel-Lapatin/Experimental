@@ -15,11 +15,12 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             if (Messages.Count > 0)
             {
                 Console.WriteLine();
-                Console.Write("Message: ");
+                Console.WriteLine("Messages: ");
                 foreach (var message in Messages)
                 {
                     Console.WriteLine(message);
                 }
+                Console.WriteLine();
             }
         }
         public abstract void RenderViewModel();

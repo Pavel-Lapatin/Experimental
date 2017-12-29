@@ -21,7 +21,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             if(IsAthenticated())
             {
                 var model = Mapper.Instance.Map<InfoUserViewModel>(_userService.GetInfoByLogin(_userContext.Login));
-                if (model == null) throw new NullReferenceException();
+                if (model == null) throw new ArgumentNullException();
                 model.RenderViewModel();
             } 
         }

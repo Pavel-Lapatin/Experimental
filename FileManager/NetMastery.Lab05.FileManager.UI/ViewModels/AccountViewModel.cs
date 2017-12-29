@@ -17,6 +17,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             Console.WriteLine("Account info: ");
             Console.WriteLine($"Login: {Login}");
             Console.WriteLine($"Root directory: {RootDirectory}");
+            Console.WriteLine();
         }
     }
 }

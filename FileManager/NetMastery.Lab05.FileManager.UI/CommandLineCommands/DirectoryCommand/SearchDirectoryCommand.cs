@@ -17,9 +17,9 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to the root directoey for recursive search", true);
             OnExecute(() =>
             {
-                var form = new SearchDirectoryForm(arguments.Values[arguments.Values.Count - 2], 
-                    arguments.Values[arguments.Values.Count - 1]);
-                Controller().Search(form);
+                //var form = new SearchDirectoryForm(arguments.Values[arguments.Values.Count - 2], 
+                    //arguments.Values[arguments.Values.Count - 1]);
+                Controller().Search(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

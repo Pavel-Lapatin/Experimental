@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Forms;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
@@ -20,10 +19,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             
         }
 
-        public void Add(AddDirectoryForm form)
+        public void Add(string destinationPath, string name)
         {
             if (IsAthenticated())
             {
+                var form = new AddDirectoryForm(_userContext.CurrentPath, destinationPath, name);
                 if(form.IsValid)
                 {
                     _directoryService.Add(form.DestinationPath, form.Name);
@@ -39,15 +39,17 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void List(OnePathForm form)
+        public void List(string destinationPath)
         {
             if (IsAthenticated())
             {
+
+                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
                     var result = _directoryService.List(form.DestinationPath).ToArray();
-                    if (result == null) throw new NullReferenceException();
-                    var model = new DirectoryListViewModel(result, form.CurrentPath);
+                    if (result == null) throw new ArgumentNullException();
+                    var model = new DirectoryListViewModel(result, _userContext.CurrentPath);
                     model.RenderViewModel();
                 }
                 else
@@ -58,10 +60,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             } 
         }
 
-        public void Move(TwoPathForm form)
+        public void Move(string destinationPath, string sourcePath)
         {
             if (IsAthenticated())
             {
+                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
                 if (form.IsValid)
                 {
                     _directoryService.Move(form.DestinationPath, form.SourcePath);
@@ -77,10 +80,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }       
         }
 
-        public void Remove(OnePathForm form)
+        public void Remove(string destinationPath)
         {
             if (IsAthenticated())
             {
+                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
                     _directoryService.Remove(form.DestinationPath);
@@ -98,11 +102,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
 
         
-        public void ChangeWorkingDirectory(OnePathForm form)
+        public void ChangeWorkingDirectory(string destinationPath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
                     _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(form.DestinationPath); 
@@ -118,11 +122,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             } 
         }
 
-        public void GetDirectoryInfo(OnePathForm form)
+        public void GetDirectoryInfo(string destinationPath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
                     var model = Mapper.Instance.Map<DirectoryInfoViewModel>(_directoryService.GetInfoByPath(form.DestinationPath));
@@ -136,15 +140,16 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void Search(SearchDirectoryForm form)
+        public void Search(string destinationPath, string sourcePath)
         {
             if (IsAthenticated())
-            {           
+            {
+                var form = new SearchDirectoryForm(_userContext.CurrentPath, destinationPath, sourcePath);
                 if (form.IsValid)
                 {
                     
                     var results =_directoryService.Search(form.DestinationPath, form.Pattern);
-                    if (results == null) throw new NullReferenceException();
+                    if (results == null) throw new ArgumentNullException();
                     var model = new DirectorySearchVIewModel(results.ToArray());
                     model.RenderViewModel();
                 }

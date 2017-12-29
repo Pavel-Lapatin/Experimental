@@ -18,8 +18,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to directory fo render child directories and folders", false);
             OnExecute(() =>
             {
-                var formPath = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
-                Controller().List(formPath);
+                //var formPath = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
+                Controller().List(arguments.Values[arguments.Values.Count - 1]);
 
                 return 0;
             });

@@ -46,14 +46,14 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             }
         }
 
-        public LoginForm()
+        public LoginForm(string currentPath) : base(currentPath)
         {
             
             Login = null;
             Password = null;
         }
 
-        public LoginForm(string login, string password)
+        public LoginForm(string currentPath, string login, string password) : base(currentPath)
         {
             Login = login;
             Password = password;
@@ -65,7 +65,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             Console.WriteLine("Please, signin in the system");
             Console.WriteLine("Command: login -l <userName> -p <password>");
             Console.WriteLine();
-            Console.Write("login -l ");
+            Console.Write($"{_currentPath}--> login -l ");
         }
     }
 }

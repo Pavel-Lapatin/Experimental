@@ -17,8 +17,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to new directory", true);
             OnExecute(() =>
             {
-                var form = new AddDirectoryForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
-                Controller().Add(form);
+                //var form = new AddDirectoryForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
+                Controller().Add(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

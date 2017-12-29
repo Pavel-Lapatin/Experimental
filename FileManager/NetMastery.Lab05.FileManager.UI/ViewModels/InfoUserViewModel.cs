@@ -22,7 +22,8 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             Console.WriteLine($"Creation date: {CreationDate.ToString("yy-MM-dd")}");
             Console.WriteLine($"Current Storage Size: {CurentStorageSize}");
             Console.WriteLine($"Max Storage Size: {MaxStorageSize }");
-            Console.WriteLine($"Root directory: {RootDirectory}"); 
+            Console.WriteLine($"Root directory: {RootDirectory}");
+            Console.WriteLine();
         }
     }
 }

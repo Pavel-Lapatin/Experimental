@@ -20,6 +20,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             {
                 Console.WriteLine(str);
             };
+            Console.WriteLine();
         }
     }
 }

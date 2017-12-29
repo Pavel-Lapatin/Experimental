@@ -29,7 +29,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             }
         }
 
-        public AddDirectoryForm(string destinationPath, string name) : base(destinationPath)
+        public AddDirectoryForm(string currentPath, string destinationPath, string name) : base(currentPath, destinationPath)
         {
         }
     }

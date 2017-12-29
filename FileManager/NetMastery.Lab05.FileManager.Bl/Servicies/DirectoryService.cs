@@ -82,11 +82,11 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
             if (currentDirectoryFrom == null || currentDirectoryTo == null)
             {
-                throw new NullReferenceException("Directory doesn't exist");
+                throw new ArgumentNullException("Directory doesn't exist");
             }
             if (currentDirectoryTo.FullPath.Contains(currentDirectoryFrom.FullPath))
             {
-                throw new NullReferenceException("Distanation directory is subfolder of source directory");
+                throw new ArgumentNullException("Distanation directory is subfolder of source directory");
             }
             currentDirectoryFrom.ParentDirectory = currentDirectoryTo;
             currentDirectoryFrom.FullPath = currentDirectoryTo.FullPath + "\\" + currentDirectoryFrom.Name;
@@ -150,7 +150,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         public IEnumerable<string> List(string path)
         {
             var directory = _unitOfWork.Repository<DirectoryStructure>().EagerFind(x => x.FullPath == path, x => x.Files).FirstOrDefault();
-            if (directory == null) throw new NullReferenceException();
+            if (directory == null) throw new ArgumentNullException();
             var result = new List<string>();
             var files = directory.Files.Select(x => x.Name + x.Extension).ToList();
             var directories = directory.ChildrenDirectories.Select(x => x.Name).ToArray();

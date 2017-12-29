@@ -18,9 +18,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Paths for source and destination directories", true);
             OnExecute(() =>
             {
-                var form = new TwoPathForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
-                Controller().Move(form);
-                arguments.Values.Clear();
+                //var form = new TwoPathForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
+                Controller().Move(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

@@ -15,23 +15,20 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
 
             Name = "login";
             HelpOption("-?|-h|--help");
-
             var login = Option("-l | --login<value>",
                 "Login  is required",
                 CommandOptionType.SingleValue);
-         
             var password = Option("-p|--password <value>",
                 "Password is required",
                 CommandOptionType.SingleValue);
-
             OnExecute(() =>
             {
                 var l = login.Values[0];
                 var p = password.Values[0];
                 login.Values.Clear();
                 password.Values.Clear();
-                var form = new LoginForm(l, p);
-                Controller().Singin(form);
+                //var form = new LoginForm(l, p);
+                Controller().Singin(l, p);
                 return 0;
             });
 

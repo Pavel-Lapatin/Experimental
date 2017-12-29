@@ -23,6 +23,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             Console.WriteLine($"Modification date: {ModificationDate.ToString("yy-MM-dd")}");
             Console.WriteLine($"DirectorySize: {DirectorySize}");
             Console.WriteLine($"FullPath: {FullPath}");
+            Console.WriteLine();
         }
     }
 

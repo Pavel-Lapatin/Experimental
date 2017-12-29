@@ -79,20 +79,10 @@
     <Compile Include="AutoMapping\Configuration\InfoDirectoryVMOnDirectoryStructureDto.cs" />
     <Compile Include="AutoMapping\Configuration\InfoFileVMOnFileDto.cs" />
     <Compile Include="AutoMapping\Configuration\InfoUserVMOnAccountDtoMapping.cs" />
-    <Compile Include="CommandLineNames.Designer.cs">
-      <DependentUpon>CommandLineNames.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="CompRoot.cs" />
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="Database\DatabaseInitializer.cs" />
     <Compile Include="DirectoryInitializer.cs" />
-    <Compile Include="EnglishLocalisation.Designer.cs">
-      <DependentUpon>EnglishLocalisation.resx</DependentUpon>
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-    </Compile>
     <Compile Include="Logger\LoggerConfiguration.cs" />
     <Compile Include="Logger\ProcessIdEnriacher.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -100,18 +90,6 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="CommandLineNames.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>CommandLineNames.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="EnglishLocalisation.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>EnglishLocalisation.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\NetMastery.Lab05.FileManager.Bl\NetMastery.Lab05.FileManager.Bl.csproj">

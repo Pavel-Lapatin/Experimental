@@ -16,11 +16,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             _fileService = fileService;
         }
 
-        public void Upload(TwoPathForm form)
+        public void Upload(string destinationPath, string sourcePath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
                 if (form.IsValid)
                 {
                     _fileService.Upload(form.SourcePath, form.DestinationPath);
@@ -36,11 +36,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             } 
         }
 
-        public void Download(TwoPathForm form)
+        public void Download(string destinationPath, string sourcePath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
                 if (form.IsValid)
                 {
                     _fileService.Download(form.DestinationPath, form.SourcePath);
@@ -57,11 +57,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         }
     
 
-        public void Move(TwoPathForm form)
+        public void Move(string destinationPath, string sourcePath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
                 if (form.IsValid)
                 {
                     _fileService.Move(form.DestinationPath, form.SourcePath);
@@ -77,11 +77,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void Remove(OnePathForm form)
+        public void Remove(string destinationPath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
                     _fileService.Remove(form.DestinationPath);
@@ -97,15 +97,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void GetFleInfo(OnePathForm form)
+        public void GetFleInfo(string destinationPath)
         {
             if (IsAthenticated())
             {
-                
+                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
                     var model = Mapper.Instance.Map<FileInfoVieModel>(_fileService.GetFileByPath(form.DestinationPath));
-                    if (model == null) throw new NullReferenceException();
+                    if (model == null) throw new ArgumentNullException();
                     model.RenderViewModel();
                 }
                 else
@@ -115,15 +115,5 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 GetCommandRedirect();
             }
         }
-
-
-
-
-
-
-
-
-
-
     }
 }

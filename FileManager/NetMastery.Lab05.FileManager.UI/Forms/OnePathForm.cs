@@ -26,13 +26,13 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 }
                 else
                 {
-                    value = CreatePath(value, CurrentPath, "Destination path");
+                    value = CreatePath(value, _currentPath, "Destination path");
                 }
                 destinationPath = value;
             }
         }
 
-        public OnePathForm(string destinationPath)
+        public OnePathForm(string currentPath, string destinationPath) : base(currentPath)
         {
             DestinationPath = destinationPath;
         }

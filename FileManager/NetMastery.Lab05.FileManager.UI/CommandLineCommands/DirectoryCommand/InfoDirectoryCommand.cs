@@ -16,9 +16,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to directory for render informationn", false);
             OnExecute(() =>
             {
-                var form = new OnePathForm(arguments.Value);
-                var ctr = Controller();
-                ctr.GetDirectoryInfo(form); 
+                //var form = new OnePathForm(arguments.Value);
+                Controller().GetDirectoryInfo(arguments.Values[arguments.Values.Count - 1]); 
                 return 0;
             });
 

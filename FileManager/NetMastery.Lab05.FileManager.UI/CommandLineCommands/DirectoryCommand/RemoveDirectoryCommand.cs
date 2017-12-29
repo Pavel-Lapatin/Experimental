@@ -16,9 +16,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to the directory for removing", true);
             OnExecute(() =>
             {
-                var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
-                Controller().Remove(form);
-                
+                //var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
+                Controller().Remove(arguments.Values[arguments.Values.Count - 1]);    
                 return 0;
             });
         }

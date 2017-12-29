@@ -14,7 +14,7 @@ namespace NetMastery.Lab05.FileManager.UI
     {
         Type _controller = typeof(StartController);
         string _method = "Start";
-        object[] _parameters = new object[] { new StartForm() };
+        object[] _parameters = new object[] { new StartForm("~\\") };
 
         public Func<Type, Controller> _getController;
         CommandLineApplication _cmd;
@@ -43,16 +43,11 @@ namespace NetMastery.Lab05.FileManager.UI
                         e.Command.ShowHelp();
                         Redirect(typeof(CommandController), "CommandGet", null);
                     }
-                   
-                    catch (NullReferenceException e)
-                    {
-                        Log.Logger.Debug(e.Message);
-                        Console.WriteLine(e.Message);
-                    }
                     catch (ArgumentException e)
                     {
                         Log.Logger.Debug(e.Message);
                         Console.WriteLine(e.Message);
+                        Redirect(typeof(CommandController), "CommandGet", null);
                     }
                 }
             }

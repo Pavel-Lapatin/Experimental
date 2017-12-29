@@ -33,7 +33,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             {
                 ControllerType = typeof(LoginController),
                 Method = "SigninGet",
-                Parameters = new[] { new LoginForm() }
+                Parameters = new[] { new LoginForm(_userContext.CurrentPath) }
             });
         }
 
@@ -53,7 +53,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             {
                 return _userContext.CurrentPath;
             }
-            throw new NullReferenceException();
+            throw new ArgumentNullException();
         }
     }
 }

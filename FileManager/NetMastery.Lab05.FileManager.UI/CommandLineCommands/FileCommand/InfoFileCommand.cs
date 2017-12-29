@@ -17,8 +17,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to the file for rendering its info", false);
             OnExecute(() =>
             {
-                var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
-                Controller().GetFleInfo(form);
+                //var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
+                Controller().GetFleInfo(arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }
