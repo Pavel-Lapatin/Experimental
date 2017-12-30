@@ -14,6 +14,7 @@ using NetMastery.Lab05.FileManager.UI.Forms;
 using System.Linq;
 using System.Reflection;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot
 {
@@ -37,42 +38,23 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                .SingleInstance();
 
             builder.RegisterAssemblyTypes(uiAssembly)
-                .Where(t=> t.IsSubclassOf(typeof(CommandLineApplication)));
+                .Where(t=> t.IsSubclassOf(typeof(CommandLineApplication))
+                || t.IsSubclassOf(typeof(Form)));
 
-            //var item = builder.RegisterAssemblyTypes(uiAssembly)
-            //    .AssignableTo<Form>()
-            //    .OnActivated( args =>
-            //    {
-            //        var form = args.Instance as Form;
-            //        if(form != null)
-            //        {
-            //            form.UserContext = args.Context.Resolve<IUserContext>();
-            //        }
-            //    });
 
             builder.RegisterAssemblyTypes(uiAssembly)
                 .Where(t => t.IsSubclassOf(typeof(Controller)))
                 .WithParameter(new TypedParameter(typeof(RedirectEvent), rerdirectEvent));
 
-            //builder.RegisterType<OnePathForm>().OnActivating(c => c.Instance.UserContext = c.Context.Resolve<IUserContext>());
-            //builder.RegisterType<LoginForm>().OnActivating(c => c.Instance.UserContext = context);
-            //builder.RegisterType<CommandForm>().OnActivating(c => c.Instance.UserContext = c.Context.Resolve<IUserContext>());
+            builder.Register(c=> new DBRepositoryFactory())
+                              .As<IDBRepositoryFactory>();
 
-            builder.RegisterType<OnePathForm>();
-            builder.RegisterType<LoginForm>();
-            builder.RegisterType<CommandForm>();
-            builder.RegisterType<TwoPathForm>();
-            builder.RegisterType<AddDirectoryForm>();
-            builder.RegisterType<SearchDirectoryForm>();
+            builder.RegisterType<FSRepositoryFactory>()
+                   .As<IFSRepositoryFactory>();
 
-
-            //builder.Register(c => new OnePathForm { CurrentPath = c.Resolve<IUserContext>().CurrentPath });
-            //builder.Register(c => new LoginForm { CurrentPath = c.Resolve<IUserContext>().CurrentPath });
-            //builder.Register(c => new CommandForm { CurrentPath = c.Resolve<IUserContext>().CurrentPath });
 
             builder.RegisterType<AuthenticationService>()
-                   .As<IAuthenticationService>()
-                   .InstancePerLifetimeScope();
+                   .As<IAuthenticationService>();
 
             builder.RegisterType<FileService>()
                    .As<IFileService>()
@@ -93,27 +75,25 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                        typeof(FileManagerDbContext),
                        new FileManagerDbContext()));
 
-            builder.Register(c => new FileCommand(
-                c.Resolve<AddDirectoryCommand>(),
-                c.Resolve<ChangeWorkDirectoryCommand>(),
-                c.Resolve<InfoDirectoryCommand>(),
-                c.Resolve<MoveDirectoryCommand>(),
-                c.Resolve<RemoveDirectoryCommand>(),
-                c.Resolve<SearchDirectoryCommand>(),
-                c.Resolve<ListDirectoryCommand>()));
-
-            builder.Register(c => new UserCommand(
-                c.Resolve<InfoUserCommand>()));
-
-
             builder.Register(c => new DirectoryCommand(
                 c.Resolve<AddDirectoryCommand>(),
                 c.Resolve<ChangeWorkDirectoryCommand>(),
                 c.Resolve<InfoDirectoryCommand>(),
                 c.Resolve<MoveDirectoryCommand>(),
-                c.Resolve<RemoveDirectoryCommand>(),
                 c.Resolve<SearchDirectoryCommand>(),
-                c.Resolve<ListDirectoryCommand>()));
+                c.Resolve<ListDirectoryCommand>(),
+                c.Resolve<RemoveDirectoryCommand>()));
+
+            builder.Register(c => new UserCommand(
+                c.Resolve<InfoUserCommand>()));
+
+
+            builder.Register(c => new FileCommand(
+                c.Resolve<DownloadFileCommand>(),
+                c.Resolve<UploadFileCommand>(),
+                c.Resolve<MoveFileCommand>(),
+                c.Resolve<RemoveFileCommand>(),
+                c.Resolve<InfoFileCommand>()));
 
 
             builder.Register(c => new CommandLineApplicationRoot(

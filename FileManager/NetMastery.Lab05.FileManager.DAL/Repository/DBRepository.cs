@@ -19,6 +19,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             Context.Set<TEntity>().Add(entity);
         }
+
+        public void Update(IEnumerable<TEntity> entity)
+        {
+            Context.Entry(entity).State = EntityState.Modified;
+        }
         public void AddRange(IEnumerable<TEntity> entities)
         {
             Context.Set<TEntity>().AddRange(entities);
@@ -31,6 +36,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
         }
+        public IEnumerable<TEntity> EagerFind(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, TEntity>> predicate2)
+        {
+            return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
+        }
+
         public IEnumerable<TEntity> EagerFind<TCollectionEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, ICollection<TCollectionEntity>>> predicate2) where TCollectionEntity : class
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();

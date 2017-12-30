@@ -29,6 +29,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _userContext.Login = accountViewModel.Login;
                     _userContext.CurrentPath = accountViewModel.RootDirectory;
+                    _userContext.RootDirectory = accountViewModel.RootDirectory;
                     accountViewModel.Messages.Add($"Welcome to the system, {accountViewModel.Login}");
                 }
                 accountViewModel.RenderMessages();

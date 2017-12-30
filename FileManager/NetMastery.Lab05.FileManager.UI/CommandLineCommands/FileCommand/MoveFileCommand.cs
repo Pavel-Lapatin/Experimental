@@ -7,14 +7,14 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    class MoveFileCommand : CommandLineApplication
+    public class MoveFileCommand : CommandLineApplication
     { 
         public Func<FileController> Controller;
         public MoveFileCommand(Func<FileController> getController)
         { 
             Controller = getController;
             Name ="move";
-            var arguments = Argument("path", "Paths to source and destination files", false);
+            var arguments = Argument("path", "Paths to source and destination files", true);
             OnExecute(() =>
             {
                 //var form = new TwoPathForm(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);

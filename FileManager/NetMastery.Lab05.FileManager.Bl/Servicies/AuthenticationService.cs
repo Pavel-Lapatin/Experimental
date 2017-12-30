@@ -6,6 +6,7 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
 using Serilog;
+using NetMastery.Lab05.FileManager.Bl.Exceptions;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -27,9 +28,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (password == null || login == null)
             {
-                throw new ArgumentNullException("Login and password must not be null or empty");
+                Log.Logger.Debug($"AuthenticationService -- Signin -- input parameters are null");
+                throw new FileManagerBlArgumentException("Login and password must not be null or empty");
             }
-            var account = Mapper.Instance.Map<AccountDto>(_unitOfWork.Repository<Account>().Find(x => x.Login == login).FirstOrDefault());
+            var account = Mapper.Instance.Map<AccountDto>(_unitOfWork.DBRepository<Account>().Find(x => x.Login == login).FirstOrDefault());
             if (account != null)
             {
                 if (BCrypt.Net.BCrypt.Verify(password, account.Password))
@@ -40,25 +42,27 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 else
                 {
                     Log.Logger.Information($"Unathorized acceess: login {login}");
-                    throw new ArgumentException("Password is wrong");
+                    throw new FileManagerBlArgumentException("Password is wrong");
                 }
             }
             else
             {
                 Log.Logger.Information($"Unathorized acceess. Login doesn't exist");
-                throw new ArgumentNullException("Account with such login doesn't exist");
+                throw new FileManagerBlArgumentException("Account with such login doesn't exist");
             }
         }
+
 
         public void Singup(string login, string password)
         {
             if (password == null || login == null)
             {
-                Log.Logger.Information($"Empty input used, authentication controller");
-                throw new ArgumentNullException();
+                Log.Logger.Debug($"AuthenticationService -- Signin -- input parameters are null");
+                throw new FileManagerBlArgumentException("Login and password must not be null or empty");
             }
             else
             {
+                Log.Logger.Information($"Creating new account {login} ...");
                 var newAccount = new Account
                 {
                     AccountId = 0,
@@ -74,9 +78,9 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
                     }
                 };
-                _unitOfWork.Repository<Account>().Add(Mapper.Instance.Map<Account>(newAccount));
+                _unitOfWork.DBRepository<Account>().Add(Mapper.Instance.Map<Account>(newAccount));
                 _unitOfWork.Commit();
-                Log.Logger.Information($"Create new account: {login}");
+                Log.Logger.Information($"Created successfully");  
             }
         }
     }

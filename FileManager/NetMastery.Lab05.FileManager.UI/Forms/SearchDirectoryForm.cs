@@ -15,17 +15,16 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             get { return pattern; }
             set
             {
-                RemoveError(nameof(Pattern));
                 if (string.IsNullOrEmpty(value))
                 {
                     AddError(nameof(Pattern), "Pattern shouldn't be null or empty");
                 }
-                value = pattern;
+                pattern = value;
             }
         }
-        public SearchDirectoryForm(string currentPath, string path, string pattern) : base(currentPath, path)
+        public SearchDirectoryForm(string currentPath, string path, string pat) : base(currentPath, path)
         {
-            Pattern = pattern;
+            Pattern = pat;
         }
     }
 }

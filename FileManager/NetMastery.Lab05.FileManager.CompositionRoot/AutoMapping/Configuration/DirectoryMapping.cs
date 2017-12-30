@@ -8,7 +8,10 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
     {
         public DirectoryMapping()
         {
-            CreateMap<DirectoryStructure, DirectoryStructureDto>();
+            CreateMap<DirectoryStructureDto, DirectoryStructure>()
+                .ForMember(c=>c.ParentDirectory, c=>c.Ignore())
+                .ForMember(c=>c.Files, c=>c.Ignore())
+                .ForMember(c=>c.ChildrenDirectories, c=>c.Ignore());
         }
     }
 }

@@ -11,7 +11,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Interfaces
         void Remove(string path);
         string ChangeWorkDirectory(string path);
         IEnumerable<string> Search(string path, string pattern);
-        IEnumerable<string> List(string path);
+        IEnumerable<string> ShowContent(string path);
         DirectoryStructureDto GetInfoByPath(string path);
     }
 }

@@ -6,6 +6,10 @@ using System;
 using System.Linq;
 using System.IO;
 using NetMastery.Lab05.FileManager.Domain;
+using NetMastery.Lab05.FileManager.Bl.Exceptions;
+using NetMastery.Lab05.FileManager.DAL.Repository;
+using Serilog;
+using NetMastery.Lab05.FileManager.DAL.Exceptions;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -20,156 +24,234 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         #endregion
 
         #region FileServiceAPI
-  
-        public void Upload(string pathToFile, string pathToStorage)
+
+        public void Upload(string pathToStorage, string pathToFile)
         {
-            var fullPathToFile = pathToFile.Replace("~", Directory.GetCurrentDirectory());
-
-            var directory = _unitOfWork
-                .Repository<DirectoryStructure>()
-                .Find(x => x.FullPath == pathToStorage)
-                .FirstOrDefault();
-
-            if (File.Exists(pathToFile) && directory != null)
+            try
             {
+                var currentDirectory = ((IDirectoryRepository)_unitOfWork
+                    .FSRepository<DirectoryRepository>())
+                    .GetCurrentPath();
+
+                var fullPathToFile = pathToFile.Replace("~", currentDirectory);
+                if (!_unitOfWork.FSRepository<FileRepository>().IsExist(fullPathToFile))
+                {
+                    throw new FileDoesNotExistException();
+                }
+
+                var directory = _unitOfWork
+                    .DBRepository<DirectoryStructure>()
+                    .Find(x => x.FullPath == pathToStorage)
+                    .FirstOrDefault() ?? throw new DirectoryDoesNotExistException();
+
                 var userRootDirectoryName = pathToStorage.Split('\\')[1];
+
                 var account = _unitOfWork
-                    .Repository<Account>()
+                    .DBRepository<Account>()
                     .Find(x => x.RootDirectory.Name == userRootDirectoryName)
-                    .FirstOrDefault();
-                if(account != null)
-                {
-                    var freeSpace = account.MaxStorageSize - account.CurentStorageSize;
-                    var newFile = Mapper.Instance.Map<FileStructure>(new FileInfo(pathToFile));
-                    var fullPathToNewFile = pathToStorage.Replace("~", Directory.GetCurrentDirectory())+'\\'+newFile.Name;
-                    if (freeSpace < (newFile.FileSize))
-                    {
-                        throw new ArgumentException("There is no enouugh space in the storage");
-                    }
-                    File.Copy(pathToFile, fullPathToNewFile);
-                    account.CurentStorageSize += newFile.FileSize;
+                    .FirstOrDefault() ?? throw new UnathorizeStorageAccessException();
 
-                    try
-                    {
-                        newFile.Directory = directory;
-                        _unitOfWork.Repository<FileStructure>().Add(newFile);
-                        _unitOfWork.Commit();
-                    }
-                    catch (Exception e)
-                    {
-                        File.Delete(fullPathToNewFile);
-                        Console.WriteLine(e.Message);
-                    }    
-                }
-                else
+                var freeSpace = GetFreeSpace(account);
+
+                var fileInfo = ((IFileRepository)_unitOfWork
+                    .FSRepository<FileRepository>())
+                    .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
+
+                if (freeSpace < fileInfo.Length)
                 {
-                    throw new ArgumentException("Storage account has invalid rootFolder");
+                    throw new FileManagerBlArgumentException("Free space is not enough");
                 }
-                
+
+                var newFile = Mapper.Instance.Map<FileStructure>(fileInfo);
+                newFile.Directory = directory;
+                account.CurentStorageSize += newFile.FileSize;
+
+                _unitOfWork.DBRepository<FileStructure>().Add(newFile);
+                var fullPathToNewFile = pathToStorage.Replace("~", currentDirectory) + '\\' + fileInfo.Name;
+                ((IFileRepository)_unitOfWork.FSRepository<FileRepository>()).Copy(fullPathToNewFile, fullPathToFile);
+                _unitOfWork.Commit();
             }
-            else
+            catch (FSRepositoryArgumentException e)
             {
-                throw new ArgumentException("Uploading file or storage directory don't exist");
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
+            }
+            catch (DBRepositoryArgumentException e)
+            {
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
             }
         }
 
-        public void Download(string pathFromStorage, string pathToFile)
+        public void Download(string pathToFile, string pathToStorage)
         {
-            var fullPathToFile = pathToFile.Replace("~", Directory.GetCurrentDirectory());
-            if (pathToFile.Contains(Directory.GetCurrentDirectory()))
-            {
-                throw new ArgumentException("For downloading file into storage use upload or move commands, please");
-            }
-            var fileName = pathFromStorage.Substring(pathFromStorage.LastIndexOf('\\') + 1, pathFromStorage.Length - 1);
-            var storageDirectoryPath = pathFromStorage.Substring(0, pathFromStorage.LastIndexOf('\\'));
-            var file = _unitOfWork
-                .Repository<DirectoryStructure>()
-                .EagerFind(x => x.FullPath == storageDirectoryPath, x=>x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name == fileName);
-
-            if(file == null)
-            {
-                throw new ArgumentException("Directory or file are not exist");
-            }
-            var pathToNewFile = pathToFile + '\\' + fileName;
-            File.Copy(pathFromStorage, pathToNewFile);
-            file.DownloadsNumber++;
             try
             {
+                var currentDirectory = ((IDirectoryRepository)_unitOfWork
+                    .FSRepository<DirectoryRepository>())
+                    .GetCurrentPath();
+
+                pathToFile = pathToFile.Replace("~", currentDirectory);
+
+                if (!_unitOfWork.FSRepository<FileRepository>().IsExist(pathToFile))
+                {
+                    throw new FileDoesNotExistException();
+                }
+                if (pathToStorage.Contains(currentDirectory))
+                {
+                    throw new FileManagerBlArgumentException(
+                        "For downloading file into storage use upload or move commands, " +
+                        "please");
+                }
+
+                var fileName = GetFileName(pathToFile);
+                var virtualDirectoryPath = GetVirtualDirectoryPath(pathToFile, currentDirectory);
+
+                var fileInfo = ((IFileRepository)_unitOfWork
+                    .FSRepository<FileRepository>())
+                    .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
+
+                var fileStructure = _unitOfWork
+                .DBRepository<DirectoryStructure>()
+                .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
+                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+                ?? throw new FileDoesNotExistException();
+
+                if (!IsFileValid(fileInfo, fileStructure))
+                {
+                    throw new FileManagerBlArgumentException("File is damaged");
+                }
+
+                var pathToNewFile = pathToStorage + '\\' + fileName;
+
+                fileStructure.DownloadsNumber++;
+                ((IFileRepository)_unitOfWork.FSRepository<FileRepository>()).Copy(pathToNewFile, pathToFile);
                 _unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (FSRepositoryArgumentException e)
             {
-                File.Delete(pathToNewFile);
-                Console.WriteLine(e.Message);
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
             }
-
+            catch (DBRepositoryArgumentException e)
+            {
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
+            }
         }
 
-        public void Move(string pathFrom, string pathTo)
+        private bool IsFileValid(FileInfo fileInfo, FileStructure fileStructure)
         {
-            var fileName = pathFrom.Substring(pathFrom.LastIndexOf('\\') + 1, pathFrom.Length - 1);
-            var storageDirectoryPath = pathFrom.Substring(0, pathFrom.LastIndexOf('\\'));
-            var file = _unitOfWork
-                .Repository<DirectoryStructure>()
-                .EagerFind(x => x.FullPath == storageDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name == fileName);
-            var directoryTo = _unitOfWork
-                .Repository<DirectoryStructure>()
-                .Find(x => x.FullPath == storageDirectoryPath)
-                .FirstOrDefault(); 
-            if (file == null || directoryTo == null)
+            if (fileStructure.FileSize * 1024 == fileInfo.Length)
             {
-                throw new ArgumentException("Directory or file are not exist");
+                return true;
             }
-            var pathToNewFile = pathTo.Replace("~", Directory.GetCurrentDirectory()) + '\\' + fileName;
-            var fullPathFromStorage = pathFrom.Replace("~", Directory.GetCurrentDirectory());
-            File.Copy(fullPathFromStorage, pathToNewFile);
-            file.Directory = directoryTo;
+            return false;
+        }
+
+        private string GetVirtualDirectoryPath(string pathToFile, string currentPath)
+        {
+            var virtuaPath = pathToFile.Replace(currentPath, "~");
+            return virtuaPath.Substring(0, virtuaPath.LastIndexOf('\\'));
+        }
+
+        private string GetFileName(string pathToFile)
+        {
+            return pathToFile.Substring(pathToFile.LastIndexOf('\\') + 1);
+        }
+
+
+        public void Move(string pathToFile, string pathToStorage)
+        {
+                var currentDirectory = ((IDirectoryRepository)_unitOfWork
+                    .FSRepository<DirectoryRepository>())
+                    .GetCurrentPath();
+
+                var fileName = GetFileName(pathToFile);
+                var virtualDirectoryPath = GetVirtualDirectoryPath(pathToFile, currentDirectory);
+                var fullFilePath = pathToFile.Replace("~", currentDirectory);
+                var virtualStoragePath = pathToStorage.Replace(currentDirectory, "~");
+                var newFileFullPath = virtualStoragePath.Replace("~", currentDirectory) + '\\' + fileName;
             try
             {
+                var fileStructure = _unitOfWork
+                .DBRepository<DirectoryStructure>()
+                .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
+                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+                ?? throw new FileDoesNotExistException();
+
+                var storage = _unitOfWork
+                .DBRepository<DirectoryStructure>()
+                .Find(x => x.FullPath == virtualStoragePath).FirstOrDefault()
+                ?? throw new DirectoryDoesNotExistException();
+
+                fileStructure.Directory = storage;
+                _unitOfWork.FSRepository<FileRepository>().Move(newFileFullPath, fullFilePath);
                 _unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (FSRepositoryArgumentException e)
             {
-                File.Delete(pathToNewFile);
-                Console.WriteLine(e.Message);
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
+            }
+            catch (DBRepositoryArgumentException e)
+            {
+                Log.Logger.Debug(e.Message);
+                _unitOfWork.FSRepository<FileRepository>().MoveRollback(newFileFullPath, fullFilePath);
+                throw new FileManagerBlArgumentException(e.Message);
             }
         }
 
         public void Remove(string path)
         {
-            var fileName = path.Substring(path.LastIndexOf('\\') + 1, path.Length - 1);
-            var storageDirectoryPath = path.Substring(0, path.LastIndexOf('\\'));
-            var file = _unitOfWork
-                .Repository<DirectoryStructure>()
-                .EagerFind(x => x.FullPath == storageDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name == fileName);
-            if(file == null)
-            {
-                throw new ArgumentException("Directory or file are not exist");
-            }
-            var fullPath = path.Replace("~", Directory.GetCurrentDirectory());
-            File.Delete(fullPath);
             try
             {
-                _unitOfWork.Repository<FileStructure>().Remove(file);
+                var currentDirectory = ((IDirectoryRepository)_unitOfWork
+                    .FSRepository<DirectoryRepository>())
+                    .GetCurrentPath();
+
+                var fileName = GetFileName(path);
+                var virtualDirectoryPath = GetVirtualDirectoryPath(path, currentDirectory);
+                var fullFilePath = path.Replace("~", currentDirectory);
+
+                var fileStructure = _unitOfWork
+                .DBRepository<DirectoryStructure>()
+                .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
+                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+                ?? throw new FileDoesNotExistException();
+
+                _unitOfWork.DBRepository<FileStructure>().Remove(fileStructure);
+                _unitOfWork.FSRepository<FileRepository>().Remove(fullFilePath);
                 _unitOfWork.Commit();
             }
-            catch (Exception e)
+            catch (FSRepositoryArgumentException e)
             {
-                Console.WriteLine(e.Message);
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
+            }
+            catch (DBRepositoryArgumentException e)
+            {
+                Log.Logger.Debug(e.Message);
+                throw new FileManagerBlArgumentException(e.Message);
             }
         }
 
         public FileStructureDto GetFileByPath(string path)
         {
-            var fileName = path.Substring(path.LastIndexOf('\\') + 1, path.Length - 1);
+            var index = path.LastIndexOf('\\')+1;
+            
+            var fileName = path.Substring(index, path.Length-index);
             var storageDirectoryPath = path.Substring(0, path.LastIndexOf('\\'));
             return Mapper.Instance.Map<FileStructureDto>(_unitOfWork
-                .Repository<DirectoryStructure>()
+                .DBRepository<DirectoryStructure>()
                 .EagerFind(x => x.FullPath == storageDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name == fileName));
+                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name+x.Extension == fileName));
+        }
+        
+
+        private long GetFreeSpace(Account account)
+        {
+            return account.MaxStorageSize - account.CurentStorageSize;
         }
         #endregion
     }

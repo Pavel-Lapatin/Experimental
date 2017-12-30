@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
@@ -41,12 +42,15 @@ namespace NetMastery.Lab05.FileManager.UI
                     {
                         Log.Logger.Information($"Wrong command input: {arguments}");
                         e.Command.ShowHelp();
+                        Console.WriteLine();
                         Redirect(typeof(CommandController), "CommandGet", null);
                     }
-                    catch (ArgumentException e)
+                    catch (FileManagerBlArgumentException e)
                     {
                         Log.Logger.Debug(e.Message);
+                        Console.WriteLine();
                         Console.WriteLine(e.Message);
+                        Console.WriteLine();
                         Redirect(typeof(CommandController), "CommandGet", null);
                     }
                 }

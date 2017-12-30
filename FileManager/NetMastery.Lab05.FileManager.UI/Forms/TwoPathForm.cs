@@ -15,17 +15,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             get { return sourcePath; }
             set
             {
-                RemoveError(nameof(SourcePath));
-                if (string.IsNullOrEmpty(value))
-                {
-                    AddError(nameof(SourcePath), "Source path shouldn't be null or empty");
-                }
-                else
-                {
-                    value = CreatePath(value, _currentPath, nameof(SourcePath));
-                }
-                sourcePath = value;
-
+                sourcePath = CreatePath(value, _currentPath, nameof(SourcePath));
             }
         }
 

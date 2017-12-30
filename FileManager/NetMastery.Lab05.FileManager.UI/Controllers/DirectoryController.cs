@@ -4,6 +4,7 @@ using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Forms;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
+using System.Diagnostics;
 using System.Linq;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -27,9 +28,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if(form.IsValid)
                 {
                     _directoryService.Add(form.DestinationPath, form.Name);
-                    Console.WriteLine();
-                    Console.WriteLine("Directorry created successfully");
-                    Console.WriteLine();
+                    Debug.WriteLine("Directorry created successfully");
                 }
                 else
                 {
@@ -43,11 +42,10 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         {
             if (IsAthenticated())
             {
-
                 var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
-                    var result = _directoryService.List(form.DestinationPath).ToArray();
+                    var result = _directoryService.ShowContent(form.DestinationPath).ToArray();
                     if (result == null) throw new ArgumentNullException();
                     var model = new DirectoryListViewModel(result, _userContext.CurrentPath);
                     model.RenderViewModel();
@@ -68,9 +66,8 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _directoryService.Move(form.DestinationPath, form.SourcePath);
-                    Console.WriteLine();
-                    Console.WriteLine("Directorry moved successfully");
-                    Console.WriteLine();
+                    _userContext.CurrentPath = _userContext.RootDirectory;
+                    Debug.WriteLine("Directorry moved successfully");
                 }
                 else
                 {
@@ -88,9 +85,8 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _directoryService.Remove(form.DestinationPath);
-                    Console.WriteLine();
-                    Console.WriteLine("Directorry removed successfully");
-                    Console.WriteLine();
+                    _userContext.CurrentPath = _userContext.RootDirectory;
+                    Debug.WriteLine("Directorry removed successfully");
                 }
                 else
                 {
@@ -100,8 +96,6 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }         
         }
 
-
-        
         public void ChangeWorkingDirectory(string destinationPath)
         {
             if (IsAthenticated())
@@ -110,9 +104,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(form.DestinationPath); 
-                    Console.WriteLine();
-                    Console.WriteLine("Work directorry changed successfully");
-                    Console.WriteLine();
+                    Debug.WriteLine("Work directorry changed successfully");
                 }
                 else
                 {
@@ -140,11 +132,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
         }
 
-        public void Search(string destinationPath, string sourcePath)
+        public void Search(string destinationPath, string pattern)
         {
             if (IsAthenticated())
             {
-                var form = new SearchDirectoryForm(_userContext.CurrentPath, destinationPath, sourcePath);
+                var form = new SearchDirectoryForm(_userContext.CurrentPath, destinationPath, pattern);
                 if (form.IsValid)
                 {
                     

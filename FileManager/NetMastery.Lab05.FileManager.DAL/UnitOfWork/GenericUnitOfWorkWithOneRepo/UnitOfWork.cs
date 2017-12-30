@@ -10,16 +10,34 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
     {
         private readonly FileManagerDbContext _context;
         private bool disposed;
-        private Dictionary<string, object> repositories;
 
-        public UnitOfWork(FileManagerDbContext context)
+        IFSRepositoryFactory _fSRepositoryFactory;
+        IDBRepositoryFactory _dBRepocitoryFactory;
+      
+        public UnitOfWork(FileManagerDbContext context,
+            IFSRepositoryFactory fSRepositoryFactory,
+            IDBRepositoryFactory dBRepocitoryFactory)
         {
+            _fSRepositoryFactory = fSRepositoryFactory;
+            _dBRepocitoryFactory = dBRepocitoryFactory;
             _context = context;
         }
 
         public void Commit()
         {
-            _context.SaveChanges();
+            try
+            {
+                _context.SaveChanges();
+            }
+            catch (Exception e)
+            {
+
+            } 
+        }
+
+        public IDBRepository<T> DBRepository<T>() where T : class
+        {
+            return _dBRepocitoryFactory.GetRepository<T>(_context);
         }
 
         public virtual void Dispose(bool disposing)
@@ -40,22 +58,9 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IDBRepository<T> Repository<T>() where T : class
+        public IFSRepository FSRepository<FSEntity>() where FSEntity : class
         {
-            if (repositories == null)
-            {
-                repositories = new Dictionary<string, object>();
-            }
-
-            var type = typeof(T).Name;
-
-            if (!repositories.ContainsKey(type))
-            {
-                var repositoryType = typeof(DBRepository<>);
-                var repositoryInstance = Activator.CreateInstance(repositoryType.MakeGenericType(typeof(T)), _context);
-                repositories.Add(type, repositoryInstance);
-            }
-            return (DBRepository<T>)repositories[type];
+            return _fSRepositoryFactory.GetRepository<FSEntity>();
         }
     }
 }

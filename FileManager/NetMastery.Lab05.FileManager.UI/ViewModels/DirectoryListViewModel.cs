@@ -16,7 +16,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
         }
         public override void RenderViewModel()
         {  
-            if(Data.Count == 0)
+            if(Data.Count > 0)
             {
                 Console.WriteLine($"There are following catalogs and files in {Path}: ");
                 base.RenderViewModel();

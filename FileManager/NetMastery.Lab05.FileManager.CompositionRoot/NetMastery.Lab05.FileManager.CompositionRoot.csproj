@@ -81,7 +81,6 @@
     <Compile Include="AutoMapping\Configuration\InfoUserVMOnAccountDtoMapping.cs" />
     <Compile Include="CompRoot.cs" />
     <Compile Include="ContainerConfig.cs" />
-    <Compile Include="Database\DatabaseInitializer.cs" />
     <Compile Include="DirectoryInitializer.cs" />
     <Compile Include="Logger\LoggerConfiguration.cs" />
     <Compile Include="Logger\ProcessIdEnriacher.cs" />

@@ -61,7 +61,6 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 
         public override void RenderForm()
         {
-            Console.WriteLine();
             Console.WriteLine("Please, signin in the system");
             Console.WriteLine("Command: login -l <userName> -p <password>");
             Console.WriteLine();

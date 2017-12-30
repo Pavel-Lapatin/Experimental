@@ -21,7 +21,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
             Console.WriteLine($"Modification date: {ModificationDate.ToString("yy-MM-dd")}");
             Console.WriteLine($"File Size: {FileSize}");
             Console.WriteLine($"Extenson: {Extension}");
-            Console.WriteLine($"Full path: {DirectoryPath+"\\"+Name+Extension}");
+            Console.WriteLine($"Download Numbers: {DownloadsNumber}");
             Console.WriteLine();
 
         }

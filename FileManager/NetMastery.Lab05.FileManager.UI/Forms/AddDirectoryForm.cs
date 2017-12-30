@@ -21,7 +21,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 {
                     AddError(nameof(Name), "Directory name shouldn't be null or empty");
                 }
-                if(!CheckValidCharactersInName(name))
+                if(!IsFolderOrFileNameIsValid(value))
                 {
                     AddError(nameof(Name), "The characters: /,|,:,*,<,>,\\,~\" are not allowed");
                 }
@@ -31,6 +31,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
 
         public AddDirectoryForm(string currentPath, string destinationPath, string name) : base(currentPath, destinationPath)
         {
+            Name = name;
         }
     }
 }

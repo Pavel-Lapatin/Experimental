@@ -51,17 +51,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\DBDirectoryArgumentException.cs" />
+    <Compile Include="Exceptions\DirectoryRepositoryArgumentException.cs" />
+    <Compile Include="Exceptions\FileManagerDALArgumentException.cs" />
     <Compile Include="FileManagerDBContext.cs" />
-    <Compile Include="Interfacies\IFSRepository.cs" />
     <Compile Include="Interfacies\IDBRepository.cs" />
+    <Compile Include="UnitOfWork\Factory\IDBRepositoryFactory.cs" />
+    <Compile Include="Interfacies\IDirectoryRepository.cs" />
+    <Compile Include="Interfacies\IFileRepository.cs" />
+    <Compile Include="Interfacies\IFSRepository.cs" />
+    <Compile Include="UnitOfWork\Factory\IFSRepositoryFactory.cs" />
     <Compile Include="Migrations\201712231751169_UniqueFullPath.cs" />
     <Compile Include="Migrations\201712231751169_UniqueFullPath.Designer.cs">
       <DependentUpon>201712231751169_UniqueFullPath.cs</DependentUpon>
     </Compile>
-    <Compile Include="Repository\FSRepsitory.cs" />
-    <Compile Include="UnitOfWork\Factory\AbstractUnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWork\Factory\UnitOfWorkFactory.cs" />
-    <Compile Include="UnitOfWork\Factory\UnitOfWorkFactoryGeneric.cs" />
+    <Compile Include="Repository\DirectoryRepository.cs" />
+    <Compile Include="Repository\FileRepository.cs" />
+    <Compile Include="UnitOfWork\Factory\FSRepositoryFactory.cs" />
+    <Compile Include="UnitOfWork\Factory\DBRepositoryFactory.cs" />
     <Compile Include="UnitOfWork\GenericUnitOfWorkWithOneRepo\IUnitOfWork.cs" />
     <Compile Include="Migrations\201712170945302_v1.0.0.cs" />
     <Compile Include="Migrations\201712170945302_v1.0.0.Designer.cs">
@@ -99,5 +106,6 @@
       <DependentUpon>201712231751169_UniqueFullPath.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

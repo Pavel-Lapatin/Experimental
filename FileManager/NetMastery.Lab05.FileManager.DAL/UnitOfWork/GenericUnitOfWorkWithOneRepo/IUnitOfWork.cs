@@ -7,7 +7,8 @@ namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
     public interface IUnitOfWork : IDisposable
     {
-        IDBRepository<T> Repository<T>() where T : class;
+        IDBRepository<T> DBRepository<T>() where T : class;
+        IFSRepository FSRepository<FSEntity>() where FSEntity : class;
         void Commit();
     }
 }

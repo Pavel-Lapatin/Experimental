@@ -10,7 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
     {
         protected string _currentPath { get; set; }
         public bool IsValid => Errors.Count == 0;
-        public Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        protected Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
         protected Form(string currentPath)
         {
             _currentPath = currentPath;

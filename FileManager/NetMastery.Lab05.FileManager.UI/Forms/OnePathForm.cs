@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.UI.Forms
@@ -19,16 +20,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             get { return destinationPath; }
             set
             {
-                RemoveError(nameof(DestinationPath));
-                if(string.IsNullOrEmpty(value))
-                {
-                    AddError(nameof(DestinationPath), "Destination path shouldn't be null or empty");
-                }
-                else
-                {
-                    value = CreatePath(value, _currentPath, "Destination path");
-                }
-                destinationPath = value;
+                destinationPath = CreatePath(value, _currentPath, nameof(DestinationPath));   
             }
         }
 
@@ -37,26 +29,31 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
             DestinationPath = destinationPath;
         }
 
-        public string CreatePath(string newPath, string currentPath, string errorKey)
+        protected string CreatePath(string newPath, string currentPath, string errorKey)
         {
-            var path = new StringBuilder();
-            var disk = newPath.Trim().Split(':');
-            if (disk.Length > 2)
+            if(!IsPathCorrect(newPath, errorKey))
             {
-                AddError(errorKey, "There is could be only one \":\" in the path");
                 return null;
             }
-            else if (disk.Length == 2)
+            
+            var virtualPath = CreateVirtualPath(newPath, currentPath, errorKey);
+            if (virtualPath == null) return null;
+            if(IsAccessIsAllowed(virtualPath, currentPath, errorKey))
             {
-                path.Append(disk[0]);
-                path.Append(":");
-                newPath = disk[1];
+                return virtualPath;
             }
-            var pathParts = newPath.Trim('\\').Split('\\');
+            return null;
 
+        }
+
+        private string CreateVirtualPath(string path, string currentPath, string errorKey)
+        {
+            var virtualPath = new StringBuilder();
+            path = GetDisk(path, virtualPath);
+            var pathParts = path.Trim('\\').Split('\\');
             if (pathParts[0] == "~")
             {
-                path.Append("~");
+                virtualPath.Append("~");
                 pathParts = pathParts.Skip(1).ToArray();
             }
             foreach (var partName in pathParts.Where(x => !string.IsNullOrEmpty(x)))
@@ -64,28 +61,36 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 switch (partName)
                 {
                     case "..":
-                        if (path.Length == 0) path.Append(currentPath);
-                        var index = path.ToString().LastIndexOf("\\");
-                        path = path.Remove(index, path.Length - index);
+                        if (virtualPath.Length == 0)
+                        {
+                            virtualPath.Append(currentPath);
+                        }   
+                        var index = virtualPath.ToString().LastIndexOf("\\");
+                        if (index == -1) continue;
+                        virtualPath = virtualPath.Remove(index, virtualPath.Length - index);
                         break;
                     case ".":
-                        if (path.Length == 0) path.Append(currentPath);
+                        if (virtualPath.Length == 0)
+                        {
+                            virtualPath.Append(currentPath);
+                        }   
                         break;
                     default:
-                        if(CheckValidCharactersInName(partName))
+                        if (!IsFolderOrFileNameIsValid(partName))
                         {
-                            AddError(errorKey, "The characters: /,|,:,*,<,>,\\,~\" are not allowed");
+                            AddError(errorKey, "The characters: /,|,*,<,>,\\,~\" are not allowed");
                             return null;
                         }
-                        if (!string.IsNullOrEmpty(partName))
-                        {
-                            path.Append("\\");
-                            path.Append(partName);
-                        }
+                        virtualPath.Append("\\");
+                        virtualPath.Append(partName);
                         break;
                 }
             }
-            var virtualPath = path.ToString();
+            return virtualPath.ToString();
+        }
+
+        private bool IsAccessIsAllowed(string virtualPath, string currentPath, string errorKey)
+        {
             if (virtualPath[0] != '~')
             {
                 var curDir = Directory.GetCurrentDirectory();
@@ -95,39 +100,69 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
                 }
                 else
                 {
-                    return virtualPath;
+                    return true;
                 }
             }
             var newRootFolder = virtualPath.Trim().Split('\\');
             var currentRootFolder = currentPath.Split('\\');
             if (newRootFolder.Length >= 2 && newRootFolder[1] == currentRootFolder[1])
             {
-                return path.ToString();
+                return true;
             }
             else
             {
                 AddError(errorKey, "Access is denied");
-                return null;
+                return false;
             }
-
         }
 
-        public bool CheckValidCharactersInName(string name)
+        private bool IsPathCorrect(string path, string errorKey)
         {
-            if (name.Any(x => x == '/'
-                        || x == ':'
-                        || x == '*'
-                        || x == '?'
-                        || x == '<'
-                        || x == '>'
-                        || x == '\"'
-                        || x == '|'
-                        || x == '~'))
+            if (IsPathNull(path, errorKey))
             {
                 return false;
             }
+            
+            if (new Regex(":").Match(path).Length > 2)
+            {
+                AddError(errorKey, "The path is not correct");
+                return false;
+            }
+            return true;
+        }
+
+        private string GetDisk(string path, StringBuilder virtualPath)
+        {
+            var parts = path.Trim().Split(':');
+            if (parts.Length == 2)
+            {
+                virtualPath.Append(parts[0]);
+                virtualPath.Append(':');
+                return parts[1];
+            }
+            return parts[0];
+        }
+
+        private bool IsPathNull(string path, string errorKey)
+        {
+            if (string.IsNullOrEmpty(path))
+            {
+                AddError(errorKey, "The path value is missing");
+                return true;
+            }
+            return false;
+        }
+
+        protected bool IsFolderOrFileNameIsValid(string name)
+        {
+            var pattern = new Regex("^([a-zA-Z0-9][^*/><?\"|:~]*)$");
+            if (pattern.IsMatch(name))
             {
                 return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

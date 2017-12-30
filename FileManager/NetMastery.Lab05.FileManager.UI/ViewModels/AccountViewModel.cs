@@ -13,7 +13,6 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
 
         public override void RenderViewModel()
         {
-            Console.WriteLine();
             Console.WriteLine("Account info: ");
             Console.WriteLine($"Login: {Login}");
             Console.WriteLine($"Root directory: {RootDirectory}");

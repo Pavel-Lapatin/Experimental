@@ -9,7 +9,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
     public class StartForm : Form
     {
         const string WelcomeNote = "Welcome to File Manager v.1.0.0";
-        const string ContactInformation = "Contact informations: e-mail - plapatin@gmail.com";
+        const string ContactInformation = "Contact information: e-mail - plapatin@gmail.com";
         public StartForm(string currentPath) : base(currentPath)
         {
         }
@@ -17,6 +17,7 @@ namespace NetMastery.Lab05.FileManager.UI.Forms
         {
             Console.WriteLine(WelcomeNote);
             Console.WriteLine(ContactInformation);
+            Console.WriteLine();
         }
     }
 }

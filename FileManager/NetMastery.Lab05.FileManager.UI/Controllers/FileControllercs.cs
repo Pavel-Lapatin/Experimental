@@ -4,6 +4,7 @@ using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Forms;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using System;
+using System.Diagnostics;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
@@ -24,9 +25,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _fileService.Upload(form.SourcePath, form.DestinationPath);
-                    Console.WriteLine();
-                    Console.WriteLine("File uploaded successfully");
-                    Console.WriteLine();
+                    Debug.WriteLine("File uploaded successfully");
                 }
                 else
                 {
@@ -44,9 +43,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _fileService.Download(form.DestinationPath, form.SourcePath);
-                    Console.WriteLine();
-                    Console.WriteLine("File uploaded successfully");
-                    Console.WriteLine();
+                    Debug.WriteLine("File downloaded successfully");
                 }
                 else
                 {
@@ -65,9 +62,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _fileService.Move(form.DestinationPath, form.SourcePath);
-                    Console.WriteLine();
-                    Console.WriteLine("File downloaded successfully");
-                    Console.WriteLine();
+                    Debug.WriteLine("File downloaded successfully");
                 }
                 else
                 {
@@ -85,9 +80,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     _fileService.Remove(form.DestinationPath);
-                    Console.WriteLine();
-                    Console.WriteLine("File removed successfully");
-                    Console.WriteLine();
+                    Debug.WriteLine("File removed successfully");
                 }
                 else
                 {
@@ -105,7 +98,6 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 if (form.IsValid)
                 {
                     var model = Mapper.Instance.Map<FileInfoVieModel>(_fileService.GetFileByPath(form.DestinationPath));
-                    if (model == null) throw new ArgumentNullException();
                     model.RenderViewModel();
                 }
                 else

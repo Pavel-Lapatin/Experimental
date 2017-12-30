@@ -8,9 +8,8 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
         public static void LoggerConfig()
         {
             Log.Logger = new LoggerConfiguration()
-                
                 .MinimumLevel.Information()
-                .WriteTo.File("log-.txt", 
+                .WriteTo.File("log-.txt",  fileSizeLimitBytes: 26214400, 
                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} " +
                                  "(processId: {ProcessId}) " +
                                  "(threadId: {ThreadId}) " +
