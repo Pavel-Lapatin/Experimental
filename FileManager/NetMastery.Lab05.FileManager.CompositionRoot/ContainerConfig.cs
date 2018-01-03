@@ -15,6 +15,9 @@ using System.Linq;
 using System.Reflection;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
+using AutoMapper;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot
 {
@@ -46,12 +49,25 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 .Where(t => t.IsSubclassOf(typeof(Controller)))
                 .WithParameter(new TypedParameter(typeof(RedirectEvent), rerdirectEvent));
 
-            builder.Register(c=> new DBRepositoryFactory())
-                              .As<IDBRepositoryFactory>();
+            builder.Register(c => new RepositoryFactory())
+                              .As<IRepositoryFactory>();
 
-            builder.RegisterType<FSRepositoryFactory>()
-                   .As<IFSRepositoryFactory>();
+            var profiles = compositionBaseAssembly.GetTypes()
+                .Where(x => x.IsSubclassOf(typeof(Profile))).ToArray();
 
+            builder.RegisterTypes(profiles);
+
+           
+            builder.Register(c => new MapperConfiguration(cfg =>
+            {
+                foreach (var profile in profiles)
+                {
+                    cfg.AddProfile(c.Resolve(profile) as Profile);
+                };
+            })).AsSelf().SingleInstance();
+
+            builder.Register(c=> new Mapper(c.Resolve<MapperConfiguration>())).As<IMapper>()
+                .SingleInstance();
 
             builder.RegisterType<AuthenticationService>()
                    .As<IAuthenticationService>();

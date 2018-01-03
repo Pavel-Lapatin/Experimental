@@ -1,14 +1,15 @@
-﻿using System;
+﻿using NetMastery.Lab05.FileManager.DAL.Repository;
+using System;
 using System.Data.Entity;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork : IDisposable 
     {
-        IDBRepository<T> DBRepository<T>() where T : class;
-        IFSRepository FSRepository<FSEntity>() where FSEntity : class;
+        TEntity GetDbRepository<TEntity>() where TEntity : class;
+        TEntity GetFsRepository<TEntity>() where TEntity : class;
         void Commit();
     }
 }

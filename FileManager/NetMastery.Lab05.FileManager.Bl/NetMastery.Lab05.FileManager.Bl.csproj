@@ -53,10 +53,9 @@
     <Compile Include="Exceptions\DirectoryDoesNotExistException.cs" />
     <Compile Include="Exceptions\DirectoryExistsException.cs" />
     <Compile Include="Exceptions\FileDoesNotExist.cs" />
-    <Compile Include="Exceptions\FileManagerBlArgumentException.cs" />
-    <Compile Include="Exceptions\FileManagerBlUnathorizedtException.cs" />
-    <Compile Include="Exceptions\NullInputParametrException.cs" />
-    <Compile Include="Exceptions\UnathorizeStorageAccessException.cs" />
+    <Compile Include="Exceptions\ServiceArgumentException.cs" />
+    <Compile Include="Exceptions\ServiceArgumentNullException.cs" />
+    <Compile Include="Exceptions\ServiceUnathorizedtAccessException.cs" />
     <Compile Include="Interfaces\IAuthenticationService.cs" />
     <Compile Include="Interfaces\IDirectoryService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.Bl.Exceptions
 {
-    public class FileDoesNotExistException : FileManagerBlArgumentException
+    public class FileDoesNotExistException : ServiceArgumentException
     {
         public FileDoesNotExistException() : base("File doesn't exist")
         {

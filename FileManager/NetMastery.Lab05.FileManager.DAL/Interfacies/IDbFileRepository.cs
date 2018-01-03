@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetMastery.Lab05.FileManager.Domain;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IFSRepositoryFactory
+    public interface IDbFileRepository : IDbRepository<FileStructure>
     {
-        IFSRepository GetRepository<T>() where T : class;
+
     }
 }

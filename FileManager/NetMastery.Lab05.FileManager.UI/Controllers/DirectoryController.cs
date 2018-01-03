@@ -12,12 +12,16 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class DirectoryController : Controller
     {
         private readonly IDirectoryService _directoryService;
+        private readonly IMapper _mapper;
         
 
-        public DirectoryController(IDirectoryService directoryService, IUserContext context, RedirectEvent redirect) : base(context, redirect)
+        public DirectoryController(IDirectoryService directoryService, 
+                                   IUserContext context, 
+                                   IMapper mapper, 
+                                   RedirectEvent redirect) : base(context, redirect)
         {
             _directoryService = directoryService;
-            
+            _mapper = mapper;
         }
 
         public void Add(string destinationPath, string name)
@@ -121,7 +125,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
-                    var model = Mapper.Instance.Map<DirectoryInfoViewModel>(_directoryService.GetInfoByPath(form.DestinationPath));
+                    var model = _mapper.Map<DirectoryInfoViewModel>(_directoryService.GetInfoByPath(form.DestinationPath));
                     model.RenderViewModel();
                 }
                 else

@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.Bl.Exceptions
 {
-    public class FileManagerBlUnathorizedtException : UnauthorizedAccessException
+    public class ServiceArgumentNullException : ServiceArgumentException
     {
-        public FileManagerBlUnathorizedtException() : base()
+        public ServiceArgumentNullException() : base("Input argument is null")
         {
 
         }
-        public FileManagerBlUnathorizedtException(string message) : base(message)
+        public ServiceArgumentNullException(string message) : base(message)
         {
 
         }

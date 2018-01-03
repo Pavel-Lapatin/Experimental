@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.Bl.Exceptions
 {
-    class DirectoryDoesNotExistException : FileManagerBlArgumentException
+    public class DirectoryDoesNotExistException : ServiceArgumentException
     {
-        public DirectoryDoesNotExistException() : base("Directory dosn't exist")
+        public DirectoryDoesNotExistException() : base("Directory doesn't exist")
         {
 
         }

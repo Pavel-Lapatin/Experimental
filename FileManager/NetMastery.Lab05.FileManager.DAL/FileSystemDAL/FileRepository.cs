@@ -2,15 +2,11 @@
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
-    public class FileRepository : IFileRepository
+    public class FSFileManager : IFSFileManager
     {
         public void Copy(string destination, string source)
         {

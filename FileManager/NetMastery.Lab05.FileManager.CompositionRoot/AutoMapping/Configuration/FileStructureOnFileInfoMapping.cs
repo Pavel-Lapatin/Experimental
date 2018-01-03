@@ -15,7 +15,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
         public FileStructureOnFileInfoMapping()
         {
             CreateMap<FileInfo, FileStructure>()
-                .ForMember(m => m.Name, cfg => cfg.MapFrom(x => x.Name))
+                .ForMember(m => m.Name, cfg => cfg.MapFrom(x => x.Name.Replace(x.Extension, "")))
                 .ForMember(m => m.ModificationDate, cfg => cfg.MapFrom(x => x.LastWriteTime))
                 .ForMember(m => m.CreationTime, cfg => cfg.MapFrom(x => x.CreationTime))
                 .ForMember(m => m.FileSize, cfg => cfg.MapFrom(x => x.Length))

@@ -7,18 +7,21 @@ using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
 using Serilog;
 using NetMastery.Lab05.FileManager.Bl.Exceptions;
+using NetMastery.Lab05.FileManager.DAL.Repository;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
     public class AuthenticationService : IAuthenticationService
     {
         IUnitOfWork _unitOfWork;
+        IMapper _mapper;
 
         #region Constructors
 
-        public AuthenticationService(IUnitOfWork unitOfWork)
+        public AuthenticationService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
@@ -29,9 +32,13 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (password == null || login == null)
             {
                 Log.Logger.Debug($"AuthenticationService -- Signin -- input parameters are null");
-                throw new FileManagerBlArgumentException("Login and password must not be null or empty");
+                throw new ServiceArgumentNullException("Login and password must not be null or empty");
             }
-            var account = Mapper.Instance.Map<AccountDto>(_unitOfWork.DBRepository<Account>().Find(x => x.Login == login).FirstOrDefault());
+            var account = _mapper.Map<AccountDto>(_unitOfWork
+                .GetDbRepository<IDbAccountRepository>()
+                .Find(x => x.Login == login)
+                .FirstOrDefault());
+
             if (account != null)
             {
                 if (BCrypt.Net.BCrypt.Verify(password, account.Password))
@@ -42,23 +49,22 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 else
                 {
                     Log.Logger.Information($"Unathorized acceess: login {login}");
-                    throw new FileManagerBlArgumentException("Password is wrong");
+                    throw new ServiceArgumentException("Password is wrong");
                 }
             }
             else
             {
                 Log.Logger.Information($"Unathorized acceess. Login doesn't exist");
-                throw new FileManagerBlArgumentException("Account with such login doesn't exist");
+                throw new ServiceArgumentNullException("Account with such login doesn't exist");
             }
         }
-
 
         public void Singup(string login, string password)
         {
             if (password == null || login == null)
             {
                 Log.Logger.Debug($"AuthenticationService -- Signin -- input parameters are null");
-                throw new FileManagerBlArgumentException("Login and password must not be null or empty");
+                throw new ServiceArgumentException("Login and password must not be null or empty");
             }
             else
             {
@@ -78,7 +84,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
                     }
                 };
-                _unitOfWork.DBRepository<Account>().Add(Mapper.Instance.Map<Account>(newAccount));
+                _unitOfWork.GetDbRepository<IDbAccountRepository>().Add(_mapper.Map<Account>(newAccount));
                 _unitOfWork.Commit();
                 Log.Logger.Information($"Created successfully");  
             }

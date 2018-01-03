@@ -11,11 +11,13 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class LoginController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
+        private readonly IMapper _mapper;
 
         public LoginController(IAuthenticationService authenticationService,  
-            IUserContext userContext, RedirectEvent redirect) : base(userContext, redirect)
+            IUserContext userContext, IMapper mapper, RedirectEvent redirect) : base(userContext, redirect)
         {
             _authenticationService = authenticationService;
+            _mapper = mapper;
         }
 
         public void Singin(string login, string password)
@@ -23,7 +25,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             var form = new LoginForm(_userContext.CurrentPath, login, password);
             if (form.IsValid)
             {
-                var accountViewModel = Mapper.Instance.Map<AccountViewModel>(_authenticationService.Signin(form.Login, form.Password));
+                var accountViewModel = _mapper.Map<AccountViewModel>(_authenticationService.Signin(form.Login, form.Password));
 
                 if (!IsUser(accountViewModel))
                 {
@@ -52,7 +54,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
         public void Signoff()
         {
-            var accountViewModel = Mapper.Instance.Map<AccountViewModel>(_userContext);
+            var accountViewModel = _mapper.Map<AccountViewModel>(_userContext);
             
             if (accountViewModel.Login != null)
             {

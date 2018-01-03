@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.Bl.Exceptions
 {
-    public class UnathorizeStorageAccessException : FileManagerBlArgumentException
+    public class ServiceArgumentException : ArgumentException
     {
-        public UnathorizeStorageAccessException(): base("Access to the storage path is denied")
+        public ServiceArgumentException() : base()
+        {
+
+        }
+        public ServiceArgumentException(string message) : base(message)
         {
 
         }

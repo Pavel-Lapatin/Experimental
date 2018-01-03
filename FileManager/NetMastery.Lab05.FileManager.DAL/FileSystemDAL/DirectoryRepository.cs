@@ -2,15 +2,11 @@
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using Serilog;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
-    public class DirectoryRepository : IDirectoryRepository
+    public class FSDirectoryManager : IFSDirectoryManager
     {
         public void AddFolder(string path, string name)
         {
@@ -35,17 +31,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException("Directory move operation failed");
+                throw new FSRepositoryArgumentException("Get current path operation failed");
             }
         }
 
         public bool IsExist(string path)
         {
-            if(Directory.Exists(path))
-            {
-                return true;
-            }   
-            return false;
+            return Directory.Exists(path);   
         }
 
         public void Move(string destination, string source)

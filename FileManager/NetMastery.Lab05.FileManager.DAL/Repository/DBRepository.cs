@@ -7,11 +7,11 @@ using System.Linq.Expressions;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
-    public class DBRepository<TEntity> : IDBRepository<TEntity> where TEntity : class
+    public class DbRepository<TEntity> : IDbRepository<TEntity> where TEntity : class
     {
         protected readonly FileManagerDbContext Context;
 
-        public DBRepository(FileManagerDbContext context)
+        public DbRepository(FileManagerDbContext context)
         {
             Context = context;
         }
@@ -28,10 +28,12 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             Context.Set<TEntity>().AddRange(entities);
         }
+
         public IEnumerable<TEntity> Find(System.Linq.Expressions.Expression<Func<TEntity, bool>> predicate)
         {
             return Context.Set<TEntity>().Where(predicate);
         }
+
         public IEnumerable<TEntity> EagerFind(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, ICollection<TEntity>>> predicate2)
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
@@ -40,7 +42,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
         }
-
         public IEnumerable<TEntity> EagerFind<TCollectionEntity>(Expression<Func<TEntity, bool>> predicate, Expression<Func<TEntity, ICollection<TCollectionEntity>>> predicate2) where TCollectionEntity : class
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).ToList();
@@ -53,6 +54,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             return Context.Set<TEntity>().Where(predicate).Include(predicate2).Include(predicate3).ToList();
         }
+
         public TEntity Get(int id)
         {
             return Context.Set<TEntity>().Find(id);

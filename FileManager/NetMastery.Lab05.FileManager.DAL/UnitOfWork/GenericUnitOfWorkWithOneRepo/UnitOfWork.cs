@@ -1,4 +1,6 @@
-﻿using NetMastery.Lab05.FileManager.DAL.Interfacies;
+﻿using NetMastery.Lab05.FileManager.DAL.Exceptions;
+using NetMastery.Lab05.FileManager.DAL.Interfacies;
+using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
 using System;
 using System.Collections.Generic;
 using System.Data.Entity;
@@ -11,15 +13,12 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         private readonly FileManagerDbContext _context;
         private bool disposed;
 
-        IFSRepositoryFactory _fSRepositoryFactory;
-        IDBRepositoryFactory _dBRepocitoryFactory;
+        IRepositoryFactory _repositoryFactory;
       
         public UnitOfWork(FileManagerDbContext context,
-            IFSRepositoryFactory fSRepositoryFactory,
-            IDBRepositoryFactory dBRepocitoryFactory)
+            IRepositoryFactory repositoryFactory)
         {
-            _fSRepositoryFactory = fSRepositoryFactory;
-            _dBRepocitoryFactory = dBRepocitoryFactory;
+            _repositoryFactory = repositoryFactory;
             _context = context;
         }
 
@@ -29,16 +28,13 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             {
                 _context.SaveChanges();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-
+                throw new DbRepositoryArgumentException("Data base operations failed");
             } 
         }
 
-        public IDBRepository<T> DBRepository<T>() where T : class
-        {
-            return _dBRepocitoryFactory.GetRepository<T>(_context);
-        }
+        
 
         public virtual void Dispose(bool disposing)
         {
@@ -58,9 +54,16 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             GC.SuppressFinalize(this);
         }
 
-        public IFSRepository FSRepository<FSEntity>() where FSEntity : class
+       
+        public TEntity GetDbRepository<TEntity>() where TEntity : class
+                                                    
         {
-            return _fSRepositoryFactory.GetRepository<FSEntity>();
+            return _repositoryFactory.GetRepository<TEntity>(new[] { _context });
+        }
+
+        public TEntity GetFsRepository<TEntity>() where TEntity : class
+        {
+            return _repositoryFactory.GetRepository<TEntity>(null);
         }
     }
 }

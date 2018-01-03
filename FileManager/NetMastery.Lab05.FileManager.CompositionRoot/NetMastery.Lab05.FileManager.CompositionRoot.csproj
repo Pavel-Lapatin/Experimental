@@ -68,7 +68,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutoMapperInitializer.cs" />
     <Compile Include="AutoMapping\Configuration\AccountMapping.cs" />
     <Compile Include="AutoMapping\Configuration\AccountDtoOnAccountVMMapping.cs" />
     <Compile Include="AutoMapping\Configuration\AccountVMOnUserContext.cs" />

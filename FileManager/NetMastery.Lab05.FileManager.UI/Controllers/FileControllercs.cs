@@ -11,10 +11,15 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class FileController : Controller
     {
         private readonly IFileService _fileService;
+        private readonly IMapper _mapper;
 
-        public FileController(IFileService fileService, IUserContext context, RedirectEvent redirect) : base(context, redirect)
+        public FileController(IFileService fileService,
+                              IUserContext context,
+                              IMapper mapper,
+                              RedirectEvent redirect) : base(context, redirect)
         {
             _fileService = fileService;
+            _mapper = mapper;
         }
 
         public void Upload(string destinationPath, string sourcePath)
@@ -97,7 +102,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
-                    var model = Mapper.Instance.Map<FileInfoVieModel>(_fileService.GetFileByPath(form.DestinationPath));
+                    var model =_mapper.Map<FileInfoVieModel>(_fileService.GetFileByPath(form.DestinationPath));
                     model.RenderViewModel();
                 }
                 else

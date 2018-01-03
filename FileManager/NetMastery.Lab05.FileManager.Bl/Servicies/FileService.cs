@@ -15,11 +15,14 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
     public class FileService : IFileService
     {
-        IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+
         #region Constructors
-        public FileService(IUnitOfWork unitOfWork)
+        public FileService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         #endregion
 
@@ -29,57 +32,57 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             try
             {
-                var currentDirectory = ((IDirectoryRepository)_unitOfWork
-                    .FSRepository<DirectoryRepository>())
+                var currentDirectory = (_unitOfWork
+                    .GetFsRepository<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 var fullPathToFile = pathToFile.Replace("~", currentDirectory);
-                if (!_unitOfWork.FSRepository<FileRepository>().IsExist(fullPathToFile))
+                if (!_unitOfWork.GetFsRepository<IFSFileManager>().IsExist(fullPathToFile))
                 {
                     throw new FileDoesNotExistException();
                 }
 
                 var directory = _unitOfWork
-                    .DBRepository<DirectoryStructure>()
+                    .GetDbRepository<IDbDirectoryRepository>()
                     .Find(x => x.FullPath == pathToStorage)
                     .FirstOrDefault() ?? throw new DirectoryDoesNotExistException();
 
                 var userRootDirectoryName = pathToStorage.Split('\\')[1];
 
                 var account = _unitOfWork
-                    .DBRepository<Account>()
+                    .GetDbRepository<IDbAccountRepository>()
                     .Find(x => x.RootDirectory.Name == userRootDirectoryName)
-                    .FirstOrDefault() ?? throw new UnathorizeStorageAccessException();
+                    .FirstOrDefault() ?? throw new ServiceUnathorizedtAccessException();
 
                 var freeSpace = GetFreeSpace(account);
 
-                var fileInfo = ((IFileRepository)_unitOfWork
-                    .FSRepository<FileRepository>())
+                var fileInfo = (_unitOfWork
+                    .GetFsRepository<IFSFileManager>())
                     .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
 
                 if (freeSpace < fileInfo.Length)
                 {
-                    throw new FileManagerBlArgumentException("Free space is not enough");
+                    throw new ServiceArgumentException("Free space is not enough");
                 }
 
-                var newFile = Mapper.Instance.Map<FileStructure>(fileInfo);
+                var newFile = _mapper.Map<FileStructure>(fileInfo);
                 newFile.Directory = directory;
                 account.CurentStorageSize += newFile.FileSize;
 
-                _unitOfWork.DBRepository<FileStructure>().Add(newFile);
+                _unitOfWork.GetDbRepository<IDbFileRepository>().Add(newFile);
                 var fullPathToNewFile = pathToStorage.Replace("~", currentDirectory) + '\\' + fileInfo.Name;
-                ((IFileRepository)_unitOfWork.FSRepository<FileRepository>()).Copy(fullPathToNewFile, fullPathToFile);
+                (_unitOfWork.GetFsRepository<IFSFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
                 _unitOfWork.Commit();
             }
             catch (FSRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
-            catch (DBRepositoryArgumentException e)
+            catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
         }
 
@@ -87,19 +90,19 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             try
             {
-                var currentDirectory = ((IDirectoryRepository)_unitOfWork
-                    .FSRepository<DirectoryRepository>())
+                var currentDirectory = (_unitOfWork
+                    .GetFsRepository<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 pathToFile = pathToFile.Replace("~", currentDirectory);
 
-                if (!_unitOfWork.FSRepository<FileRepository>().IsExist(pathToFile))
+                if (!_unitOfWork.GetFsRepository<IFSFileManager>().IsExist(pathToFile))
                 {
                     throw new FileDoesNotExistException();
                 }
                 if (pathToStorage.Contains(currentDirectory))
                 {
-                    throw new FileManagerBlArgumentException(
+                    throw new ServiceArgumentException(
                         "For downloading file into storage use upload or move commands, " +
                         "please");
                 }
@@ -107,36 +110,35 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 var fileName = GetFileName(pathToFile);
                 var virtualDirectoryPath = GetVirtualDirectoryPath(pathToFile, currentDirectory);
 
-                var fileInfo = ((IFileRepository)_unitOfWork
-                    .FSRepository<FileRepository>())
+                var fileInfo = (_unitOfWork
+                    .GetFsRepository<IFSFileManager>())
                     .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
 
                 var fileStructure = _unitOfWork
-                .DBRepository<DirectoryStructure>()
-                .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+                .GetDbRepository<IDbDirectoryRepository>()
+                .FindByPathEagerLoadingFiles(virtualDirectoryPath)?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
                 ?? throw new FileDoesNotExistException();
 
                 if (!IsFileValid(fileInfo, fileStructure))
                 {
-                    throw new FileManagerBlArgumentException("File is damaged");
+                    throw new ServiceArgumentException("File is damaged");
                 }
 
                 var pathToNewFile = pathToStorage + '\\' + fileName;
 
                 fileStructure.DownloadsNumber++;
-                ((IFileRepository)_unitOfWork.FSRepository<FileRepository>()).Copy(pathToNewFile, pathToFile);
+                (_unitOfWork.GetFsRepository<IFSFileManager>()).Copy(pathToNewFile, pathToFile);
                 _unitOfWork.Commit();
             }
             catch (FSRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
-            catch (DBRepositoryArgumentException e)
+            catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
         }
 
@@ -163,8 +165,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
         public void Move(string pathToFile, string pathToStorage)
         {
-                var currentDirectory = ((IDirectoryRepository)_unitOfWork
-                    .FSRepository<DirectoryRepository>())
+                var currentDirectory = (_unitOfWork
+                    .GetFsRepository<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 var fileName = GetFileName(pathToFile);
@@ -175,30 +177,30 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 var fileStructure = _unitOfWork
-                .DBRepository<DirectoryStructure>()
+                .GetDbRepository<IDbDirectoryRepository>()
                 .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
                 .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
                 ?? throw new FileDoesNotExistException();
 
                 var storage = _unitOfWork
-                .DBRepository<DirectoryStructure>()
+                .GetDbRepository<IDbDirectoryRepository>()
                 .Find(x => x.FullPath == virtualStoragePath).FirstOrDefault()
                 ?? throw new DirectoryDoesNotExistException();
 
                 fileStructure.Directory = storage;
-                _unitOfWork.FSRepository<FileRepository>().Move(newFileFullPath, fullFilePath);
+                _unitOfWork.GetFsRepository<IFSFileManager>().Move(newFileFullPath, fullFilePath);
                 _unitOfWork.Commit();
             }
             catch (FSRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
-            catch (DBRepositoryArgumentException e)
+            catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                _unitOfWork.FSRepository<FileRepository>().MoveRollback(newFileFullPath, fullFilePath);
-                throw new FileManagerBlArgumentException(e.Message);
+                _unitOfWork.GetFsRepository<IFSFileManager>().MoveRollback(newFileFullPath, fullFilePath);
+                throw new ServiceArgumentException(e.Message);
             }
         }
 
@@ -206,8 +208,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             try
             {
-                var currentDirectory = ((IDirectoryRepository)_unitOfWork
-                    .FSRepository<DirectoryRepository>())
+                var currentDirectory = (_unitOfWork
+                    .GetFsRepository<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 var fileName = GetFileName(path);
@@ -215,24 +217,24 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 var fullFilePath = path.Replace("~", currentDirectory);
 
                 var fileStructure = _unitOfWork
-                .DBRepository<DirectoryStructure>()
+                .GetDbRepository<IDbDirectoryRepository>()
                 .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
                 .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
                 ?? throw new FileDoesNotExistException();
 
-                _unitOfWork.DBRepository<FileStructure>().Remove(fileStructure);
-                _unitOfWork.FSRepository<FileRepository>().Remove(fullFilePath);
+                _unitOfWork.GetDbRepository <IDbFileRepository>().Remove(fileStructure);
+                _unitOfWork.GetFsRepository<IFSFileManager>().Remove(fullFilePath);
                 _unitOfWork.Commit();
             }
             catch (FSRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
-            catch (DBRepositoryArgumentException e)
+            catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FileManagerBlArgumentException(e.Message);
+                throw new ServiceArgumentException(e.Message);
             }
         }
 
@@ -242,8 +244,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             
             var fileName = path.Substring(index, path.Length-index);
             var storageDirectoryPath = path.Substring(0, path.LastIndexOf('\\'));
-            return Mapper.Instance.Map<FileStructureDto>(_unitOfWork
-                .DBRepository<DirectoryStructure>()
+            return _mapper.Map<FileStructureDto>(_unitOfWork
+                .GetDbRepository<IDbDirectoryRepository> ()
                 .EagerFind(x => x.FullPath == storageDirectoryPath, x => x.Files)
                 .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name+x.Extension == fileName));
         }

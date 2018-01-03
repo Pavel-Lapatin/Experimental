@@ -6,13 +6,13 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Exceptions
 {
-    public class DBRepositoryArgumentException : FileManagerDALArgumentException
+    public class DbRepositoryArgumentException : FileManagerDALArgumentException
     {
-        public DBRepositoryArgumentException() : base()
+        public DbRepositoryArgumentException() : base()
         {
 
         }
-        public DBRepositoryArgumentException(string message) : base(message)
+        public DbRepositoryArgumentException(string message) : base(message)
         {
 
         }

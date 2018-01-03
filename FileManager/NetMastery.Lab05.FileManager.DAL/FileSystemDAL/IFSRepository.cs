@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IFSRepository
+    public interface IFSManager
     {
         void Move(string destination, string source);
         void Remove(string destination);

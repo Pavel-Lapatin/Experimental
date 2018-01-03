@@ -5,7 +5,7 @@ using System.Linq.Expressions;
 
 namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
-    public interface IDBRepository<TEntity> where TEntity : class
+    public interface IDbRepository<TEntity> where TEntity : class
     {
         TEntity Get(int id);
         IEnumerable<TEntity> GetAll();

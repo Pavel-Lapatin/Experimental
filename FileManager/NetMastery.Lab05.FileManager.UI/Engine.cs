@@ -45,7 +45,7 @@ namespace NetMastery.Lab05.FileManager.UI
                         Console.WriteLine();
                         Redirect(typeof(CommandController), "CommandGet", null);
                     }
-                    catch (FileManagerBlArgumentException e)
+                    catch (ServiceArgumentException e)
                     {
                         Log.Logger.Debug(e.Message);
                         Console.WriteLine();

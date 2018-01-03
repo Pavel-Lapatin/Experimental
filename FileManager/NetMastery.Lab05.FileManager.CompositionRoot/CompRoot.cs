@@ -20,9 +20,6 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             Log.Logger.Information("IoC initializing ...");
             var container = ContainerConfiguration.Config();
             Log.Logger.Information("Successfully");
-            Log.Logger.Information("Automapper initializing ...");
-            AutoMapperInitializer.Initialize();
-            Log.Logger.Information("Successfully");
             Log.Logger.Information("Set current directory ...");
             DirectoryInitializer.SetCurrentDirectory();
             Log.Logger.Information($"Successfully. Current directory {Directory.GetCurrentDirectory()}");
