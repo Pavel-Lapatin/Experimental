@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Exceptions
 {
-    public class FSRepositoryArgumentException : FileManagerDALArgumentException
+    public class fsDirectoryManagerArgumentException : FileManagerDALArgumentException
     {
-        public FSRepositoryArgumentException() : base()
+        public fsDirectoryManagerArgumentException() : base()
         {
 
         }
 
-        public FSRepositoryArgumentException(string message) : base(message)
+        public fsDirectoryManagerArgumentException(string message) : base(message)
         {
 
         }

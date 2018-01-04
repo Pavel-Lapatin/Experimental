@@ -13,5 +13,10 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         public DbAccountRepository(FileManagerDbContext context) : base(context)
         {
         }
+
+        public Account FindByLogin(string login)
+        {
+            return Find(x => x.Login == login).FirstOrDefault();
+        }
     }
 }

@@ -9,6 +9,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Interfacies
 {
     public interface IDbAccountRepository : IDbRepository<Account>
     {
-
+        Account FindByLogin(string login);
     }
 }

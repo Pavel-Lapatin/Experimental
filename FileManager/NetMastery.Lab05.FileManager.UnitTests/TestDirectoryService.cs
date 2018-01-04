@@ -42,8 +42,6 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
             Assert.That(() => directoryService.Add(parametr1, parametr2),
                 Throws.TypeOf<ServiceArgumentNullException>());
-            Assert.That(() => directoryService.ChangeWorkDirectory(null),
-                Throws.TypeOf<ServiceArgumentNullException>());
             Assert.That(() => directoryService.GetInfoByPath(null),
                 Throws.TypeOf<ServiceArgumentNullException>());
             Assert.That(() => directoryService.Move(parametr1, parametr2),
@@ -89,8 +87,6 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             //Assert
             Assert.That(() => directoryService.Add("NotExistingPath", "newFolder"),
                Throws.TypeOf<DirectoryDoesNotExistException>());
-            Assert.That(() => directoryService.ChangeWorkDirectory("NotExistingPath"),
-                Throws.TypeOf<DirectoryDoesNotExistException>());
             Assert.That(() => directoryService.GetInfoByPath("NotExistingPath"),
                 Throws.TypeOf<DirectoryDoesNotExistException>());
             Assert.That(() => directoryService.Move(parametr1, parametr2),
@@ -132,7 +128,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
 
         [Test]
         [TestCase("ParentDirectoryFullPath", "newFolderName")]
-        public void When_AddDirectorySeccessfully_Expected_NewCorrectDirectory(string path, string name)
+        public void When_AddDirectorySeccessfully_Expected_ExecuteAddMethod(string path, string name)
         {
             //Arrange
 
@@ -143,20 +139,20 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             DbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s != "ParentDirectoryFullPath")))
                .Returns((DirectoryStructure)null);
             DbRepository.Setup(u => u.Add(It.IsAny<DirectoryStructure>()));
-            var fsRepository = new Mock<IFSDirectoryManager>();
-            fsRepository.Setup(u => u.AddFolder(It.IsAny<string>(), It.IsAny<string>()));
+            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
+            fsDirectoryManager.Setup(u => u.AddFolder(It.IsAny<string>(), It.IsAny<string>()));
             var autoMapper = new Mock<IMapper>();
             autoMapper.Setup(x => x.Map<DirectoryStructure>(It.IsAny<DirectoryStructureDto>()))
                 .Returns(new DirectoryStructure { FullPath = path + '\\'+name});
 
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(DbRepository.Object);
-            unitOfWork.Setup(x => x.GetFsRepository<IFSDirectoryManager>()).Returns(fsRepository.Object);
+            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
             directoryService.Add(path, name);
             //Assert
             DbRepository.Verify(u => u.Add(It.IsAny<DirectoryStructure>()), Times.Once);
-            fsRepository.Verify(u => u.AddFolder(path, name), Times.Once);
+            fsDirectoryManager.Verify(u => u.AddFolder(path, name), Times.Once);
         }
 
         [Test]
@@ -166,7 +162,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var unitOfWork = new Mock<IUnitOfWork>();
             var dbRepository = new Mock<IDbDirectoryRepository>();
 
-            var fsRepository = new Mock<IFSDirectoryManager>();
+            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
             var autoMapper = new Mock<IMapper>();
             dbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s == pathTo)))
                 .Returns(new DirectoryStructure { FullPath = pathTo });
@@ -180,15 +176,15 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                     },
                 FullPath = pathFrom });
 
-            fsRepository.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
+            fsDirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
             
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetFsRepository<IFSDirectoryManager>()).Returns(fsRepository.Object);
+            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             new DirectoryService(unitOfWork.Object, autoMapper.Object).Move(pathFrom, pathTo);
             //Assert
-            fsRepository.Verify(u => u.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            fsDirectoryManager.Verify(u => u.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             unitOfWork.Verify(u => u.Commit());
         }
 
@@ -199,7 +195,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var unitOfWork = new Mock<IUnitOfWork>();
             var dbRepository = new Mock<IDbDirectoryRepository>();
 
-            var fsRepository = new Mock<IFSDirectoryManager>();
+            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
             var autoMapper = new Mock<IMapper>();
             dbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s == pathTo)))
                 .Returns(new DirectoryStructure { FullPath = pathTo });
@@ -214,10 +210,10 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                     FullPath = pathFrom
                 });
 
-            fsRepository.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
+            fsDirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
 
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetFsRepository<IFSDirectoryManager>()).Returns(fsRepository.Object);
+            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
@@ -226,6 +222,314 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 Throws.TypeOf<ServiceArgumentException>());
         }
 
+        [Test]
+        [TestCase("~adminRoot\\folder2")]
+        public void When_DirectoryRemovedSeccessfully_Expect_RemoveMethodExucutes(string path)
+        {
+            var unitOfWork = new Mock<IUnitOfWork>();
+            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
+            var fdFileRepository = new Mock<IDbFileRepository>();
+            var autoMapper = new Mock<IMapper>();
+            dbRepository.Setup(u => u.FindByPathEagerLoadingFiles(It.Is<string>(s => s == path)))
+                .Returns(new DirectoryStructure { FullPath = path,
+                                                    Files = new[]
+                                                    {
+                                                        new FileStructure(),
+                                                        new FileStructure()
+                                                    }
+                                                 });
+
+            dbRepository.Setup(u => u.Remove(It.IsAny<DirectoryStructure>()));
+            fsDirectoryManager.Setup(u => u.Remove(It.IsAny<string>()));
+            fdFileRepository.Setup(u => u.RemoveRange(It.IsAny<ICollection<FileStructure>>()));
+
+            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+            unitOfWork.Setup(x => x.GetDbRepository<IDbFileRepository>()).Returns(fdFileRepository.Object);
+            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.Commit());
+            //Act
+            var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
+            directoryService.Remove(path);
+            //Assert
+            dbRepository.Verify(u => u.Remove(It.IsAny<DirectoryStructure>()), Times.AtLeastOnce);
+            fsDirectoryManager.Verify(u => u.Remove(It.IsAny<string>()), Times.Once);
+            fdFileRepository.Verify(u => u.RemoveRange(It.IsAny<ICollection<FileStructure>>()), Times.AtLeastOnce);
+            unitOfWork.Verify(u => u.Commit());
+        }
+
+        [Test]
+        [TestCase("~adminRoot\\folder2")]
+        public void When_GetInfoByPathSeccessfullyExecuted_Expect_ReturnDirectoryStructureDto(string path)
+        {
+            var unitOfWork = new Mock<IUnitOfWork>();
+            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var autoMapper = new Mock<IMapper>();
+            dbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s == path)))
+                .Returns(new DirectoryStructure());
+            autoMapper.Setup(u => u.Map<DirectoryStructureDto>(It.IsAny<DirectoryStructure>()))
+                .Returns(new DirectoryStructureDto { FullPath = path });
+            
+            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+
+            //Act
+            var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
+            var res = directoryService.GetInfoByPath(path);
+            //Assert
+            Assert.AreEqual(res.FullPath, path);
+        }
+
+        [Test]
+        [TestCase("~adminRoot\\fol2", "File1")]
+        public void When_SearchSeccessfullyExecuted_Expect_ReturnDirectoryStructureDto(string path, string pattern)
+        {
+            var rootDirectory = new DirectoryStructure
+            {
+                Name = "fol2",
+                FullPath = path,
+                ChildrenDirectories = new[]
+                {
+                    new DirectoryStructure
+                    {
+                        Name = "folder1",
+                        FullPath = path+"\\folder1",
+                        ChildrenDirectories = new []
+                        {
+                            new DirectoryStructure
+                            {
+                                Name = "Folder2",
+                                FullPath = path+"\\folder1"+"\\Folder2",
+                                Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File1",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File2",
+                                        Extension = ".html"
+                                    }
+                                }
+                            }
+                        } ,
+                        Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File11",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File12",
+                                        Extension = ".html"
+                                    }
+                                }
+                    },
+                    new DirectoryStructure
+                    {
+                        Name = "folder2",
+                        FullPath = path+"\\folder2",
+                        ChildrenDirectories = new []
+                        {
+                            new DirectoryStructure
+                            {
+                                Name = "Folder3",
+                                FullPath = path+"\\folder2"+"\\Folder3",
+                                Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File31",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File32",
+                                        Extension = ".html"
+                                    }
+                                }
+                            }
+                        },
+                        Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File21",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File22",
+                                        Extension = ".html"
+                                    }
+                                }
+                    }
+
+                },
+                Files = new[]
+                {
+                    new FileStructure
+                    {
+                        Name = "File1",
+                        Extension = ".txt"
+                    },
+                    new FileStructure
+                    {
+                        Name = "File2",
+                        Extension = ".html"
+                    }
+                }
+            };
+            
+            var unitOfWork = new Mock<IUnitOfWork>();
+            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var autoMapper = new Mock<IMapper>();
+            dbRepository.Setup(u => u.FindByPathEagerLoadingFull(It.Is<string>(s => s == path)))
+                .Returns(rootDirectory);
+
+            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+
+            //Act
+            var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
+            var res = directoryService.Search(path, pattern);
+            //Assert
+            var actual = new List<string>(new[] {
+                path + "\\folder1\\Folder2\\File1.txt",
+                path + "\\folder1\\File11.txt",
+                path + "\\folder1\\File12.html",
+                path +"\\File1.txt"
+                });
+            CollectionAssert.AreEqual(res, actual);
+        }
+
+        [Test]
+        [TestCase("~adminRoot\\fol2")]
+        public void When_ShowContextSeccessfullyExecuted_Expect_ReturnDirectoryStructureDto(string path)
+        {
+            var rootDirectory = new DirectoryStructure
+            {
+                Name = "fol2",
+                FullPath = path,
+                ChildrenDirectories = new[]
+                {
+                    new DirectoryStructure
+                    {
+                        Name = "folder1",
+                        FullPath = path+"\\folder1",
+                        ChildrenDirectories = new []
+                        {
+                            new DirectoryStructure
+                            {
+                                Name = "Folder2",
+                                FullPath = path+"\\folder1"+"\\Folder2",
+                                Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File1",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File2",
+                                        Extension = ".html"
+                                    }
+                                }
+                            }
+                        } ,
+                        Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File11",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File12",
+                                        Extension = ".html"
+                                    }
+                                }
+                    },
+                    new DirectoryStructure
+                    {
+                        Name = "folder2",
+                        FullPath = path+"\\folder2",
+                        ChildrenDirectories = new []
+                        {
+                            new DirectoryStructure
+                            {
+                                Name = "Folder3",
+                                FullPath = path+"\\folder2"+"\\Folder3",
+                                Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File31",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File32",
+                                        Extension = ".html"
+                                    }
+                                }
+                            }
+                        },
+                        Files = new []
+                                {
+                                    new FileStructure
+                                    {
+                                        Name = "File21",
+                                        Extension = ".txt"
+                                    },
+                                    new FileStructure
+                                    {
+                                        Name = "File22",
+                                        Extension = ".html"
+                                    }
+                                }
+                    }
+
+                },
+                Files = new[]
+                {
+                    new FileStructure
+                    {
+                        Name = "File1",
+                        Extension = ".txt"
+                    },
+                    new FileStructure
+                    {
+                        Name = "File2",
+                        Extension = ".html"
+                    }
+                }
+            };
+
+            var unitOfWork = new Mock<IUnitOfWork>();
+            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var autoMapper = new Mock<IMapper>();
+            dbRepository.Setup(u => u.FindByPathEagerLoadingFull(It.Is<string>(s => s == path)))
+                .Returns(rootDirectory);
+
+            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+
+            //Act
+            var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
+            var res = directoryService.ShowContent(path);
+            //AssertSk
+            var actual = new List<string>(new[] {
+                "folder1",
+                "folder2",
+                "File1.txt",
+                "File2.html"
+                });
+            CollectionAssert.AreEqual(res, actual);
+        }
 
     }
 }

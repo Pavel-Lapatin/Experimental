@@ -17,7 +17,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException(e.Message);
+                throw new fsDirectoryManagerArgumentException(e.Message);
             }
         }
 
@@ -30,7 +30,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException(e.Message);
+                throw new fsDirectoryManagerArgumentException(e.Message);
             }
 
         }
@@ -56,7 +56,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException(e.Message);
+                throw new fsDirectoryManagerArgumentException(e.Message);
             }
         }
 
@@ -74,7 +74,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException(e.Message);
+                throw new fsDirectoryManagerArgumentException(e.Message);
             }
         }
     }

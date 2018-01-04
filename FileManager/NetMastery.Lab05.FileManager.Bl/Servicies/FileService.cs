@@ -33,11 +33,11 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 var currentDirectory = (_unitOfWork
-                    .GetFsRepository<IFSDirectoryManager>())
+                    .GetfsDirectoryManager<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 var fullPathToFile = pathToFile.Replace("~", currentDirectory);
-                if (!_unitOfWork.GetFsRepository<IFSFileManager>().IsExist(fullPathToFile))
+                if (!_unitOfWork.GetfsDirectoryManager<IFSFileManager>().IsExist(fullPathToFile))
                 {
                     throw new FileDoesNotExistException();
                 }
@@ -57,7 +57,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 var freeSpace = GetFreeSpace(account);
 
                 var fileInfo = (_unitOfWork
-                    .GetFsRepository<IFSFileManager>())
+                    .GetfsDirectoryManager<IFSFileManager>())
                     .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
 
                 if (freeSpace < fileInfo.Length)
@@ -71,10 +71,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
                 _unitOfWork.GetDbRepository<IDbFileRepository>().Add(newFile);
                 var fullPathToNewFile = pathToStorage.Replace("~", currentDirectory) + '\\' + fileInfo.Name;
-                (_unitOfWork.GetFsRepository<IFSFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
+                (_unitOfWork.GetfsDirectoryManager<IFSFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -91,12 +91,12 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 var currentDirectory = (_unitOfWork
-                    .GetFsRepository<IFSDirectoryManager>())
+                    .GetfsDirectoryManager<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 pathToFile = pathToFile.Replace("~", currentDirectory);
 
-                if (!_unitOfWork.GetFsRepository<IFSFileManager>().IsExist(pathToFile))
+                if (!_unitOfWork.GetfsDirectoryManager<IFSFileManager>().IsExist(pathToFile))
                 {
                     throw new FileDoesNotExistException();
                 }
@@ -111,7 +111,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 var virtualDirectoryPath = GetVirtualDirectoryPath(pathToFile, currentDirectory);
 
                 var fileInfo = (_unitOfWork
-                    .GetFsRepository<IFSFileManager>())
+                    .GetfsDirectoryManager<IFSFileManager>())
                     .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
 
                 var fileStructure = _unitOfWork
@@ -127,10 +127,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 var pathToNewFile = pathToStorage + '\\' + fileName;
 
                 fileStructure.DownloadsNumber++;
-                (_unitOfWork.GetFsRepository<IFSFileManager>()).Copy(pathToNewFile, pathToFile);
+                (_unitOfWork.GetfsDirectoryManager<IFSFileManager>()).Copy(pathToNewFile, pathToFile);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -166,7 +166,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         public void Move(string pathToFile, string pathToStorage)
         {
                 var currentDirectory = (_unitOfWork
-                    .GetFsRepository<IFSDirectoryManager>())
+                    .GetfsDirectoryManager<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 var fileName = GetFileName(pathToFile);
@@ -188,10 +188,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 ?? throw new DirectoryDoesNotExistException();
 
                 fileStructure.Directory = storage;
-                _unitOfWork.GetFsRepository<IFSFileManager>().Move(newFileFullPath, fullFilePath);
+                _unitOfWork.GetfsDirectoryManager<IFSFileManager>().Move(newFileFullPath, fullFilePath);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -199,7 +199,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                _unitOfWork.GetFsRepository<IFSFileManager>().MoveRollback(newFileFullPath, fullFilePath);
+                _unitOfWork.GetfsDirectoryManager<IFSFileManager>().MoveRollback(newFileFullPath, fullFilePath);
                 throw new ServiceArgumentException(e.Message);
             }
         }
@@ -209,7 +209,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 var currentDirectory = (_unitOfWork
-                    .GetFsRepository<IFSDirectoryManager>())
+                    .GetfsDirectoryManager<IFSDirectoryManager>())
                     .GetCurrentPath();
 
                 var fileName = GetFileName(path);
@@ -223,10 +223,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 ?? throw new FileDoesNotExistException();
 
                 _unitOfWork.GetDbRepository <IDbFileRepository>().Remove(fileStructure);
-                _unitOfWork.GetFsRepository<IFSFileManager>().Remove(fullFilePath);
+                _unitOfWork.GetfsDirectoryManager<IFSFileManager>().Remove(fullFilePath);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);

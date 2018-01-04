@@ -17,7 +17,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException("Directory add operation failed");
+                throw new fsDirectoryManagerArgumentException("Directory add operation failed");
             }
            
         }
@@ -31,7 +31,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException("Get current path operation failed");
+                throw new fsDirectoryManagerArgumentException("Get current path operation failed");
             }
         }
 
@@ -47,7 +47,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             var fullPathDestination = destination.Replace("~", Directory.GetCurrentDirectory())+'\\'+folderName;
             if (Directory.Exists(fullPathDestination))
             {
-                throw new FSRepositoryArgumentException("There is already folder with the exact name as source folder");
+                throw new fsDirectoryManagerArgumentException("There is already folder with the exact name as source folder");
             }
             try
             {
@@ -56,7 +56,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException("Directory move operation failed");
+                throw new fsDirectoryManagerArgumentException("Directory move operation failed");
             }
         }
 
@@ -74,7 +74,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new FSRepositoryArgumentException("Directory Remove operation failed");
+                throw new fsDirectoryManagerArgumentException("Directory Remove operation failed");
             }
         }
     }

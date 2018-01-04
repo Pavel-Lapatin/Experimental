@@ -46,11 +46,11 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
             try
             {
-                (_unitOfWork.GetFsRepository<IFSDirectoryManager>()).AddFolder(path, name);
+                (_unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>()).AddFolder(path, name);
                 _unitOfWork.GetDbRepository<IDbDirectoryRepository>().Add(newDirectory);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -58,7 +58,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                _unitOfWork.GetFsRepository<IFSDirectoryManager>().Remove(path + '\\' + name);
+                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().Remove(path + '\\' + name);
                 throw new ServiceArgumentException(e.Message);
             }
         }
@@ -93,10 +93,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             currentDirectoryFrom.ModificationDate = DateTime.Now;
             try
             {
-                _unitOfWork.GetFsRepository<IFSDirectoryManager>().Move(pathTo, pathFrom);
+                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().Move(pathTo, pathFrom);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -104,7 +104,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                _unitOfWork.GetFsRepository<IFSDirectoryManager>().MoveRollback(pathTo, pathFrom);
+                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().MoveRollback(pathTo, pathFrom);
                 throw new ServiceArgumentException(e.Message);
             }
         } 
@@ -116,17 +116,18 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 throw new ServiceArgumentNullException();
             }
 
-            var currentDirectory = (_unitOfWork
+            var currentDirectory = _unitOfWork
                 .GetDbRepository<IDbDirectoryRepository>()
-                .EagerFind((x => x.FullPath == path), x => x.ChildrenDirectories)
-                .FirstOrDefault()) ?? throw new DirectoryDoesNotExistException();
+                .FindByPathEagerLoadingFiles(path) 
+                ?? throw new DirectoryDoesNotExistException();
+
             RecursiveRemove(currentDirectory);
             try
             {
-                _unitOfWork.GetFsRepository<IFSDirectoryManager>().Remove(path);
+                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().Remove(path);
                 _unitOfWork.Commit();
             }
-            catch (FSRepositoryArgumentException e)
+            catch (fsDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -143,13 +144,13 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (path == null || pattern == null)
             {
-            throw new ServiceArgumentNullException();
+                throw new ServiceArgumentNullException();
             }
                
             var currentDirectory = _unitOfWork
                 .GetDbRepository<IDbDirectoryRepository>()
-                .EagerFind(x => x.FullPath == path, x => x.ChildrenDirectories, x => x.Files)
-                .FirstOrDefault() ?? throw new DirectoryDoesNotExistException(); 
+                .FindByPathEagerLoadingFull(path) 
+                ?? throw new DirectoryDoesNotExistException(); 
 
             IList<string> results = new List<string>();
             RecursiveSearch(pattern, results, currentDirectory);
@@ -165,8 +166,8 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
             var directory = _unitOfWork
                 .GetDbRepository<IDbDirectoryRepository>()
-                .EagerFind(x => x.FullPath == path, x => x.Files)
-                .FirstOrDefault() ?? throw new DirectoryDoesNotExistException();
+                .FindByPathEagerLoadingFull(path) 
+                ?? throw new DirectoryDoesNotExistException();
    
             var result = new List<string>();
             var files = directory.Files.Select(x => x.Name + x.Extension);
@@ -176,18 +177,16 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             return result;
         }
 
-        public string ChangeWorkDirectory(string path)
+        public DirectoryStructureDto GetInfoByPath(string path)
         {
             if (path == null)
             {
                 throw new ServiceArgumentNullException();
             }
-
-            var currentDirectory = _mapper.Map<DirectoryStructureDto>(_unitOfWork
+            return _mapper.Map<DirectoryStructureDto>(_unitOfWork
                  .GetDbRepository<IDbDirectoryRepository>()
                  .FindByPath(path)
                  ?? throw new DirectoryDoesNotExistException());
-            return path;
         }
 
         #endregion
@@ -211,21 +210,11 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             return _mapper.Map<DirectoryStructure>(newDirectory);
         }
 
-        public DirectoryStructureDto GetInfoByPath(string path)
-        {
-            if (path == null)
-            {
-                throw new ServiceArgumentNullException();
-            }  
-            return _mapper.Map<DirectoryStructureDto>(_unitOfWork
-                 .GetDbRepository<IDbDirectoryRepository>()
-                 .FindByPath(path)
-                 ?? throw new DirectoryDoesNotExistException());
-        }
+        
 
         private void RecursiveSearch(string pattern, IList<string> results, DirectoryStructure directory)
         {          
-            if (directory.ChildrenDirectories != null && directory.ChildrenDirectories.Count != 0)
+            if (directory.ChildrenDirectories != null)
             {
                 foreach (var child in directory.ChildrenDirectories)
                 {
@@ -240,7 +229,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 if (file.Name.Contains(pattern))
                 {
-                    results.Add(directory.FullPath + "\\" + file.Name);
+                    results.Add(directory.FullPath + "\\" + file.Name+file.Extension);
                 }
             }
            
@@ -256,7 +245,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                     RecursiveRemove(children[i]);
                 }
             }
-            _unitOfWork.GetDbRepository<DbRepository<FileStructure>>().RemoveRange(rootDirectory.Files);  
+            _unitOfWork.GetDbRepository<IDbFileRepository>().RemoveRange(rootDirectory.Files);  
             _unitOfWork.GetDbRepository<IDbDirectoryRepository>().Remove(rootDirectory);
 
         }
@@ -272,11 +261,9 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
         }
 
-        
-
         public void Dispose()
         {
-            _unitOfWork.Dispose();
+            _unitOfWork?.Dispose();
         }
     }
 }

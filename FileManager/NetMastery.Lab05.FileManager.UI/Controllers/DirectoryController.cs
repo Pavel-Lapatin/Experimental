@@ -107,7 +107,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
                 if (form.IsValid)
                 {
-                    _userContext.CurrentPath = _directoryService.ChangeWorkDirectory(form.DestinationPath); 
+                    _userContext.CurrentPath = _directoryService.GetInfoByPath(form.DestinationPath).FullPath; 
                     Debug.WriteLine("Work directorry changed successfully");
                 }
                 else

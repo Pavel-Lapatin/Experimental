@@ -61,7 +61,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             return _repositoryFactory.GetRepository<TEntity>(new[] { _context });
         }
 
-        public TEntity GetFsRepository<TEntity>() where TEntity : class
+        public TEntity GetfsDirectoryManager<TEntity>() where TEntity : class
         {
             return _repositoryFactory.GetRepository<TEntity>(null);
         }
