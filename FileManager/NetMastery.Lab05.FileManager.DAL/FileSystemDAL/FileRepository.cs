@@ -1,5 +1,7 @@
-﻿using NetMastery.Lab05.FileManager.DAL.Exceptions;
+﻿using AutoMapper;
+using NetMastery.Lab05.FileManager.DAL.Exceptions;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
+using NetMastery.Lab05.FileManager.Domain;
 using Serilog;
 using System;
 using System.IO;
@@ -8,6 +10,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
     public class FSFileManager : IFSFileManager
     {
+        IMapper _mapper;
+        public FSFileManager(IMapper mapper)
+        {
+            _mapper = mapper;
+        }
         public void Copy(string destination, string source)
         {
             try
@@ -17,20 +24,20 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new fsDirectoryManagerArgumentException(e.Message);
+                throw new FSDirectoryManagerArgumentException(e.Message);
             }
         }
 
-        public FileInfo GetFileInfo(string path)
+        public FileStructure GetFileInfo(string path)
         {
             try
             {
-                return new FileInfo(path);
+                return _mapper.Map<FileStructure>(new FileInfo(path));
             }
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new fsDirectoryManagerArgumentException(e.Message);
+                throw new FSDirectoryManagerArgumentException(e.Message);
             }
 
         }
@@ -56,7 +63,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new fsDirectoryManagerArgumentException(e.Message);
+                throw new FSDirectoryManagerArgumentException(e.Message);
             }
         }
 
@@ -74,7 +81,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             catch (Exception e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new fsDirectoryManagerArgumentException(e.Message);
+                throw new FSDirectoryManagerArgumentException(e.Message);
             }
         }
     }

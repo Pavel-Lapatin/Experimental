@@ -52,9 +52,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Account.cs" />
-    <Compile Include="Configurations\AccountsMap.cs" />
-    <Compile Include="Configurations\DirectoryStructMap.cs" />
-    <Compile Include="Configurations\FileStructMap.cs" />
     <Compile Include="DirectoryStructure.cs" />
     <Compile Include="FileStructure.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

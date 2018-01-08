@@ -46,11 +46,11 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
             try
             {
-                (_unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>()).AddFolder(path, name);
+                (_unitOfWork.GetFileSystemManager<IFSDirectoryManager>()).AddFolder(path, name);
                 _unitOfWork.GetDbRepository<IDbDirectoryRepository>().Add(newDirectory);
                 _unitOfWork.Commit();
             }
-            catch (fsDirectoryManagerArgumentException e)
+            catch (FSDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -58,7 +58,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().Remove(path + '\\' + name);
+                _unitOfWork.GetFileSystemManager<IFSDirectoryManager>().Remove(path + '\\' + name);
                 throw new ServiceArgumentException(e.Message);
             }
         }
@@ -93,10 +93,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             currentDirectoryFrom.ModificationDate = DateTime.Now;
             try
             {
-                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().Move(pathTo, pathFrom);
+                _unitOfWork.GetFileSystemManager<IFSDirectoryManager>().Move(pathTo, pathFrom);
                 _unitOfWork.Commit();
             }
-            catch (fsDirectoryManagerArgumentException e)
+            catch (FSDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -104,7 +104,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             catch (DbRepositoryArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
-                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().MoveRollback(pathTo, pathFrom);
+                _unitOfWork.GetFileSystemManager<IFSDirectoryManager>().MoveRollback(pathTo, pathFrom);
                 throw new ServiceArgumentException(e.Message);
             }
         } 
@@ -124,10 +124,10 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             RecursiveRemove(currentDirectory);
             try
             {
-                _unitOfWork.GetfsDirectoryManager<IFSDirectoryManager>().Remove(path);
+                _unitOfWork.GetFileSystemManager<IFSDirectoryManager>().Remove(path);
                 _unitOfWork.Commit();
             }
-            catch (fsDirectoryManagerArgumentException e)
+            catch (FSDirectoryManagerArgumentException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -229,7 +229,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 if (file.Name.Contains(pattern))
                 {
-                    results.Add(directory.FullPath + "\\" + file.Name+file.Extension);
+                    results.Add(directory.FullPath + "\\" + file.Name + file.Extension);
                 }
             }
            

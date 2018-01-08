@@ -146,7 +146,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 .Returns(new DirectoryStructure { FullPath = path + '\\'+name});
 
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(DbRepository.Object);
-            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
             directoryService.Add(path, name);
@@ -179,7 +179,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             fsDirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
             
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             new DirectoryService(unitOfWork.Object, autoMapper.Object).Move(pathFrom, pathTo);
@@ -213,7 +213,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             fsDirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
 
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
@@ -246,7 +246,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
 
             unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
             unitOfWork.Setup(x => x.GetDbRepository<IDbFileRepository>()).Returns(fdFileRepository.Object);
-            unitOfWork.Setup(x => x.GetfsDirectoryManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);

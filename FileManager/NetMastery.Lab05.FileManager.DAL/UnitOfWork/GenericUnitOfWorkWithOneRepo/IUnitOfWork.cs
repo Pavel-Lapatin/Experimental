@@ -9,7 +9,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Interfacies
     public interface IUnitOfWork : IDisposable 
     {
         TEntity GetDbRepository<TEntity>() where TEntity : class;
-        TEntity GetfsDirectoryManager<TEntity>() where TEntity : class;
+        TEntity GetFileSystemManager<TEntity>() where TEntity : class;
         void Commit();
     }
 }

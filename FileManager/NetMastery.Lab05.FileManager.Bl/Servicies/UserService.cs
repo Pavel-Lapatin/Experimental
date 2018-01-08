@@ -5,6 +5,7 @@ using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Domain;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.DAL.Repository;
+using NetMastery.Lab05.FileManager.Bl.Exceptions;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -24,6 +25,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
         public AccountDto GetInfoByLogin(string login)
         {
+            if (string.IsNullOrEmpty(login)) throw new ServiceArgumentNullException();
             return _mapper.Map<AccountDto>(_unitOfWork
                 .GetDbRepository<IDbAccountRepository>().Find(x => x.Login == login).FirstOrDefault());
         }

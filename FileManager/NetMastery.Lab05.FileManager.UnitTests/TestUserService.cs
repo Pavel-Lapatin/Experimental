@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Moq;
+using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.Bl.Servicies;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.DAL.Repository;
@@ -36,6 +37,18 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var res = userService.GetInfoByLogin(login);
             //Assert
             Assert.AreEqual(res.Login, login);
+        }
+
+        [Test]
+        [TestCase("")]
+        [TestCase(null)]
+        public void When_LoginIsNullOrEmpty_Expected_ServiceNullArgumentException(string login)
+        {
+            var unitOfWork = new Mock<IUnitOfWork>();
+            var autoMapper = new Mock<IMapper>();
+            var userService = new UserService(unitOfWork.Object, autoMapper.Object);
+            Assert.That(() => userService.GetInfoByLogin(login),
+                Throws.TypeOf<ServiceArgumentNullException>());
         }
     }
 }
