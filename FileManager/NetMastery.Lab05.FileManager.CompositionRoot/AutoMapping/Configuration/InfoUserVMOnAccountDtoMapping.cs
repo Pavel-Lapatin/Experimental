@@ -9,7 +9,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
         public InfoUserVMOnAccountDtoMapping()
         {
             CreateMap<AccountDto, InfoUserViewModel>()
-                .ForMember(x=>x.Messages, cfg=>cfg.Ignore());
+                .modelember(x=>x.Messages, cfg=>cfg.Ignore());
         }
     }
 }

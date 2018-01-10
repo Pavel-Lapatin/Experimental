@@ -1,7 +1,5 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
-using NetMastery.Lab05.FileManager.UI.events;
-using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
@@ -18,8 +16,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             var arguments = Argument("path", "Path to the file for rendering its info", false);
             OnExecute(() =>
             {
-                //var form = new OnePathForm(arguments.Values[arguments.Values.Count - 1]);
-                Controller().GetFleInfo(arguments.Values[arguments.Values.Count - 1]);
+                //var model = new OnePathmodel(arguments.Values[arguments.Values.Count - 1]);
+                Controller().GetFileInfo(arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

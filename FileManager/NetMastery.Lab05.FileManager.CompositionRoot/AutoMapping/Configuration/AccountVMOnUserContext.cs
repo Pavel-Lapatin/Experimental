@@ -14,10 +14,10 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
         public AccountVMOnUserContext()
         {
             CreateMap<IUserContext, AccountViewModel>()
-                .ForMember(m => m.Login, cfg => cfg.MapFrom(x => x.Login))
-                .ForMember(m => m.RootDirectory, cfg => cfg.MapFrom(x => x.CurrentPath))
-                .ForMember(m => m.Messages, cfg => cfg.Ignore())
-                .ForMember(m => m.RootDirectory, cfg => cfg.MapFrom(x => x.RootDirectory));
+                .modelember(m => m.Login, cfg => cfg.MapFrom(x => x.Login))
+                .modelember(m => m.RootDirectory, cfg => cfg.MapFrom(x => x.CurrentPath))
+                .modelember(m => m.Messages, cfg => cfg.Ignore())
+                .modelember(m => m.RootDirectory, cfg => cfg.MapFrom(x => x.RootDirectory));
         }
     }
 }

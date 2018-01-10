@@ -7,31 +7,14 @@ using NetMastery.Lab05.FileManager.DAL.Repository;
 using NetMastery.Lab05.FileManager.Domain;
 using NetMastery.Lab05.FileManager.Dto;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace NetMastery.Lab05.FileManager.UnitTests
 {
     [TestFixture]
     public class TestDirectoryService
     {
-
-        [SetUp]
-        public void Init()
-        {
-
-        }
-
-        [TearDown]
-        public void Dispose()
-        {
-
-        }
-
         [Test]
         [TestCase(null, "something")]
         [TestCase("something", null)]
@@ -61,8 +44,8 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
-            var DbRepository = new Mock<IDbDirectoryRepository> ();
-            DbRepository.Setup(
+            var Repository = new Mock<IDirectoryRepository> ();
+            Repository.Setup(
                 u => u.Find(
                     x => x.Name == "ExistingPath"))
                 .Returns(new List<DirectoryStructure>(
@@ -71,12 +54,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                         new DirectoryStructure()
                     }));
 
-            DbRepository.Setup(
+            Repository.Setup(
                 u => u.Find(
                     x => x.Name != "ExistingPath"))
                 .Returns(new List<DirectoryStructure>());
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(DbRepository.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
             var autoMapper = new Mock<IMapper>();
             autoMapper.Setup(m => m.Map<DirectoryStructure>(It.Is<Account>(x => x != null)))
                       .Returns(new DirectoryStructure());
@@ -112,13 +95,13 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 });
 
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(
+            Repository.Setup(
                 u => u.FindByPath(It.Is<string>(s=>s == path + '\\'+name)))
                 .Returns(new DirectoryStructure());
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
             //Assert
@@ -133,26 +116,26 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             //Arrange
 
             var unitOfWork = new Mock<IUnitOfWork>();
-            var DbRepository = new Mock<IDbDirectoryRepository>(); 
-            DbRepository.Setup(u => u.FindByPath(It.Is<string>(s=>s == "ParentDirectoryFullPath")))
+            var Repository = new Mock<IDirectoryRepository>(); 
+            Repository.Setup(u => u.FindByPath(It.Is<string>(s=>s == "ParentDirectoryFullPath")))
                 .Returns(new DirectoryStructure { DirectoryId = 1, FullPath = "ParentDirectoryFullPath" });
-            DbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s != "ParentDirectoryFullPath")))
+            Repository.Setup(u => u.FindByPath(It.Is<string>(s => s != "ParentDirectoryFullPath")))
                .Returns((DirectoryStructure)null);
-            DbRepository.Setup(u => u.Add(It.IsAny<DirectoryStructure>()));
-            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
-            fsDirectoryManager.Setup(u => u.AddFolder(It.IsAny<string>(), It.IsAny<string>()));
+            Repository.Setup(u => u.Add(It.IsAny<DirectoryStructure>()));
+            var DirectoryManager = new Mock<IDirectoryManager>();
+            DirectoryManager.Setup(u => u.AddFolder(It.IsAny<string>(), It.IsAny<string>()));
             var autoMapper = new Mock<IMapper>();
             autoMapper.Setup(x => x.Map<DirectoryStructure>(It.IsAny<DirectoryStructureDto>()))
                 .Returns(new DirectoryStructure { FullPath = path + '\\'+name});
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(DbRepository.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(DirectoryManager.Object);
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
             directoryService.Add(path, name);
             //Assert
-            DbRepository.Verify(u => u.Add(It.IsAny<DirectoryStructure>()), Times.Once);
-            fsDirectoryManager.Verify(u => u.AddFolder(path, name), Times.Once);
+            Repository.Verify(u => u.Add(It.IsAny<DirectoryStructure>()), Times.Once);
+            DirectoryManager.Verify(u => u.AddFolder(path, name), Times.Once);
         }
 
         [Test]
@@ -160,14 +143,14 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         public void When_MoveDirectorySuccessfully_Expect_ExecutionOfMoveMethod(string pathFrom, string pathTo)
         {
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
 
-            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
+            var DirectoryManager = new Mock<IDirectoryManager>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s == pathTo)))
+            Repository.Setup(u => u.FindByPath(It.Is<string>(s => s == pathTo)))
                 .Returns(new DirectoryStructure { FullPath = pathTo });
 
-            dbRepository.Setup(u => u.FindByPathEagerLoadingParentDirectory(It.Is<string>(s => s == pathFrom)))
+            Repository.Setup(u => u.FindByPathEagerLoadingParentDirectory(It.Is<string>(s => s == pathFrom)))
                 .Returns(new DirectoryStructure
                 {
                     ParentDirectory = new DirectoryStructure
@@ -176,15 +159,15 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                     },
                 FullPath = pathFrom });
 
-            fsDirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
+            DirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
             
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(DirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             new DirectoryService(unitOfWork.Object, autoMapper.Object).Move(pathFrom, pathTo);
             //Assert
-            fsDirectoryManager.Verify(u => u.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
+            DirectoryManager.Verify(u => u.Move(It.IsAny<string>(), It.IsAny<string>()), Times.Once);
             unitOfWork.Verify(u => u.Commit());
         }
 
@@ -193,14 +176,14 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         public void When_DirectoryMovedToSubDirectory_Expect_ServiceArgumentException(string pathFrom, string pathTo)
         {
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
 
-            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
+            var DirectoryManager = new Mock<IDirectoryManager>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s == pathTo)))
+            Repository.Setup(u => u.FindByPath(It.Is<string>(s => s == pathTo)))
                 .Returns(new DirectoryStructure { FullPath = pathTo });
 
-            dbRepository.Setup(u => u.FindByPathEagerLoadingParentDirectory(It.Is<string>(s => s == pathFrom)))
+            Repository.Setup(u => u.FindByPathEagerLoadingParentDirectory(It.Is<string>(s => s == pathFrom)))
                 .Returns(new DirectoryStructure
                 {
                     ParentDirectory = new DirectoryStructure
@@ -210,10 +193,10 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                     FullPath = pathFrom
                 });
 
-            fsDirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
+            DirectoryManager.Setup(u => u.Move(It.IsAny<string>(), It.IsAny<string>()));
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(DirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
@@ -227,11 +210,11 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         public void When_DirectoryRemovedSeccessfully_Expect_RemoveMethodExucutes(string path)
         {
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
-            var fsDirectoryManager = new Mock<IFSDirectoryManager>();
-            var fdFileRepository = new Mock<IDbFileRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
+            var DirectoryManager = new Mock<IDirectoryManager>();
+            var fdFileRepository = new Mock<IFileRepository>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(u => u.FindByPathEagerLoadingFiles(It.Is<string>(s => s == path)))
+            Repository.Setup(u => u.FindByPathEagerLoadingFiles(It.Is<string>(s => s == path)))
                 .Returns(new DirectoryStructure { FullPath = path,
                                                     Files = new[]
                                                     {
@@ -240,20 +223,20 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                                     }
                                                  });
 
-            dbRepository.Setup(u => u.Remove(It.IsAny<DirectoryStructure>()));
-            fsDirectoryManager.Setup(u => u.Remove(It.IsAny<string>()));
+            Repository.Setup(u => u.Remove(It.IsAny<DirectoryStructure>()));
+            DirectoryManager.Setup(u => u.Remove(It.IsAny<string>()));
             fdFileRepository.Setup(u => u.RemoveRange(It.IsAny<ICollection<FileStructure>>()));
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
-            unitOfWork.Setup(x => x.GetDbRepository<IDbFileRepository>()).Returns(fdFileRepository.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(fsDirectoryManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
+            unitOfWork.Setup(x => x.Get<IFileRepository>()).Returns(fdFileRepository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(DirectoryManager.Object);
             unitOfWork.Setup(x => x.Commit());
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
             directoryService.Remove(path);
             //Assert
-            dbRepository.Verify(u => u.Remove(It.IsAny<DirectoryStructure>()), Times.AtLeastOnce);
-            fsDirectoryManager.Verify(u => u.Remove(It.IsAny<string>()), Times.Once);
+            Repository.Verify(u => u.Remove(It.IsAny<DirectoryStructure>()), Times.AtLeastOnce);
+            DirectoryManager.Verify(u => u.Remove(It.IsAny<string>()), Times.Once);
             fdFileRepository.Verify(u => u.RemoveRange(It.IsAny<ICollection<FileStructure>>()), Times.AtLeastOnce);
             unitOfWork.Verify(u => u.Commit());
         }
@@ -263,14 +246,14 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         public void When_GetInfoByPathSeccessfullyExecuted_Expect_ReturnDirectoryStructureDto(string path)
         {
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(u => u.FindByPath(It.Is<string>(s => s == path)))
+            Repository.Setup(u => u.FindByPath(It.Is<string>(s => s == path)))
                 .Returns(new DirectoryStructure());
             autoMapper.Setup(u => u.Map<DirectoryStructureDto>(It.IsAny<DirectoryStructure>()))
                 .Returns(new DirectoryStructureDto { FullPath = path });
             
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
 
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
@@ -385,12 +368,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             };
             
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(u => u.FindByPathEagerLoadingFull(It.Is<string>(s => s == path)))
+            Repository.Setup(u => u.FindByPathEagerLoadingFull(It.Is<string>(s => s == path)))
                 .Returns(rootDirectory);
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
 
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);
@@ -511,12 +494,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             };
 
             var unitOfWork = new Mock<IUnitOfWork>();
-            var dbRepository = new Mock<IDbDirectoryRepository>();
+            var Repository = new Mock<IDirectoryRepository>();
             var autoMapper = new Mock<IMapper>();
-            dbRepository.Setup(u => u.FindByPathEagerLoadingFull(It.Is<string>(s => s == path)))
+            Repository.Setup(u => u.FindByPathEagerLoadingFull(It.Is<string>(s => s == path)))
                 .Returns(rootDirectory);
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(dbRepository.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(Repository.Object);
 
             //Act
             var directoryService = new DirectoryService(unitOfWork.Object, autoMapper.Object);

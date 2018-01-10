@@ -1,6 +1,4 @@
-﻿
-
-using System;
+﻿using System;
 
 namespace NetMastery.Lab05.FileManager.Dto
 {

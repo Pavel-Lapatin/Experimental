@@ -27,7 +27,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (string.IsNullOrEmpty(login)) throw new ServiceArgumentNullException();
             return _mapper.Map<AccountDto>(_unitOfWork
-                .GetDbRepository<IDbAccountRepository>().Find(x => x.Login == login).FirstOrDefault());
+                .Get<IAccountRepository>().Find(x => x.Login == login).FirstOrDefault());
         }
     }
 }

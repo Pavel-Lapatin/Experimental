@@ -5,17 +5,9 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.DAL.Repository;
 using NetMastery.Lab05.FileManager.Domain;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SystemWrapper.IO;
 
 namespace NetMastery.Lab05.FileManager.UnitTests
 {
-
     [TestFixture]
     public class TestFileService
     {
@@ -26,9 +18,9 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
-            var directoryManager = new Mock<IFSDirectoryManager>();
+            var directoryManager = new Mock<IDirectoryManager>();
             directoryManager.Setup(x => x.GetCurrentPath()).Returns("E\\CommonStorage");
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(directoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(directoryManager.Object);
             //Act
             var fileService = new FileService(unitOfWork.Object, null);
             //Assert
@@ -44,11 +36,11 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
-            var fileManager = new Mock<IFSFileManager>();
-            var directoryManager = new Mock<IFSDirectoryManager>();
+            var fileManager = new Mock<IFileManager>();
+            var directoryManager = new Mock<IDirectoryManager>();
             directoryManager.Setup(x => x.GetCurrentPath()).Returns("E\\CommonStorage");
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(directoryManager.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSFileManager>()).Returns(fileManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(directoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFileManager>()).Returns(fileManager.Object);
             fileManager.Setup(x => x.GetFileInfo(It.IsAny<string>()))
                 .Returns((FileStructure)null);
             //Act
@@ -64,15 +56,15 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
-            var fileManager = new Mock<IFSFileManager>();
-            var directoryManager = new Mock<IFSDirectoryManager>();
-            var directoryRepository = new Mock<IDbDirectoryRepository>();
+            var fileManager = new Mock<IFileManager>();
+            var directoryManager = new Mock<IDirectoryManager>();
+            var directoryRepository = new Mock<IDirectoryRepository>();
             fileManager.Setup(x => x.GetFileInfo(It.IsAny<string>())).Returns(new FileStructure());
             directoryManager.Setup(x => x.GetCurrentPath()).Returns("E\\CommonStorage");
             directoryRepository.Setup(x => x.FindByPath(It.IsAny<string>())).Returns((DirectoryStructure)null);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(directoryManager.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSFileManager>()).Returns(fileManager.Object);
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(directoryRepository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(directoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFileManager>()).Returns(fileManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(directoryRepository.Object);
             //Act
             var fileService = new FileService(unitOfWork.Object, null);
             //Assert
@@ -86,18 +78,18 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
-            var fileManager = new Mock<IFSFileManager>();
-            var directoryManager = new Mock<IFSDirectoryManager>();
-            var directoryRepository = new Mock<IDbDirectoryRepository>();
-            var accountRepository = new Mock<IDbAccountRepository>();
+            var fileManager = new Mock<IFileManager>();
+            var directoryManager = new Mock<IDirectoryManager>();
+            var directoryRepository = new Mock<IDirectoryRepository>();
+            var accountRepository = new Mock<IAccountRepository>();
             fileManager.Setup(x => x.GetFileInfo(It.IsAny<string>())).Returns(new FileStructure {FileSize = 1024 });
             directoryManager.Setup(x => x.GetCurrentPath()).Returns("E\\CommonStorage");
             directoryRepository.Setup(x => x.FindByPath(It.IsAny<string>())).Returns(new DirectoryStructure());
-            accountRepository.Setup(x => x.IsFreeSpaceEnough(It.IsAny<string>(), It.IsAny<long>())).Returns(false);
-            unitOfWork.Setup(x => x.GetDbRepository<IDbAccountRepository>()).Returns(accountRepository.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(directoryManager.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSFileManager>()).Returns(fileManager.Object);
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(directoryRepository.Object);
+            accountRepository.Setup(x => x.HasEnoughFreeSpace(It.IsAny<string>(), It.IsAny<long>())).Returns(false);
+            unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(accountRepository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(directoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFileManager>()).Returns(fileManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(directoryRepository.Object);
             //Act
             var fileService = new FileService(unitOfWork.Object, null);
             //Assert
@@ -112,22 +104,22 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
             unitOfWork.Setup(x => x.Commit());
-            var fileManager = new Mock<IFSFileManager>();
+            var fileManager = new Mock<IFileManager>();
             fileManager.Setup(x => x.GetFileInfo(It.IsAny<string>())).Returns(new FileStructure { FileSize = 1024 });
-            var directoryManager = new Mock<IFSDirectoryManager>();
+            var directoryManager = new Mock<IDirectoryManager>();
             directoryManager.Setup(x => x.GetCurrentPath()).Returns("E\\CommonStorage");
-            var directoryRepository = new Mock<IDbDirectoryRepository>();
+            var directoryRepository = new Mock<IDirectoryRepository>();
             directoryRepository.Setup(x => x.FindByPath(It.IsAny<string>())).Returns(new DirectoryStructure());
-            var accountRepository = new Mock<IDbAccountRepository>();
-            accountRepository.Setup(x => x.IsFreeSpaceEnough(It.IsAny<string>(), It.IsAny<long>())).Returns(true);
-            var fileRepository = new Mock<IDbFileRepository>();
+            var accountRepository = new Mock<IAccountRepository>();
+            accountRepository.Setup(x => x.HasEnoughFreeSpace(It.IsAny<string>(), It.IsAny<long>())).Returns(true);
+            var fileRepository = new Mock<IFileRepository>();
             fileRepository.Setup(x => x.Add(It.IsAny<FileStructure>()));
 
-            unitOfWork.Setup(x => x.GetDbRepository<IDbAccountRepository>()).Returns(accountRepository.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(directoryManager.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSFileManager>()).Returns(fileManager.Object);
-            unitOfWork.Setup(x => x.GetDbRepository<IDbDirectoryRepository>()).Returns(directoryRepository.Object);
-            unitOfWork.Setup(x => x.GetDbRepository<IDbFileRepository>()).Returns(fileRepository.Object);
+            unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(accountRepository.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(directoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFileManager>()).Returns(fileManager.Object);
+            unitOfWork.Setup(x => x.Get<IDirectoryRepository>()).Returns(directoryRepository.Object);
+            unitOfWork.Setup(x => x.Get<IFileRepository>()).Returns(fileRepository.Object);
             //Act
             var fileService = new FileService(unitOfWork.Object, null);
             fileService.Upload(pathToStorage, pathToFile);
@@ -143,11 +135,11 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             //Arrange
             var unitOfWork = new Mock<IUnitOfWork>();
-            var fileManager = new Mock<IFSFileManager>();
-            var directoryManager = new Mock<IFSDirectoryManager>();
+            var fileManager = new Mock<IFileManager>();
+            var directoryManager = new Mock<IDirectoryManager>();
             directoryManager.Setup(x => x.GetCurrentPath()).Returns("E\\CommonStorage");
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSDirectoryManager>()).Returns(directoryManager.Object);
-            unitOfWork.Setup(x => x.GetFileSystemManager<IFSFileManager>()).Returns(fileManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IDirectoryManager>()).Returns(directoryManager.Object);
+            unitOfWork.Setup(x => x.GetFileSystemManager<IFileManager>()).Returns(fileManager.Object);
             fileManager.Setup(x => x.GetFileInfo(It.IsAny<string>()))
                 .Returns((FileStructure)null);
             //Act

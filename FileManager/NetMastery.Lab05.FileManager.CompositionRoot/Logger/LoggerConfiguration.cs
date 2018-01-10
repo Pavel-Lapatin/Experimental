@@ -18,7 +18,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 .MinimumLevel.Debug()
                 .Enrich.With(new CommonLogEnricher())
                 .WriteTo.File("log-.txt",
-                outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | " +
+                 outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} | " +
                                  "processId: {ProcessId} | " +
                                  "threadId: {ThreadId} | " +
                                  "message lvl: [{Level:u3}] " +

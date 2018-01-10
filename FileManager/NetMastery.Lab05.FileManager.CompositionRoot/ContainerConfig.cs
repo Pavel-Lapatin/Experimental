@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Microsoft.Extensions.CommandLineUtils;
-
 using NetMastery.Lab05.FileManager.Bl.Servicies;
 using NetMastery.Lab05.FileManager.DAL;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
@@ -8,16 +7,15 @@ using NetMastery.Lab05.FileManager.DAL.Repository;
 using NetMastery.Lab05.FileManager.UI;
 using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
-using NetMastery.Lab05.FileManager.UI.events;
 using NetMastery.Lab05.FileManager.UI.Implementation;
-using NetMastery.Lab05.FileManager.UI.Forms;
 using System.Linq;
 using System.Reflection;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
 using AutoMapper;
-using System.Collections;
-using System.Collections.Generic;
+using NetMastery.Lab05.FileManager.UI.Results;
+using System;
+using NetMastery.Lab05.FileManager.UI.Interfaces;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot
 {
@@ -27,32 +25,25 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
         {
             var builder = new ContainerBuilder();
 
-            var uiAssembly = Assembly.GetAssembly(typeof(Controller));
+            var userInterfaceAssembly = Assembly.GetAssembly(typeof(Controller));
 
-            var compositionBaseAssembly = Assembly.GetExecutingAssembly();
+            var compositionRootAssembly = Assembly.GetExecutingAssembly();
 
             builder.RegisterType<UserContext>()
                 .As<IUserContext>()
                 .SingleInstance();
 
-            var rerdirectEvent = new RedirectEvent();
-
-            builder.RegisterInstance(rerdirectEvent)
-               .SingleInstance();
-
-            builder.RegisterAssemblyTypes(uiAssembly)
-                .Where(t=> t.IsSubclassOf(typeof(CommandLineApplication))
-                || t.IsSubclassOf(typeof(Form)));
+            builder.RegisterAssemblyTypes(userInterfaceAssembly)
+                .Where(t=> t.IsSubclassOf(typeof(CommandLineApplication)));
 
 
-            builder.RegisterAssemblyTypes(uiAssembly)
-                .Where(t => t.IsSubclassOf(typeof(Controller)))
-                .WithParameter(new TypedParameter(typeof(RedirectEvent), rerdirectEvent));
+            builder.RegisterAssemblyTypes(userInterfaceAssembly)
+                .Where(t => t.IsSubclassOf(typeof(Controller)));
 
             builder.Register(c => new RepositoryFactory())
                               .As<IRepositoryFactory>();
 
-            var profiles = compositionBaseAssembly.GetTypes()
+            var profiles = compositionRootAssembly.GetTypes()
                 .Where(x => x.IsSubclassOf(typeof(Profile))).ToArray();
 
             builder.RegisterTypes(profiles);
@@ -66,7 +57,8 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 };
             })).AsSelf().SingleInstance();
 
-            builder.Register(c=> new Mapper(c.Resolve<MapperConfiguration>())).As<IMapper>()
+            builder.Register(c=> new Mapper(c.Resolve<MapperConfiguration>()))
+                .As<IMapper>()
                 .SingleInstance();
 
             builder.RegisterType<AuthenticationService>()
@@ -120,7 +112,14 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 c.Resolve<LogoffCommand>(),
                 c.Resolve<UserCommand>()));
 
+            builder.Register(c => new Func<Type, Controller>(t => c.Resolve(t) as Controller))
+                .As<IContrrollerFactory>()
+                .SingleInstance();
+
             return builder.Build();
+
+           
+
         }
     }
 }

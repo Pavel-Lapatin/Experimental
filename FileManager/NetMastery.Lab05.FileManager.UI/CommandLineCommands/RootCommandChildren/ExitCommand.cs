@@ -5,7 +5,7 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class ExitCommand : CommandLineApplication
+    public class ExitCommand : CommandLineApplicationRoot
     {
         public ExitCommand()
         {

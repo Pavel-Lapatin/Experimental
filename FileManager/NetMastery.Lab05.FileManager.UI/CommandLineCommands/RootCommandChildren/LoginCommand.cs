@@ -1,12 +1,10 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
-using NetMastery.Lab05.FileManager.UI.events;
-using NetMastery.Lab05.FileManager.UI.Forms;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class LoginCommand : CommandLineApplication
+    public class LoginCommand : CommandLineApplicationRoot
     {
         public Func<LoginController> Controller;
         public LoginCommand(Func<LoginController> getController) 
@@ -27,8 +25,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                 var p = password.Values[0];
                 login.Values.Clear();
                 password.Values.Clear();
-                //var form = new LoginForm(l, p);
-                Controller().Singin(l, p);
+                //var model = new Loginmodel(l, p);
+                Controller().SinginPost(l, p);
                 return 0;
             });
 

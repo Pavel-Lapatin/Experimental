@@ -3,7 +3,7 @@ using NetMastery.Lab05.FileManager.UI.events;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class FileCommand : CommandLineApplication
+    public class FileCommand : CommandLineApplicationRoot
     {
         public FileCommand(params CommandLineApplication[] commands)
         { 

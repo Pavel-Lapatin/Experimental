@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping;
 using NetMastery.Lab05.FileManager.UI;
 using NetMastery.Lab05.FileManager.UI.Commands;
 using NetMastery.Lab05.FileManager.UI.Controllers;
@@ -7,6 +6,7 @@ using Serilog;
 using System;
 using System.IO;
 using NetMastery.Lab05.FileManager.UI.events;
+using NetMastery.Lab05.FileManager.UI.Results;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot
 {
@@ -27,10 +27,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             Log.Logger.Information("Factory initializing ...");
             Func<Type, Controller> controllerFactory = t => container.Resolve(t) as Controller;
             Log.Logger.Information("Successfully");
-            Log.Logger.Information("Redirecting initializing ...");
-            var engine = new Engine(controllerFactory, (CommandLineApplicationRoot)cmd);
-            var redirectEvent = container.Resolve<RedirectEvent>();
-            redirectEvent.Redirected += engine.RedirecteRedirectEventHandler;
+            var engine = new Engine(new RedirectResult(typeof(StartController)), container.Resolve<IUserContext>(), cmd);
             Log.Logger.Information("Successfully");
             return engine;
         }

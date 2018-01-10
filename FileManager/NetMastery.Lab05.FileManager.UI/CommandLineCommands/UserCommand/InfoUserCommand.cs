@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using System;
+using NetMastery.Lab05.FileManager.UI.Results;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
@@ -18,6 +19,7 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                 return 0;
             });
         }
-       
+
+        public ActionResult Result { get; set; }
     }
 }

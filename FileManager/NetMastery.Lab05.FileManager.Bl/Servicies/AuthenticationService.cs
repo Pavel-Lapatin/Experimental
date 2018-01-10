@@ -35,7 +35,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 throw new ServiceArgumentNullException("Login and password must not be null or empty");
             }
             var account = _mapper.Map<AccountDto>(_unitOfWork
-                .GetDbRepository<IDbAccountRepository>()
+                .Get<IAccountRepository>()
                 .Find(x => x.Login == login)
                 .FirstOrDefault());
 
@@ -84,7 +84,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
                     }
                 };
-                _unitOfWork.GetDbRepository<IDbAccountRepository>().Add(_mapper.Map<Account>(newAccount));
+                _unitOfWork.Get<IAccountRepository>().Add(_mapper.Map<Account>(newAccount));
                 _unitOfWork.Commit();
                 Log.Logger.Information($"Created successfully");  
             }

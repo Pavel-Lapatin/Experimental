@@ -10,7 +10,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
             ContextKey = "NetMastery.Lab05.FileManager.DAL.FileManagerDBContext";
         }
 

@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
-// set of attributes. Change these attribute values to modify the information
+// set of attributes. Change these attribute values to modify the Information
 // associated with an assembly.
 [assembly: AssemblyTitle("NetMastery.FileManager.Controller")]
 [assembly: AssemblyDescription("")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("0af6afe3-9e6c-4c0c-bc0c-6a05c1d40851")]
 
-// Version information for an assembly consists of the following four values:
+// Version Information for an assembly consists of the following four values:
 //
 //      Major Version
 //      Minor Version

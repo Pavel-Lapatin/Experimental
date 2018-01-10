@@ -69,15 +69,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutoMapping\Configuration\AccountMapping.cs" />
-    <Compile Include="AutoMapping\Configuration\AccountDtoOnAccountVMMapping.cs" />
-    <Compile Include="AutoMapping\Configuration\AccountVMOnUserContext.cs" />
     <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
-    <Compile Include="AutoMapping\Configuration\DirectoryOnDirectoryInfoMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileStructureOnFileInfoMapping.cs" />
-    <Compile Include="AutoMapping\Configuration\InfoDirectoryVMOnDirectoryStructureDto.cs" />
-    <Compile Include="AutoMapping\Configuration\InfoFileVMOnFileDto.cs" />
-    <Compile Include="AutoMapping\Configuration\InfoUserVMOnAccountDtoMapping.cs" />
     <Compile Include="CompRoot.cs" />
     <Compile Include="ContainerConfig.cs" />
     <Compile Include="DirectoryInitializer.cs" />

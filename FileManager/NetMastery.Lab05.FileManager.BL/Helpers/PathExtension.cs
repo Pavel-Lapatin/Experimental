@@ -12,7 +12,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Helpers
         {
             return str.Replace(currentPath, "~");
         }
-        public static string TransformToFulllPatht(this String str, string currentPath)
+        public static string TransformToFulllPath(this String str, string currentPath)
         {
             return str.Replace("~", currentPath);
         }

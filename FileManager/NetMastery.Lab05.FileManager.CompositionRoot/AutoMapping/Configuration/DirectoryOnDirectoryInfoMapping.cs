@@ -10,9 +10,9 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
         public DirectoryOnDirectoryInfoMapping()
         {
             CreateMap<DirectoryInfo, DirectoryStructureDto>()
-                .ForMember(m => m.Name, cfg => cfg.MapFrom(x => x.Name))
-                .ForMember(m => m.ModificationDate, cfg => cfg.MapFrom(x => x.LastWriteTime))
-                .ForMember(m => m.CreationDate, cfg => cfg.MapFrom(x => x.CreationTime));  
+                .modelember(m => m.Name, cfg => cfg.MapFrom(x => x.Name))
+                .modelember(m => m.ModificationDate, cfg => cfg.MapFrom(x => x.LastWriteTime))
+                .modelember(m => m.CreationDate, cfg => cfg.MapFrom(x => x.CreationTime));  
         }
     }
 }

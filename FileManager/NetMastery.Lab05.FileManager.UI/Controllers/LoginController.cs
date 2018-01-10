@@ -1,9 +1,7 @@
-﻿using AutoMapper;
-using NetMastery.Lab05.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.UI.events;
-using NetMastery.Lab05.FileManager.UI.Forms;
+﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
-using System;
+using NetMastery.Lab05.FileManager.UI.ViewModels.Login;
 
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -11,71 +9,59 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class LoginController : Controller
     {
         private readonly IAuthenticationService _authenticationService;
-        private readonly IMapper _mapper;
 
         public LoginController(IAuthenticationService authenticationService,  
-            IUserContext userContext, IMapper mapper, RedirectEvent redirect) : base(userContext, redirect)
+            IUserContext userContext) : base(userContext)
         {
             _authenticationService = authenticationService;
-            _mapper = mapper;
         }
 
-        public void Singin(string login, string password)
+        public ActionResult SinginPost(string login, string password)
         {
-            var form = new LoginForm(_userContext.CurrentPath, login, password);
-            if (form.IsValid)
+            var model = new SigninPostViewModel(login, password);
+            if (model.IsValid)
             {
-                var accountViewModel = _mapper.Map<AccountViewModel>(_authenticationService.Signin(form.Login, form.Password));
+                model.Account = _authenticationService.Signin(model.Login, model.Password);
 
-                if (!IsUser(accountViewModel))
+                if (!IsCurrentUser(model))
                 {
-                    _userContext.Login = accountViewModel.Login;
-                    _userContext.CurrentPath = accountViewModel.RootDirectory;
-                    _userContext.RootDirectory = accountViewModel.RootDirectory;
-                    accountViewModel.Messages.Add($"Welcome to the system, {accountViewModel.Login}");
+                    _userContext.Login = model.Account.Login;
+                    _userContext.CurrentPath = model.Account.RootDirectory;
+                    _userContext.RootDirectory = model.Account.RootDirectory;
                 }
-                accountViewModel.RenderMessages();
-                accountViewModel.RenderViewModel();
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
-            else
-            {
-                form.RenderErrors();
-            }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+
         }
 
-        public string SigninGet(LoginForm form)
+        public ActionResult SigninGet()
         {
-            form.RenderForm();
-            var command = Console.ReadLine();
-            return "login -l " + command;
+            return new ViewResult(new SigninGetViewModel());
         }
 
 
-        public void Signoff()
+        public ActionResult Signoff()
         {
-            var accountViewModel = _mapper.Map<AccountViewModel>(_userContext);
-            
-            if (accountViewModel.Login != null)
+            var model =new SignoffViewModel();
+            if (_userContext.Login != null)
             {
-                accountViewModel.Messages.Add($"Goodbay {accountViewModel.Login}");
                 _userContext.Clear();
             }
             else
             {
-                accountViewModel.Messages.Add($"There is no any registered user");
+                model.AddError(nameof(SignoffViewModel), $"There is no any registered user");
             }
-            LoginGetRedirect();
-            accountViewModel.RenderMessages();
+            return new ViewResult(model);
         }
 
-        public bool IsUser(AccountViewModel model)
+        public bool IsCurrentUser(SigninPostViewModel model)
         {
             if (model.Login == _userContext.Login)
-            {
-                model.Messages.Add($"{model.Login} is a current user of the system");
+            { 
                 return true;
             }
+            model.AddError(nameof(SigninPostViewModel.Login), "You already signed in the system");
             return false;
         }
     }

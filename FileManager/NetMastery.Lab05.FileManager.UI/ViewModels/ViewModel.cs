@@ -8,21 +8,53 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
 {
     public abstract class ViewModel
     {
-        public IList<string> Messages = new List<string>();
-
-        public virtual void RenderMessages()
+        public bool IsValid => Errors.Count == 0;
+        protected Dictionary<string, List<string>> Errors = new Dictionary<string, List<string>>();
+        private void RenderErrors()
         {
-            if (Messages.Count > 0)
+            foreach (var property in Errors)
             {
                 Console.WriteLine();
-                Console.WriteLine("Messages: ");
-                foreach (var message in Messages)
+                Console.WriteLine($"{property.Key} errors: ");
+                Console.WriteLine("----------------------");
+                foreach (var error in property.Value)
                 {
-                    Console.WriteLine(message);
+                    Console.WriteLine(error);
                 }
                 Console.WriteLine();
             }
+            Console.WriteLine();
         }
-        public abstract void RenderViewModel();
+        public void AddError(string key, string error)
+        {
+            if (Errors.ContainsKey(key))
+            {
+                Errors[key].Add(error);
+            }
+            else
+            {
+                Errors.Add(key, new List<string>());
+                Errors[key].Add(error);
+            }
+        }
+        public void RemoveError(string key)
+        {
+            if (Errors.ContainsKey(key))
+            {
+                Errors.Remove(key);
+            }
+        }
+        public void RemoveAll()
+        {
+            Errors.Clear();
+        }
+        public virtual void RenderViewModel()
+        {
+            if (!IsValid)
+            {
+                RenderErrors();
+                return;
+            }
+        }
     }
 }

@@ -14,7 +14,7 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
         public InfoDirectoryVMOnDirectoryStructureDto()
         {
             CreateMap<DirectoryStructureDto, DirectoryInfoViewModel>()
-                .ForMember(x => x.Messages, cfg => cfg.Ignore()); 
+                .modelember(x => x.Messages, cfg => cfg.Ignore()); 
         }
     }
 }

@@ -4,12 +4,11 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Bl.Helpers;
 using System.Linq;
-using System.IO;
 using NetMastery.Lab05.FileManager.Domain;
 using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.DAL.Repository;
 using Serilog;
-using NetMastery.Lab05.FileManager.DAL.Exceptions;
+using System.Data;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -24,7 +23,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
-            _currentDirectory = _unitOfWork.GetFileSystemManager<IFSDirectoryManager>().GetCurrentPath();
+            _currentDirectory = _unitOfWork.GetFileSystemManager<IDirectoryManager>().GetCurrentPath();
         }
         #endregion
 
@@ -36,36 +35,31 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 throw new ServiceArgumentNullException();
             }
-            var fullPathToFile = pathToFile.TransformToFulllPatht(_currentDirectory);
+            var fullPathToFile = pathToFile.TransformToFulllPath(_currentDirectory);
             var virtualPathToStoorage = pathToStorage.TransformToVirtualPath(_currentDirectory);
             var newFile = _unitOfWork
-                .GetFileSystemManager<IFSFileManager>()
+                .GetFileSystemManager<IFileManager>()
                 .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
             var directory = _unitOfWork
-                .GetDbRepository<IDbDirectoryRepository>()
+                .Get<IDirectoryRepository>()
                 .FindByPath(virtualPathToStoorage) ?? throw new DirectoryDoesNotExistException();
             newFile.Directory = directory;
-            if (!_unitOfWork.GetDbRepository<IDbAccountRepository>()
-                    .IsFreeSpaceEnough(virtualPathToStoorage, newFile.FileSize))
+            if (!_unitOfWork.Get<IAccountRepository>()
+                    .HasEnoughFreeSpace(virtualPathToStoorage, newFile.FileSize))
             {
                 throw new ServiceArgumentException("Free space is not enough");
             }
             try
             {
-                _unitOfWork.GetDbRepository<IDbFileRepository>().Add(newFile);
-                var fullPathToNewFile = pathToStorage.TransformToFulllPatht(_currentDirectory) + '\\' + newFile.Name;
-                (_unitOfWork.GetFileSystemManager<IFSFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
+                _unitOfWork.Get<IFileRepository>().Add(newFile);
+                var fullPathToNewFile = pathToStorage.TransformToFulllPath(_currentDirectory) + '\\' + newFile.Name;
+                (_unitOfWork.GetFileSystemManager<IFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
                 _unitOfWork.Commit();
             }
-            catch (FSDirectoryManagerArgumentException e)
+            catch (DataException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
-            }
-            catch (DbRepositoryArgumentException e)
-            {
-                Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
+                throw;
             }
         }
 
@@ -81,7 +75,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             var virtualPathToFileDirectory = virtualPathToFile.GetDirectoryPath();
 
             var fileForDownload = (_unitOfWork
-                .GetFileSystemManager<IFSFileManager>())
+                .GetFileSystemManager<IFileManager>())
                 .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
 
             if (pathToStorage.Contains(_currentDirectory))
@@ -91,7 +85,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }
            
             var fileInfo = _unitOfWork
-            .GetDbRepository<IDbDirectoryRepository>()
+            .Get<IDirectoryRepository>()
             .FindByPathEagerLoadingFiles(virtualPathToFileDirectory)?
             .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
             ?? throw new FileDoesNotExistException();
@@ -105,18 +99,13 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 fileInfo.DownloadsNumber++;
-                (_unitOfWork.GetFileSystemManager<IFSFileManager>()).Copy(pathToNewFile, pathToFile);
+                (_unitOfWork.GetFileSystemManager<IFileManager>()).Copy(pathToNewFile, pathToFile);
                 _unitOfWork.Commit();
             }
-            catch (FSDirectoryManagerArgumentException e)
+            catch (DataException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
-            }
-            catch (DbRepositoryArgumentException e)
-            {
-                Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
+                throw;
             }
         }
 
@@ -134,7 +123,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         public void Move(string pathToFile, string pathToStorage)
         {
                 var currentDirectory = (_unitOfWork
-                    .GetFileSystemManager<IFSDirectoryManager>())
+                    .GetFileSystemManager<IDirectoryManager>())
                     .GetCurrentPath();
 
                 var fileName = pathToFile.GetFileName();
@@ -145,30 +134,25 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 var fileStructure = _unitOfWork
-                .GetDbRepository<IDbDirectoryRepository>()
-                .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+                .Get<IDirectoryRepository>()
+                .FindByPathEagerLoadingFiles(virtualDirectoryPath)?
+                .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
                 ?? throw new FileDoesNotExistException();
 
                 var storage = _unitOfWork
-                .GetDbRepository<IDbDirectoryRepository>()
+                .Get<IDirectoryRepository>()
                 .Find(x => x.FullPath == virtualStoragePath).FirstOrDefault()
                 ?? throw new DirectoryDoesNotExistException();
 
                 fileStructure.Directory = storage;
-                _unitOfWork.GetFileSystemManager<IFSFileManager>().Move(newFileFullPath, fullFilePath);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Move(newFileFullPath, fullFilePath);
                 _unitOfWork.Commit();
             }
-            catch (FSDirectoryManagerArgumentException e)
+            catch (DataException e)
             {
                 Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
-            }
-            catch (DbRepositoryArgumentException e)
-            {
-                Log.Logger.Debug(e.Message);
-                _unitOfWork.GetFileSystemManager<IFSFileManager>().MoveRollback(newFileFullPath, fullFilePath);
-                throw new ServiceArgumentException(e.Message);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Move(fullFilePath, newFileFullPath);
+                throw;
             }
         }
 
@@ -177,7 +161,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             try
             {
                 var currentDirectory = (_unitOfWork
-                    .GetFileSystemManager<IFSDirectoryManager>())
+                    .GetFileSystemManager<IDirectoryManager>())
                     .GetCurrentPath();
 
                 var fileName = path.GetFileName();
@@ -185,21 +169,16 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 var fullFilePath = path.Replace("~", currentDirectory);
 
                 var fileStructure = _unitOfWork
-                .GetDbRepository<IDbDirectoryRepository>()
-                .EagerFind(x => x.FullPath == virtualDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+                .Get<IDirectoryRepository>()
+                .FindByPathEagerLoadingFiles(virtualDirectoryPath)?
+                .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
                 ?? throw new FileDoesNotExistException();
 
-                _unitOfWork.GetDbRepository <IDbFileRepository>().Remove(fileStructure);
-                _unitOfWork.GetFileSystemManager<IFSFileManager>().Remove(fullFilePath);
+                _unitOfWork.Get <IFileRepository>().Remove(fileStructure);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Remove(fullFilePath);
                 _unitOfWork.Commit();
             }
-            catch (FSDirectoryManagerArgumentException e)
-            {
-                Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
-            }
-            catch (DbRepositoryArgumentException e)
+            catch (DataException e)
             {
                 Log.Logger.Debug(e.Message);
                 throw new ServiceArgumentException(e.Message);
@@ -213,15 +192,9 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             var fileName = path.Substring(index, path.Length-index);
             var storageDirectoryPath = path.Substring(0, path.LastIndexOf('\\'));
             return _mapper.Map<FileStructureDto>(_unitOfWork
-                .GetDbRepository<IDbDirectoryRepository> ()
-                .EagerFind(x => x.FullPath == storageDirectoryPath, x => x.Files)
-                .FirstOrDefault()?.Files.FirstOrDefault(x => x.Name+x.Extension == fileName));
-        }
-        
-
-        private long GetFreeSpace(Account account)
-        {
-            return account.MaxStorageSize - account.CurentStorageSize;
+                .Get<IDirectoryRepository> ()
+                .FindByPathEagerLoadingFiles(path)?
+                .Files.FirstOrDefault(x => x.Name+x.Extension == fileName));
         }
         #endregion
     }

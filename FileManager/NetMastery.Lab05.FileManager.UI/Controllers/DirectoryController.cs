@@ -1,10 +1,7 @@
-﻿using AutoMapper;
-using NetMastery.Lab05.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.UI.events;
-using NetMastery.Lab05.FileManager.UI.Forms;
+﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
-using System;
-using System.Diagnostics;
+using NetMastery.Lab05.FileManager.UI.ViewModels.Directory;
 using System.Linq;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -12,149 +9,112 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class DirectoryController : Controller
     {
         private readonly IDirectoryService _directoryService;
-        private readonly IMapper _mapper;
         
 
         public DirectoryController(IDirectoryService directoryService, 
-                                   IUserContext context, 
-                                   IMapper mapper, 
-                                   RedirectEvent redirect) : base(context, redirect)
+                                   IUserContext context) : base(context)
         {
             _directoryService = directoryService;
-            _mapper = mapper;
         }
 
-        public void Add(string destinationPath, string name)
+        public ActionResult Add(string destinationPath, string name)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new AddDirectoryForm(_userContext.CurrentPath, destinationPath, name);
-                if(form.IsValid)
+                var model = new DirectoryAddViewModel(_userContext.CurrentPath, destinationPath, name);
+                if(model.IsValid)
                 {
-                    _directoryService.Add(form.DestinationPath, form.Name);
-                    Debug.WriteLine("Directorry created successfully");
+                    _directoryService.Add(model.Path, model.Name);
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
-        public void List(string destinationPath)
+        public ActionResult ShowContent(string destinationPath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
-                if (form.IsValid)
+                var model = new DirectoryShowContentViewModel(_userContext.CurrentPath, destinationPath);
+                if (model.IsValid)
                 {
-                    var result = _directoryService.ShowContent(form.DestinationPath).ToArray();
-                    if (result == null) throw new ArgumentNullException();
-                    var model = new DirectoryListViewModel(result, _userContext.CurrentPath);
-                    model.RenderViewModel();
+                    model.Data = _directoryService.ShowContent(model.Path);
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
-            } 
+                return new ViewResult(model);
+            }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
-        public void Move(string destinationPath, string sourcePath)
+        public ActionResult Move(string destinationPath, string sourcePath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
-                if (form.IsValid)
+                var model = new DirectoryMoveViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                if (model.IsValid)
                 {
-                    _directoryService.Move(form.DestinationPath, form.SourcePath);
+                    _directoryService.Move(model.Path, model.SourcePath);
                     _userContext.CurrentPath = _userContext.RootDirectory;
-                    Debug.WriteLine("Directorry moved successfully");
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
-            }       
+                return new ViewResult(model);
+            }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);      
         }
 
-        public void Remove(string destinationPath)
+        public ActionResult Remove(string destinationPath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
-                if (form.IsValid)
+                var model = new DirectoryRemoveViewModel(_userContext.CurrentPath, destinationPath);
+                if (model.IsValid)
                 {
-                    _directoryService.Remove(form.DestinationPath);
+                    _directoryService.Remove(model.Path);
                     _userContext.CurrentPath = _userContext.RootDirectory;
-                    Debug.WriteLine("Directorry removed successfully");
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
-            }         
-        }
-
-        public void ChangeWorkingDirectory(string destinationPath)
-        {
-            if (IsAthenticated())
-            {
-                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
-                if (form.IsValid)
-                {
-                    _userContext.CurrentPath = _directoryService.GetInfoByPath(form.DestinationPath).FullPath; 
-                    Debug.WriteLine("Work directorry changed successfully");
-                }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
-            } 
-        }
-
-        public void GetDirectoryInfo(string destinationPath)
-        {
-            if (IsAthenticated())
-            {
-                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
-                if (form.IsValid)
-                {
-                    var model = _mapper.Map<DirectoryInfoViewModel>(_directoryService.GetInfoByPath(form.DestinationPath));
-                    model.RenderViewModel();
-                }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
-        public void Search(string destinationPath, string pattern)
+        public ActionResult ChangeWorkingDirectory(string destinationPath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new SearchDirectoryForm(_userContext.CurrentPath, destinationPath, pattern);
-                if (form.IsValid)
+                var model = new DirectoryViewModel(_userContext.CurrentPath, destinationPath);
+                if (model.IsValid)
                 {
-                    
-                    var results =_directoryService.Search(form.DestinationPath, form.Pattern);
-                    if (results == null) throw new ArgumentNullException();
-                    var model = new DirectorySearchVIewModel(results.ToArray());
-                    model.RenderViewModel();
+                    _userContext.CurrentPath = _directoryService.GetInfoByPath(model.Path).FullPath; 
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+        }
+
+        public ActionResult GetDirectoryInfo(string destinationPath)
+        {
+            if (_userContext.IsAuthenticated)
+            {
+                var model = new DirectoryInfoViewModel(_userContext.CurrentPath, destinationPath);
+                if (model.IsValid)
+                {
+                    model.Directory = _directoryService.GetInfoByPath(model.Path);
+                }
+                return new ViewResult(model);
+            }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+        }
+
+        public ActionResult Search(string destinationPath, string pattern)
+        {
+            if (_userContext.IsAuthenticated)
+            {
+                var model = new DirectorySearchVIewModel(_userContext.CurrentPath, destinationPath, pattern);
+                if(model.IsValid)
+                {
+                    model.Data = _directoryService.Search(model.Path, model.Pattern).ToList();
+                }
+                return new ViewResult(model);
+            }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }             
     }
 }

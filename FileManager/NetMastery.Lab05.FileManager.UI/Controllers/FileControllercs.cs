@@ -1,116 +1,91 @@
-﻿using AutoMapper;
-using NetMastery.Lab05.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.UI.events;
-using NetMastery.Lab05.FileManager.UI.Forms;
+﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
-using System;
-using System.Diagnostics;
+using NetMastery.Lab05.FileManager.UI.ViewModels.Directory;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
     public class FileController : Controller
     {
         private readonly IFileService _fileService;
-        private readonly IMapper _mapper;
+
 
         public FileController(IFileService fileService,
-                              IUserContext context,
-                              IMapper mapper,
-                              RedirectEvent redirect) : base(context, redirect)
+                              IUserContext context) : base(context)
         {
             _fileService = fileService;
-            _mapper = mapper;
         }
 
-        public void Upload(string destinationPath, string sourcePath)
+        public ActionResult Upload(string destinationPath, string sourcePath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
-                if (form.IsValid)
+                var model = new FileUploadViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                if (model.IsValid)
                 {
-                    _fileService.Upload(form.SourcePath, form.DestinationPath);
-                    Debug.WriteLine("File uploaded successfully");
+                    _fileService.Upload(model.SourcePath, model.Path);
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
-            } 
-        }
-
-        public void Download(string destinationPath, string sourcePath)
-        {
-            if (IsAthenticated())
-            {
-                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
-                if (form.IsValid)
-                {
-                    _fileService.Download(form.DestinationPath, form.SourcePath);
-                    Debug.WriteLine("File downloaded successfully");
-                }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+        }
+
+        public ActionResult Download(string destinationPath, string sourcePath)
+        {
+            if (_userContext.IsAuthenticated)
+            {
+                var model = new FileDownloadViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                if (model.IsValid)
+                {
+                    _fileService.Download(model.Path, model.SourcePath);
+                }
+                return new ViewResult(model);
+            }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     
 
-        public void Move(string destinationPath, string sourcePath)
+        public ActionResult Move(string destinationPath, string sourcePath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new TwoPathForm(_userContext.CurrentPath, destinationPath, sourcePath);
-                if (form.IsValid)
+                var model = new FileMoveViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                if (model.IsValid)
                 {
-                    _fileService.Move(form.DestinationPath, form.SourcePath);
-                    Debug.WriteLine("File downloaded successfully");
+                    _fileService.Move(model.Path, model.SourcePath);
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
-        public void Remove(string destinationPath)
+        public ActionResult Remove(string destinationPath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
-                if (form.IsValid)
+                var model = new FileRemoveViewModel(_userContext.CurrentPath, destinationPath);
+                if (model.IsValid)
                 {
-                    _fileService.Remove(form.DestinationPath);
-                    Debug.WriteLine("File removed successfully");
+                    _fileService.Remove(model.Path);
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
-        public void GetFleInfo(string destinationPath)
+        public ActionResult GetFileInfo(string destinationPath)
         {
-            if (IsAthenticated())
+            if (_userContext.IsAuthenticated)
             {
-                var form = new OnePathForm(_userContext.CurrentPath, destinationPath);
-                if (form.IsValid)
+                var model = new FileInfoVieModel(_userContext.CurrentPath, destinationPath);
+
+                if (model.IsValid)
                 {
-                    var model =_mapper.Map<FileInfoVieModel>(_fileService.GetFileByPath(form.DestinationPath));
-                    model.RenderViewModel();
+                    model.File =_fileService.GetFileByPath(model.Path);
                 }
-                else
-                {
-                    form.RenderErrors();
-                }
-                GetCommandRedirect();
+                return new ViewResult(model);
             }
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     }
 }
