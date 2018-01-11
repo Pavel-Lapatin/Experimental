@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.CommandLineUtils;
-using NetMastery.Lab05.FileManager.UI.events;
+﻿using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 
@@ -10,7 +9,7 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
         public ExitCommand()
         {
             Name = "exit";
-            HelpOption("-?|-h|--help");
+            Description = "Exit from the application";
             OnExecute(() =>
             {
                 Environment.Exit(0);

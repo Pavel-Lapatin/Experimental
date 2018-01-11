@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.Interfaces;
+using NetMastery.Lab05.FileManager.UI.Results;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
@@ -7,29 +9,25 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class LoginCommand : CommandLineApplicationRoot
     {
         public Func<LoginController> Controller;
-        public LoginCommand(Func<LoginController> getController) 
+        private IResultProvider _resultProvider;
+        public LoginCommand(Func<LoginController> getController, IResultProvider resultProvider) 
         {
+            _resultProvider = resultProvider;
             Controller = getController;
-
+            _resultProvider = resultProvider;
             Name = "login";
-            HelpOption("-?|-h|--help");
-            var login = Option("-l | --login<value>",
-                "Login  is required",
-                CommandOptionType.SingleValue);
-            var password = Option("-p|--password <value>",
-                "Password is required",
-                CommandOptionType.SingleValue);
+            Description = "Login to the system";
+            Option("-l|--login<value>", "Login  is required", CommandOptionType.SingleValue);
+            Option("-p|--password <value>", "Password is required", CommandOptionType.SingleValue);
             OnExecute(() =>
             {
-                var l = login.Values[0];
-                var p = password.Values[0];
-                login.Values.Clear();
-                password.Values.Clear();
-                //var model = new Loginmodel(l, p);
-                Controller().SinginPost(l, p);
+                var login = Options[1].Values[0];
+                Options[1].Values.Clear();
+                var password = Options[2].Values[0];
+                Options[2].Values.Clear();
+                _resultProvider.Result = Controller().SinginPost(login, password);
                 return 0;
             });
-
         }
     }
 }

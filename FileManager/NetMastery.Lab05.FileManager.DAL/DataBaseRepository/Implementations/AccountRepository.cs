@@ -1,10 +1,6 @@
 ﻿using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Domain;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
@@ -19,16 +15,9 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
             return Find(x => x.Login == login).FirstOrDefault();
         }
 
-        public bool HasEnoughFreeSpace(string path, long fileSize)
+        public Account FindByRootName(string rootName)
         {
-            var rootFolderNAme = path.Trim().Split('\\')[1];
-            var account = Find(x => x.RootDirectory.Name == rootFolderNAme).FirstOrDefault();
-            if (account.MaxStorageSize - account.CurentStorageSize > fileSize)
-            {
-                account.CurentStorageSize += fileSize;
-                return true;
-            }
-            return false;
+            return Find(x => x.RootDirectory.Name == rootName).FirstOrDefault();
         }
     }
 }

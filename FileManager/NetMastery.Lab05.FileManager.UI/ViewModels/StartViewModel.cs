@@ -10,6 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
     {
         public override void RenderViewModel()
         {
+            base.RenderViewModel();
             Console.WriteLine("Welcome to File Manager v.1.0.0");
             Console.WriteLine("Contact Information: e-mail - plapatin@gmail.com");
         }

@@ -1,18 +1,23 @@
-﻿using System;
+﻿using NetMastery.Lab05.FileManager.UI.Results;
+using NetMastery.Lab05.FileManager.UI.ViewModels;
+using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {   
-    public abstract class Controller
+    public class Controller
     {
+        protected readonly IUserContext _userContext;
+        protected readonly Func<Type, string, object[], RedirectResult> _redirect;
+        protected readonly Func<ViewModel, ViewResult> _viewResult;
 
-        public IUserContext _userContext;
-
-
-        public Controller(IUserContext userContext)
+        protected Controller(IUserContext userContext,
+                          Func<Type, string, object[], RedirectResult> redirect,
+                          Func<ViewModel, ViewResult> viewResult)
         {
             _userContext = userContext;
+            _redirect = redirect;
+            _viewResult = viewResult;
         }
- 
 
         public string GetCurrentPath()
         {

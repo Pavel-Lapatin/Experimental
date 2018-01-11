@@ -10,7 +10,10 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         private readonly IUserService _userService;
 
         public UserController(IUserService userService,
-                              IUserContext context) : base(context)
+                              IUserContext context,
+                              Func<Type, string, object[], RedirectResult> redirect,
+                              Func<ViewModel, ViewResult> viewResult
+                              ) : base(context, redirect, viewResult)
         {
             _userService = userService;
         }
@@ -23,9 +26,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     Account = _userService.GetInfoByLogin(_userContext.Login)
                 };
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     }
 }

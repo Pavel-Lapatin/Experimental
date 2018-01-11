@@ -1,5 +1,4 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
-using NetMastery.Lab05.FileManager.UI.events;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
@@ -8,7 +7,8 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
         public UserCommand(params CommandLineApplication[] commands) 
         {
             Name = "user";
-            Commands.AddRange(commands);   
+            Commands.AddRange(commands);
+            Description = "Command for interaction with users";
         }
     }
 }

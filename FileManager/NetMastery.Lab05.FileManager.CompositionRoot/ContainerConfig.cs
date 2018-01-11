@@ -11,11 +11,13 @@ using NetMastery.Lab05.FileManager.UI.Implementation;
 using System.Linq;
 using System.Reflection;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
-using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
 using AutoMapper;
-using NetMastery.Lab05.FileManager.UI.Results;
 using System;
+using NetMastery.Lab05.FileManager.UI.Results;
+using Autofac.Core;
+using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
+using NetMastery.Lab05.FileManager.UI.ViewModels;
 
 namespace NetMastery.Lab05.FileManager.CompositionRoot
 {
@@ -32,23 +34,43 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             builder.RegisterType<UserContext>()
                 .As<IUserContext>()
                 .SingleInstance();
+            builder.RegisterType<ResultProvider>()
+                .As<IResultProvider>()
+                .SingleInstance();
 
             builder.RegisterAssemblyTypes(userInterfaceAssembly)
-                .Where(t=> t.IsSubclassOf(typeof(CommandLineApplication)));
+                .Where(t => t.IsSubclassOf(typeof(CommandLineApplication)));
 
+            builder.RegisterAssemblyTypes(userInterfaceAssembly)
+             .Where(t => t.IsSubclassOf(typeof(ActionResult)));
 
             builder.RegisterAssemblyTypes(userInterfaceAssembly)
                 .Where(t => t.IsSubclassOf(typeof(Controller)));
 
-            builder.Register(c => new RepositoryFactory())
-                              .As<IRepositoryFactory>();
+            builder.Register(c => new Func<Type, Controller>(t =>
+           {
+               var context = c.Resolve<IComponentContext>();
+               return context.Resolve(t) as Controller;
+           }));
+
+
+            //.WithParameter(new ResolvedParameter(
+            //    (pi, ctx) => pi.ParameterType == typeof(Func<Type, string, object[], RedirectResult>),
+            //    (pi, ctx) => new Func<Type, string, object[], RedirectResult>((type, str, param) =>
+            //    {
+            //        var redirctResult = new RedirectResult(type, str, param);
+            //        var context = ctx.Resolve<IComponentContext>();
+            //        redirctResult.SetController(context.Resolve(type) as Controller);
+            //        return redirctResult;
+            //    })));
+
 
             var profiles = compositionRootAssembly.GetTypes()
                 .Where(x => x.IsSubclassOf(typeof(Profile))).ToArray();
 
             builder.RegisterTypes(profiles);
 
-           
+
             builder.Register(c => new MapperConfiguration(cfg =>
             {
                 foreach (var profile in profiles)
@@ -57,9 +79,13 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 };
             })).AsSelf().SingleInstance();
 
-            builder.Register(c=> new Mapper(c.Resolve<MapperConfiguration>()))
+            builder.Register(c => new Mapper(c.Resolve<MapperConfiguration>()))
                 .As<IMapper>()
                 .SingleInstance();
+
+            builder.RegisterType<RepositoryFactory>()
+                   .As<IRepositoryFactory>()
+                   .InstancePerLifetimeScope(); ;
 
             builder.RegisterType<AuthenticationService>()
                    .As<IAuthenticationService>();
@@ -95,14 +121,12 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
             builder.Register(c => new UserCommand(
                 c.Resolve<InfoUserCommand>()));
 
-
             builder.Register(c => new FileCommand(
                 c.Resolve<DownloadFileCommand>(),
                 c.Resolve<UploadFileCommand>(),
                 c.Resolve<MoveFileCommand>(),
                 c.Resolve<RemoveFileCommand>(),
                 c.Resolve<InfoFileCommand>()));
-
 
             builder.Register(c => new CommandLineApplicationRoot(
                 c.Resolve<LoginCommand>(),
@@ -112,14 +136,20 @@ namespace NetMastery.Lab05.FileManager.CompositionRoot
                 c.Resolve<LogoffCommand>(),
                 c.Resolve<UserCommand>()));
 
-            builder.Register(c => new Func<Type, Controller>(t => c.Resolve(t) as Controller))
-                .As<IContrrollerFactory>()
-                .SingleInstance();
+            builder.Register(c =>
+            {
+                var context = c.Resolve<IComponentContext>();
+                return new Func<Type, string, object[], RedirectResult>((type, str, param) =>
+                    {
+                        var redirctResult = new RedirectResult(type, str, param);
+                        redirctResult.SetController(context.Resolve(type) as Controller);
+                        return redirctResult;
+                    });
+            });
+
+            builder.Register(c => new Func<ViewModel, ViewResult>((vm) => new ViewResult(vm)));
 
             return builder.Build();
-
-           
-
         }
     }
 }

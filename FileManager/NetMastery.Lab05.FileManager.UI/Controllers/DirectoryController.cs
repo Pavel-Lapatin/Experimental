@@ -2,6 +2,7 @@
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using NetMastery.Lab05.FileManager.UI.ViewModels.Directory;
+using System;
 using System.Linq;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -10,9 +11,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     {
         private readonly IDirectoryService _directoryService;
         
-
         public DirectoryController(IDirectoryService directoryService, 
-                                   IUserContext context) : base(context)
+                                   IUserContext context,
+                                   Func<Type, string, object[], RedirectResult> redirect,
+                                   Func<ViewModel, ViewResult> viewResult
+                                   ) : base(context, redirect, viewResult)
         {
             _directoryService = directoryService;
         }
@@ -26,9 +29,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _directoryService.Add(model.Path, model.Name);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect.Invoke(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult ShowContent(string destinationPath)
@@ -40,9 +43,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     model.Data = _directoryService.ShowContent(model.Path);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult Move(string destinationPath, string sourcePath)
@@ -55,9 +58,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                     _directoryService.Move(model.Path, model.SourcePath);
                     _userContext.CurrentPath = _userContext.RootDirectory;
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);      
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);      
         }
 
         public ActionResult Remove(string destinationPath)
@@ -70,9 +73,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                     _directoryService.Remove(model.Path);
                     _userContext.CurrentPath = _userContext.RootDirectory;
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult ChangeWorkingDirectory(string destinationPath)
@@ -84,9 +87,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _userContext.CurrentPath = _directoryService.GetInfoByPath(model.Path).FullPath; 
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult GetDirectoryInfo(string destinationPath)
@@ -98,9 +101,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     model.Directory = _directoryService.GetInfoByPath(model.Path);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult Search(string destinationPath, string pattern)
@@ -112,9 +115,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     model.Data = _directoryService.Search(model.Path, model.Pattern).ToList();
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }             
     }
 }

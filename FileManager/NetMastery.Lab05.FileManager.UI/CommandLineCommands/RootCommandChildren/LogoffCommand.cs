@@ -1,6 +1,5 @@
-﻿using Microsoft.Extensions.CommandLineUtils;
-using NetMastery.Lab05.FileManager.UI.Controllers;
-using NetMastery.Lab05.FileManager.UI.events;
+﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
@@ -8,14 +7,16 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class LogoffCommand : CommandLineApplicationRoot
     {
         public Func<LoginController> Controller;
-        public LogoffCommand(Func<LoginController> getController)
+        IResultProvider _resultProvider;
+        public LogoffCommand(Func<LoginController> getController, IResultProvider resultProvider)
         {
+            _resultProvider = resultProvider;
             Controller = getController;
             Name = "logoff";
-            HelpOption("-?|-h|--help");
+            Description = "Logoff from the system";
             OnExecute(() =>
             {
-               Controller().Signoff();
+                _resultProvider.Result = Controller().Signoff();
                 return 0;
             });
         }

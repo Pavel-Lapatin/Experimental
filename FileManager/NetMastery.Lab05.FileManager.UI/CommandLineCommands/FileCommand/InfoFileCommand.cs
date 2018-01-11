@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.CommandLineUtils;
 using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
@@ -7,17 +8,17 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
     public class InfoFileCommand : CommandLineApplication
     {
         public Func<FileController> Controller;
-        
-        public InfoFileCommand(Func<FileController> getController)
-        { 
+        IResultProvider _resultProvider;
+        public InfoFileCommand(Func<FileController> getController, IResultProvider resultProvider)
+        {
+            _resultProvider = resultProvider;
             Controller = getController;
             Name ="info";
-
+            Description = "info <path>";
             var arguments = Argument("path", "Path to the file for rendering its info", false);
             OnExecute(() =>
             {
-                //var model = new OnePathmodel(arguments.Values[arguments.Values.Count - 1]);
-                Controller().GetFileInfo(arguments.Values[arguments.Values.Count - 1]);
+                _resultProvider.Result = Controller().GetFileInfo(arguments.Values[arguments.Values.Count - 1]);
                 return 0;
             });
         }

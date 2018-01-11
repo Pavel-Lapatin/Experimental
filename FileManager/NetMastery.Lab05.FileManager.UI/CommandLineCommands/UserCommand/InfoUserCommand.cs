@@ -2,20 +2,23 @@
 using NetMastery.Lab05.FileManager.UI.Controllers;
 using System;
 using NetMastery.Lab05.FileManager.UI.Results;
+using NetMastery.Lab05.FileManager.UI.Interfaces;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
     public class InfoUserCommand : CommandLineApplication
     {
         public Func<UserController> Controller;
-
-        public InfoUserCommand(Func<UserController> getController)
+        IResultProvider _resultProvider;
+        public InfoUserCommand(Func<UserController> getController, IResultProvider resultProvider)
         {
+            _resultProvider = resultProvider;
             Controller = getController;
             Name = "info";
+            Description = "info <login>";
             OnExecute(() =>
             {
-                Controller().GetUserInfo();
+                _resultProvider.Result = Controller().GetUserInfo();
                 return 0;
             });
         }

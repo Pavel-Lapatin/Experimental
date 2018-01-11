@@ -20,11 +20,6 @@ namespace NetMastery.Lab05.FileManager.UI.Implementation
             CurrentPath = null;
             Role = null;
             RootDirectory = null;
-        }
-
-        public void RenderError()
-        {
-            Console.WriteLine("Please, signin in the system first");
-        }
+        } 
     }
 }

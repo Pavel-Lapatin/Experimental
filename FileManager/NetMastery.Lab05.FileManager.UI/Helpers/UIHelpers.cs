@@ -14,7 +14,7 @@ namespace NetMastery.Lab05.FileManager.Helpers
             var strs = arguments.Trim('\"').Split('\"');
             List<string> args = new List<string>();
             int i = 1;
-            foreach (var item in strs)
+            foreach (var item in strs.Where(c => !string.IsNullOrEmpty(c.Trim())))
             {
                 if (i % 2 != 0)
                 {

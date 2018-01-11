@@ -1,4 +1,4 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using NetMastery.Lab05.FileManager.UI.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.UI.Interfaces
 {
-    public interface IContrrollerFactory
+    public interface IResultProvider
     {
-        Controller Get<TEntity>(object[] parameters) where TEntity : Controller;
+        ActionResult Result { get; set; }
     }
 }

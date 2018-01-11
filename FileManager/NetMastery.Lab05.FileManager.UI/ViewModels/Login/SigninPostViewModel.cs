@@ -49,7 +49,11 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
         public override void RenderViewModel()
         {
             base.RenderViewModel();
-            Console.WriteLine($"Hi, {Account.Login}");
+            if(Account != null)
+            {
+                Console.WriteLine($"Hi, {Account.Login}");
+            }
+           
         }
     }
 }

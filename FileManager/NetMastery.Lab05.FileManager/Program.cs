@@ -11,7 +11,7 @@ namespace NetMastery.Lab05.FileManager
             try
             {
                 CompositionRoot.CompRoot.Initialize().StartupUI();
-        }
+            }
             catch (Exception e)
             {
                 Log.Logger.Fatal(e.Message);

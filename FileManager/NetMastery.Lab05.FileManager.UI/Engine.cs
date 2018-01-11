@@ -2,6 +2,8 @@
 using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.Commands;
+using NetMastery.Lab05.FileManager.UI.Controllers;
+using NetMastery.Lab05.FileManager.UI.Interfaces;
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using Serilog;
@@ -13,15 +15,15 @@ namespace NetMastery.Lab05.FileManager.UI
 {
     public class Engine
     {
-        ActionResult _result { get; set; }
         IUserContext _userContext { get; set; }
         CommandLineApplicationRoot _cmd;
+        IResultProvider _resultProvider;
 
-        public Engine(ActionResult result, IUserContext userContext, CommandLineApplicationRoot cmd)
+        public Engine(IResultProvider resultProvider, IUserContext userContext, CommandLineApplicationRoot cmd)
         {
             _userContext = userContext;
-            _result = result;
             _cmd = cmd;
+            _resultProvider = resultProvider;
         }
         public void StartupUI()
         {
@@ -30,26 +32,30 @@ namespace NetMastery.Lab05.FileManager.UI
             { 
                 try
                 {
-                    if(_result is ViewResult)
+                    if(_resultProvider.Result is ViewResult)
                     {
-                        (_result as ViewResult).ViewModel.RenderViewModel();
+                        (_resultProvider.Result as ViewResult).ViewModel.RenderViewModel();
+                        _resultProvider.Result = null;
                     }
-                    else if(_result is RedirectResult)
+                    else if(_resultProvider.Result is RedirectResult)
                     {
-                        _result = (_result as RedirectResult).Execute();
+                        _resultProvider.Result = (_resultProvider.Result as RedirectResult).Execute();
                     }
                     else
                     {
                         Console.Write(_userContext.CurrentPath + "-->");
                         var arguments = UIHelpers.ParseArguemts(Console.ReadLine());
                         _cmd.Execute(arguments);
-                        _result = _cmd.Result;
                     }
                 }
                 catch (CommandParsingException e)
                 {
                     Log.Logger.Information($"Wrong command input");
                     e.Command.ShowHelp();
+                    foreach (var options in e.Command.Options)
+                    {
+                        options.Values.Clear();
+                    }
                     Console.WriteLine();
                 }
                 catch (ServiceArgumentException e)

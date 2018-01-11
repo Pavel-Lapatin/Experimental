@@ -2,6 +2,7 @@
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using NetMastery.Lab05.FileManager.UI.ViewModels.Directory;
+using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
@@ -11,7 +12,10 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
 
         public FileController(IFileService fileService,
-                              IUserContext context) : base(context)
+                              IUserContext context,
+                              Func<Type, string, object[], RedirectResult> redirect,
+                              Func<ViewModel, ViewResult> viewResult
+                              ) : base(context, redirect, viewResult)
         {
             _fileService = fileService;
         }
@@ -25,9 +29,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _fileService.Upload(model.SourcePath, model.Path);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult Download(string destinationPath, string sourcePath)
@@ -39,9 +43,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _fileService.Download(model.Path, model.SourcePath);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     
 
@@ -54,9 +58,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _fileService.Move(model.Path, model.SourcePath);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult Remove(string destinationPath)
@@ -68,9 +72,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     _fileService.Remove(model.Path);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult GetFileInfo(string destinationPath)
@@ -83,9 +87,9 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 {
                     model.File =_fileService.GetFileByPath(model.Path);
                 }
-                return new ViewResult(model);
+                return _viewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     }
 }

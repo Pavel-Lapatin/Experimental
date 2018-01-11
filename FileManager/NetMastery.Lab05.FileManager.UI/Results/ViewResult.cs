@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.UI.Results
 {
-    class ViewResult : ActionResult
+    public class ViewResult : ActionResult
     {
         public ViewModel ViewModel { get; set; }
         public ViewResult(ViewModel viewModel)

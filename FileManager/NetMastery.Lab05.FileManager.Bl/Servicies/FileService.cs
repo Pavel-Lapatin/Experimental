@@ -35,7 +35,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 throw new ServiceArgumentNullException();
             }
-            var fullPathToFile = pathToFile.TransformToFulllPath(_currentDirectory);
+            var fullPathToFile = pathToFile.TransformToFullPath(_currentDirectory);
             var virtualPathToStoorage = pathToStorage.TransformToVirtualPath(_currentDirectory);
             var newFile = _unitOfWork
                 .GetFileSystemManager<IFileManager>()
@@ -44,15 +44,14 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 .Get<IDirectoryRepository>()
                 .FindByPath(virtualPathToStoorage) ?? throw new DirectoryDoesNotExistException();
             newFile.Directory = directory;
-            if (!_unitOfWork.Get<IAccountRepository>()
-                    .HasEnoughFreeSpace(virtualPathToStoorage, newFile.FileSize))
+            if (!HasEnoughFreeSpace(virtualPathToStoorage, newFile.FileSize))
             {
                 throw new ServiceArgumentException("Free space is not enough");
             }
             try
             {
                 _unitOfWork.Get<IFileRepository>().Add(newFile);
-                var fullPathToNewFile = pathToStorage.TransformToFulllPath(_currentDirectory) + '\\' + newFile.Name;
+                var fullPathToNewFile = pathToStorage.TransformToFullPath(_currentDirectory) + '\\' + newFile.Name;
                 (_unitOfWork.GetFileSystemManager<IFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
                 _unitOfWork.Commit();
             }
@@ -195,6 +194,19 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 .Get<IDirectoryRepository> ()
                 .FindByPathEagerLoadingFiles(path)?
                 .Files.FirstOrDefault(x => x.Name+x.Extension == fileName));
+        }
+
+        private bool HasEnoughFreeSpace(string path, long fileSize)
+        {
+            var rootFolderName = path.Trim().Split('\\')[1];
+            var account = _unitOfWork.Get<IAccountRepository>().FindByRootName(rootFolderName) 
+                ?? throw new ServiceArgumentNullException("Account doesn't exist") ;
+            if (account.MaxStorageSize - account.CurentStorageSize > fileSize)
+            {
+                account.CurentStorageSize += fileSize;
+                return true;
+            }
+            return false;
         }
         #endregion
     }

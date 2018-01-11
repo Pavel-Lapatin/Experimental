@@ -2,7 +2,7 @@
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using NetMastery.Lab05.FileManager.UI.ViewModels.Login;
-
+using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
@@ -10,8 +10,11 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     {
         private readonly IAuthenticationService _authenticationService;
 
-        public LoginController(IAuthenticationService authenticationService,  
-            IUserContext userContext) : base(userContext)
+        public LoginController(IAuthenticationService authenticationService,
+                              IUserContext context,
+                              Func<Type, string, object[], RedirectResult> redirect,
+                              Func<ViewModel, ViewResult> viewResult
+                              ) : base(context, redirect, viewResult)
         {
             _authenticationService = authenticationService;
         }
@@ -29,15 +32,13 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                     _userContext.CurrentPath = model.Account.RootDirectory;
                     _userContext.RootDirectory = model.Account.RootDirectory;
                 }
-                return new ViewResult(model);
             }
-            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
-
+            return _viewResult(model);
         }
 
         public ActionResult SigninGet()
         {
-            return new ViewResult(new SigninGetViewModel());
+            return _viewResult(new SigninGetViewModel());
         }
 
 
@@ -52,7 +53,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             {
                 model.AddError(nameof(SignoffViewModel), $"There is no any registered user");
             }
-            return new ViewResult(model);
+            return _viewResult(model);
         }
 
         public bool IsCurrentUser(SigninPostViewModel model)

@@ -21,7 +21,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels.Directory
                 {
                     AddError(nameof(Name), "Directory name shouldn't be null or empty");
                 }
-                if (!IsFolderOrFileNameIsValid(value))
+                else if (!IsFolderOrFileNameIsValid(value))
                 {
                     AddError(nameof(Name), "The characters: /,|,:,*,<,>,\\,~\" are not allowed");
                 }

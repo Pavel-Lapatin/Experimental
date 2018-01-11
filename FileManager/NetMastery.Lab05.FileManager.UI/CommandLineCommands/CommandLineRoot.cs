@@ -13,5 +13,6 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Commands.AddRange(commands);
         }
         public ActionResult Result { get; set; }
+        
     }
 }
