@@ -1,10 +1,10 @@
-﻿using NetMastery.Lab05.FileManager.UI.Interfaces;
+﻿using Microsoft.Extensions.CommandLineUtils;
 using System;
 
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class ExitCommand : CommandLineApplicationRoot
+    public class ExitCommand : CommandLineApplication
     {
         public ExitCommand()
         {

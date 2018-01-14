@@ -9,6 +9,8 @@ using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.DAL.Repository;
 using Serilog;
 using System.Data;
+using System;
+using NetMastery.Lab05.FileManager.UI;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -16,48 +18,61 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly IUserContext _userContext;
         private readonly string _currentDirectory;
 
         #region Constructors
-        public FileService(IUnitOfWork unitOfWork, IMapper mapper)
+        public FileService(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
             _currentDirectory = _unitOfWork.GetFileSystemManager<IDirectoryManager>().GetCurrentPath();
+            _userContext = userContext; 
         }
         #endregion
 
         #region FileServiceAPI
 
-        public void Upload(string pathToStorage, string pathToFile)
+        public void Upload(string pathToFile, string pathToStorage)
         {
             if (pathToStorage == null || pathToFile == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("FileService-->Upload-->Input is null");
+                throw new ArgumentNullException();
             }
-            var fullPathToFile = pathToFile.TransformToFullPath(_currentDirectory);
-            var virtualPathToStoorage = pathToStorage.TransformToVirtualPath(_currentDirectory);
+            if(pathToFile.IsInTheVirtualStorage(_currentDirectory) 
+                || !pathToStorage.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
             var newFile = _unitOfWork
                 .GetFileSystemManager<IFileManager>()
-                .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
+                .GetFileInfo(pathToFile) 
+                ?? throw new BusinessException($"File with path\"{pathToFile}\" doesn't exist");
+
             var directory = _unitOfWork
                 .Get<IDirectoryRepository>()
-                .FindByPath(virtualPathToStoorage) ?? throw new DirectoryDoesNotExistException();
+                .FindByPath(pathToStorage)
+                ?? throw new BusinessException($"Directory with path\"{pathToStorage}\" doesn't exist in virtual storage");
+
             newFile.Directory = directory;
-            if (!HasEnoughFreeSpace(virtualPathToStoorage, newFile.FileSize))
+
+            if (!HasEnoughFreeSpace(pathToStorage, newFile.FileSize))
             {
-                throw new ServiceArgumentException("Free space is not enough");
+                throw new BusinessException("Free space is not enough");
             }
+            var fullPathToNewFile = pathToStorage.TransformToFullPath(_currentDirectory) + '\\' + newFile.Name;
             try
             {
                 _unitOfWork.Get<IFileRepository>().Add(newFile);
-                var fullPathToNewFile = pathToStorage.TransformToFullPath(_currentDirectory) + '\\' + newFile.Name;
-                (_unitOfWork.GetFileSystemManager<IFileManager>()).Copy(fullPathToNewFile, fullPathToFile);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Copy(fullPathToNewFile, pathToFile);
                 _unitOfWork.Commit();
             }
             catch (DataException e)
             {
                 Log.Logger.Debug(e.Message);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Remove(fullPathToNewFile);
                 throw;
             }
         }
@@ -66,39 +81,125 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if(pathToFile == null || pathToStorage == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("FileService-->Download-->Input is null");
+                throw new ArgumentNullException();
+            }
+            if (pathToStorage.IsInTheVirtualStorage(_currentDirectory)
+                || !pathToFile.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
             }
 
-            var virtualPathToFile = pathToFile.TransformToVirtualPath(_currentDirectory);
-            var fileName = virtualPathToFile.GetFileName();
-            var virtualPathToFileDirectory = virtualPathToFile.GetDirectoryPath();
+            var fileName = pathToFile.GetFileName();
+            var fileDirectoryPath = pathToFile.GetDirectoryPath();
 
             var fileForDownload = (_unitOfWork
                 .GetFileSystemManager<IFileManager>())
-                .GetFileInfo(pathToFile) ?? throw new FileDoesNotExistException();
-
-            if (pathToStorage.Contains(_currentDirectory))
-            {
-                throw new ServiceArgumentException(
-                    "For downloading file into storage use upload or move commands, please");
-            }
+                .GetFileInfo(pathToFile.TransformToFullPath(_currentDirectory))
+                ?? throw new BusinessException($"File with path\"{pathToFile}\" doesn't exist");
            
             var fileInfo = _unitOfWork
             .Get<IDirectoryRepository>()
-            .FindByPathEagerLoadingFiles(virtualPathToFileDirectory)?
+            .FindByPathEagerLoadingFiles(fileDirectoryPath)?
             .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
-            ?? throw new FileDoesNotExistException();
+            ?? throw new BusinessException($"File with path\"{pathToFile}\" doesn't exist");
 
             if (!IsFileValid(fileForDownload, fileInfo))
             {
-                throw new ServiceArgumentException("File is damaged");
+                throw new BusinessException("File is damaged");
             }
-
             var pathToNewFile = pathToStorage + '\\' + fileName;
+
+            var pathToTheDownloadFile = pathToFile.TransformToFullPath(_currentDirectory);
             try
             {
                 fileInfo.DownloadsNumber++;
-                (_unitOfWork.GetFileSystemManager<IFileManager>()).Copy(pathToNewFile, pathToFile);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Copy(pathToNewFile, pathToFile.TransformToFullPath(_currentDirectory));
+                _unitOfWork.Commit();
+            }
+            catch (DataException e)
+            {
+                Log.Logger.Debug(e.Message);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Remove(pathToNewFile);
+                throw;
+            }
+        }
+
+        public void Move(string pathFrom, string pathTo)
+        {
+            if (pathFrom == null || pathTo == null)
+            {
+                Log.Logger.Debug("FileService--Move-->Input is null");
+                throw new ArgumentNullException();
+            }
+
+            if (!pathFrom.HasAccessToVirtualStorage(_userContext.RootDirectory)
+                || !pathTo.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
+            var currentDirectory = (_unitOfWork
+                    .GetFileSystemManager<IDirectoryManager>())
+                    .GetCurrentPath();
+
+            var fileName = pathFrom.GetFileName();
+            var fileDirectoryPath = pathFrom.GetDirectoryPath();
+
+            var fileStructure = _unitOfWork
+            .Get<IDirectoryRepository>()
+            .FindByPathEagerLoadingFiles(fileDirectoryPath)?
+            .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+            ?? throw new BusinessException($"File with path\"{pathFrom}\" doesn't exist");
+
+            var storage = _unitOfWork
+            .Get<IDirectoryRepository>()
+            .Find(x => x.FullPath == pathTo).FirstOrDefault()
+            ?? throw new BusinessException($"Directory with path\"{pathTo}\" doesn't exist in virtual storage");
+            var newFilePath = (pathTo + '\\' + fileName).TransformToFullPath(_currentDirectory);
+            var oldFilePath = pathFrom.TransformToFullPath(_currentDirectory);
+            fileStructure.Directory = storage;
+            try
+            {
+                _unitOfWork.GetFileSystemManager<IFileManager>()
+                    .Move(newFilePath, oldFilePath);
+
+                _unitOfWork.Commit();
+            }
+            catch (DataException e)
+            {
+                Log.Logger.Debug(e.Message);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Move(oldFilePath, newFilePath);
+                throw;
+            }
+        }
+
+        public void Remove(string path)
+        {
+            if (path == null)
+            {
+                Log.Logger.Debug("FileService--Remove-->Input is null");
+                throw new ArgumentNullException();
+            }
+
+            if (!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+
+            {
+                throw new BusinessException("Access is denied");
+            }
+
+            var fileName = path.GetFileName();
+            var fileDirectoryPath = path.GetDirectoryPath();
+      
+            var fileStructure = _unitOfWork
+            .Get<IDirectoryRepository>()
+            .FindByPathEagerLoadingFiles(fileDirectoryPath)?
+            .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+            ?? throw new BusinessException($"File with path\"{path}\" doesn't exist");
+            try
+            {
+                _unitOfWork.Get<IFileRepository>().Remove(fileStructure);
+                _unitOfWork.GetFileSystemManager<IFileManager>().Remove(path.TransformToFullPath(_currentDirectory));
                 _unitOfWork.Commit();
             }
             catch (DataException e)
@@ -106,6 +207,43 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 Log.Logger.Debug(e.Message);
                 throw;
             }
+        }
+
+        public FileStructureDto GetFileByPath(string path)
+        {
+            if (path == null)
+            {
+                Log.Logger.Debug("FileService--Remove-->Input is null");
+                throw new ArgumentNullException();
+            }
+
+            if (!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
+            var fileName = path.GetFileName();
+            var fileDirectoryPath = path.GetDirectoryPath();
+
+            return _mapper.Map<FileStructureDto>(_unitOfWork
+                .Get<IDirectoryRepository> ()
+                .FindByPathEagerLoadingFiles(fileDirectoryPath)?
+                .Files.FirstOrDefault(x => x.Name+x.Extension == fileName)
+                ?? throw new BusinessException($"File with path\"{path}\" doesn't exist"));
+        }
+        
+        #endregion
+
+        private bool HasEnoughFreeSpace(string virtualPath, long fileSize)
+        {
+            var account = _unitOfWork.Get<IAccountRepository>().FindByLogin(_userContext.Login) 
+                ?? throw new ArgumentNullException();
+            if (account.MaxStorageSize - account.CurentStorageSize > fileSize)
+            {
+                account.CurentStorageSize += fileSize;
+                return true;
+            }
+            return false;
         }
 
         private bool IsFileValid(FileStructure fileInfo, FileStructure fileStructure)
@@ -117,97 +255,5 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             return false;
         }
 
-
-
-        public void Move(string pathToFile, string pathToStorage)
-        {
-                var currentDirectory = (_unitOfWork
-                    .GetFileSystemManager<IDirectoryManager>())
-                    .GetCurrentPath();
-
-                var fileName = pathToFile.GetFileName();
-                var virtualDirectoryPath = pathToFile.GetDirectoryPath().TransformToVirtualPath(_currentDirectory);
-                var fullFilePath = pathToFile.Replace("~", currentDirectory);
-                var virtualStoragePath = pathToStorage.Replace(currentDirectory, "~");
-                var newFileFullPath = virtualStoragePath.Replace("~", currentDirectory) + '\\' + fileName;
-            try
-            {
-                var fileStructure = _unitOfWork
-                .Get<IDirectoryRepository>()
-                .FindByPathEagerLoadingFiles(virtualDirectoryPath)?
-                .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
-                ?? throw new FileDoesNotExistException();
-
-                var storage = _unitOfWork
-                .Get<IDirectoryRepository>()
-                .Find(x => x.FullPath == virtualStoragePath).FirstOrDefault()
-                ?? throw new DirectoryDoesNotExistException();
-
-                fileStructure.Directory = storage;
-                _unitOfWork.GetFileSystemManager<IFileManager>().Move(newFileFullPath, fullFilePath);
-                _unitOfWork.Commit();
-            }
-            catch (DataException e)
-            {
-                Log.Logger.Debug(e.Message);
-                _unitOfWork.GetFileSystemManager<IFileManager>().Move(fullFilePath, newFileFullPath);
-                throw;
-            }
-        }
-
-        public void Remove(string path)
-        {
-            try
-            {
-                var currentDirectory = (_unitOfWork
-                    .GetFileSystemManager<IDirectoryManager>())
-                    .GetCurrentPath();
-
-                var fileName = path.GetFileName();
-                var virtualDirectoryPath =path.GetDirectoryPath().TransformToVirtualPath(_currentDirectory);
-                var fullFilePath = path.Replace("~", currentDirectory);
-
-                var fileStructure = _unitOfWork
-                .Get<IDirectoryRepository>()
-                .FindByPathEagerLoadingFiles(virtualDirectoryPath)?
-                .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
-                ?? throw new FileDoesNotExistException();
-
-                _unitOfWork.Get <IFileRepository>().Remove(fileStructure);
-                _unitOfWork.GetFileSystemManager<IFileManager>().Remove(fullFilePath);
-                _unitOfWork.Commit();
-            }
-            catch (DataException e)
-            {
-                Log.Logger.Debug(e.Message);
-                throw new ServiceArgumentException(e.Message);
-            }
-        }
-
-        public FileStructureDto GetFileByPath(string path)
-        {
-            var index = path.LastIndexOf('\\')+1;
-            
-            var fileName = path.Substring(index, path.Length-index);
-            var storageDirectoryPath = path.Substring(0, path.LastIndexOf('\\'));
-            return _mapper.Map<FileStructureDto>(_unitOfWork
-                .Get<IDirectoryRepository> ()
-                .FindByPathEagerLoadingFiles(path)?
-                .Files.FirstOrDefault(x => x.Name+x.Extension == fileName));
-        }
-
-        private bool HasEnoughFreeSpace(string path, long fileSize)
-        {
-            var rootFolderName = path.Trim().Split('\\')[1];
-            var account = _unitOfWork.Get<IAccountRepository>().FindByRootName(rootFolderName) 
-                ?? throw new ServiceArgumentNullException("Account doesn't exist") ;
-            if (account.MaxStorageSize - account.CurentStorageSize > fileSize)
-            {
-                account.CurentStorageSize += fileSize;
-                return true;
-            }
-            return false;
-        }
-        #endregion
     }
 }

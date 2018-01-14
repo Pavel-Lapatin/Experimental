@@ -15,11 +15,22 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Controller = getController;
             Name ="info";
             Description = "info <path>";
-            var arguments = Argument("path", "Path to the file for rendering its info", false);
+            var path = Argument("Path", "Path to the file into virtual storage", false);
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().GetFileInfo(arguments.Values[arguments.Values.Count - 1]);
-                return 0;
+                try
+                {
+                    if (path.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().GetFileInfo(path.Value);
+                    return 0;
+                }
+                finally
+                {
+                    path.Values.Clear();
+                }
             });
         }
     }

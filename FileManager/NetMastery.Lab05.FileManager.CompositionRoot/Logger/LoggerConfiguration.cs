@@ -1,11 +1,10 @@
 ﻿using Serilog;
 
-
-namespace NetMastery.Lab05.FileManager.CompositionRoot
+namespace NetMastery.Lab05.FileManager.Composition
 {
     public class Logger
     {
-        public static void LoggerConfig()
+        public static void LoggerConfiguration()
         {
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Information()

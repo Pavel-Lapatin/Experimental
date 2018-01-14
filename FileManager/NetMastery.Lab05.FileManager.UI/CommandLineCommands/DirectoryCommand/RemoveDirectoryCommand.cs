@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class RemoveDirectoryCommand : DirectoryCommand
+    public class RemoveDirectoryCommand : CommandLineApplication
     {
         public Func<DirectoryController> Controller;
         IResultProvider _resultProvider;
@@ -14,11 +15,22 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Controller = getController;
             Name = "remove";
             Description = "remove <path>";
-            var arguments = Argument("path", "Path to the directory for removing", true);
+            var path = Argument("path", "Path to the removing directory", false);
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().Remove(arguments.Values[arguments.Values.Count - 1]);    
-                return 0;
+                try
+                {
+                    if (path.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().Remove(path.Value);
+                    return 0;
+                }
+                finally
+                {
+                    path.Values.Clear();
+                }
             });
         }
     }

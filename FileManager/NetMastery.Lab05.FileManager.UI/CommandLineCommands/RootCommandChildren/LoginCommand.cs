@@ -6,7 +6,7 @@ using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class LoginCommand : CommandLineApplicationRoot
+    public class LoginCommand : CommandLineApplication
     {
         public Func<LoginController> Controller;
         private IResultProvider _resultProvider;
@@ -17,16 +17,23 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             _resultProvider = resultProvider;
             Name = "login";
             Description = "Login to the system";
-            Option("-l|--login<value>", "Login  is required", CommandOptionType.SingleValue);
-            Option("-p|--password <value>", "Password is required", CommandOptionType.SingleValue);
+            var login = Option("-l|--login<value>", "Login  is required", CommandOptionType.SingleValue);
+            var password = Option("-p|--password <value>", "Password is required", CommandOptionType.SingleValue);
             OnExecute(() =>
             {
-                var login = Options[1].Values[0];
-                Options[1].Values.Clear();
-                var password = Options[2].Values[0];
-                Options[2].Values.Clear();
-                _resultProvider.Result = Controller().SinginPost(login, password);
-                return 0;
+                try
+                {
+                    if (!login.HasValue() || !password.HasValue())
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().SinginPost(login.Value(), password.Value());
+                    return 0;
+                } finally
+                {
+                    login.Values.Clear();
+                    password.Values.Clear();
+                }        
             });
         }
     }

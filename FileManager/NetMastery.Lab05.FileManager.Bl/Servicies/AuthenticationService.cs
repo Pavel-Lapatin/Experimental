@@ -32,7 +32,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (password == null || login == null)
             {
                 Log.Logger.Debug($"AuthenticationService -- Signin -- input parameters are null");
-                throw new ServiceArgumentNullException("Login and password must not be null or empty");
+                throw new BusinessException("Login and password must not be null or empty");
             }
             var account = _mapper.Map<AccountDto>(_unitOfWork
                 .Get<IAccountRepository>()
@@ -49,13 +49,13 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 else
                 {
                     Log.Logger.Information($"Unathorized acceess: login {login}");
-                    throw new ServiceArgumentException("Password is wrong");
+                    throw new BusinessException("Password is wrong");
                 }
             }
             else
             {
                 Log.Logger.Information($"Unathorized acceess. Login doesn't exist");
-                throw new ServiceArgumentNullException("Account with such login doesn't exist");
+                throw new BusinessException("Account with such login doesn't exist");
             }
         }
 
@@ -64,7 +64,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             if (password == null || login == null)
             {
                 Log.Logger.Debug($"AuthenticationService -- Signin -- input parameters are null");
-                throw new ServiceArgumentException("Login and password must not be null or empty");
+                throw new BusinessException("Login and password must not be null or empty");
             }
             else
             {

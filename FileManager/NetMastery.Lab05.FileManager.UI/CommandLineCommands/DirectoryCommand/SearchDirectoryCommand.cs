@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class SearchDirectoryCommand : DirectoryCommand
+    public class SearchDirectoryCommand : CommandLineApplication
     {
         public Func<DirectoryController> Controller;
         IResultProvider _resultProvider;
@@ -14,11 +15,24 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Controller = getController;
             Name = "search";
             Description = "search <path> <pattern>";
-            var arguments = Argument("path", "Path to the root directoey for recursive search", true);
+            var path =Argument("path", "Path to the root directoey for recursive search", false);
+            var pattern = Argument("path", "Pattern for search", false);
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().Search(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
-                return 0;
+                try
+                {
+                    if (path.Value == null || pattern.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().Search(path.Value, pattern.Value);
+                    return 0;
+                }
+                finally
+                {
+                    path.Values.Clear();
+                    pattern.Values.Clear();
+                }
             });
         }
     }

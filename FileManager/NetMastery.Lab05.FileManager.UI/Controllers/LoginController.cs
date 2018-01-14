@@ -1,8 +1,7 @@
 ﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
-using NetMastery.Lab05.FileManager.UI.ViewModels.Login;
-using System;
+using NetMastery.Lab05.FileManager.UI.Views;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
 {
@@ -11,10 +10,7 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         private readonly IAuthenticationService _authenticationService;
 
         public LoginController(IAuthenticationService authenticationService,
-                              IUserContext context,
-                              Func<Type, string, object[], RedirectResult> redirect,
-                              Func<ViewModel, ViewResult> viewResult
-                              ) : base(context, redirect, viewResult)
+                              IUserContext context) : base(context)
         {
             _authenticationService = authenticationService;
         }
@@ -24,36 +20,33 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             var model = new SigninPostViewModel(login, password);
             if (model.IsValid)
             {
-                model.Account = _authenticationService.Signin(model.Login, model.Password);
-
+                var result = _authenticationService.Signin(model.Login, model.Password);
                 if (!IsCurrentUser(model))
                 {
-                    _userContext.Login = model.Account.Login;
-                    _userContext.CurrentPath = model.Account.RootDirectory;
-                    _userContext.RootDirectory = model.Account.RootDirectory;
+                    _userContext.Login = result.Login;
+                    _userContext.CurrentPath = result.RootDirectory;
+                    _userContext.RootDirectory =result.RootDirectory;
+                    return new ViewResult(new InfoView($"Welcome, {result.Login}"));
                 }
+                return new ViewResult(new InfoView($"{result.Login} has already signed in th the system"));
             }
-            return _viewResult(model);
+            return new ViewResult(new ErrorView(model.Errors));
         }
 
         public ActionResult SigninGet()
         {
-            return _viewResult(new SigninGetViewModel());
+            return new ViewResult(new SigninGetView());
         }
 
 
         public ActionResult Signoff()
         {
-            var model =new SignoffViewModel();
             if (_userContext.Login != null)
             {
                 _userContext.Clear();
+                return new ViewResult(new InfoView($"Goodby!"));
             }
-            else
-            {
-                model.AddError(nameof(SignoffViewModel), $"There is no any registered user");
-            }
-            return _viewResult(model);
+            return new ViewResult(new InfoView($"There is no any registered user"));
         }
 
         public bool IsCurrentUser(SigninPostViewModel model)
@@ -62,7 +55,6 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             { 
                 return true;
             }
-            model.AddError(nameof(SigninPostViewModel.Login), "You already signed in the system");
             return false;
         }
     }

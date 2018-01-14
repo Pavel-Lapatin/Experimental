@@ -9,37 +9,49 @@ using NetMastery.Lab05.FileManager.UI.ViewModels;
 using Serilog;
 using System;
 using System.Data;
-
+using System.IO;
+using System.Linq;
 
 namespace NetMastery.Lab05.FileManager.UI
 {
     public class Engine
     {
-        IUserContext _userContext { get; set; }
-        CommandLineApplicationRoot _cmd;
-        IResultProvider _resultProvider;
+        private readonly IUserContext _userContext;
+        private readonly CommandLineApplicationRoot _cmd;
+        private readonly IResultProvider _resultProvider;
+        private readonly Func<Type, Controller> _controller;
 
-        public Engine(IResultProvider resultProvider, IUserContext userContext, CommandLineApplicationRoot cmd)
+        public Engine(IResultProvider resultProvider, 
+                      IUserContext userContext, 
+                      CommandLineApplicationRoot cmd,
+                      Func<Type, Controller> controller)
         {
             _userContext = userContext;
             _cmd = cmd;
             _resultProvider = resultProvider;
+            _controller = controller;
+            _resultProvider.Result = new RedirectResult(
+                typeof(StartController),
+                nameof(StartController.Start),
+                null);
         }
+
         public void StartupUI()
         {
             Log.Logger.Information("UI Successfully initialized. StartupUI begins ...");
-            while(true)
-            { 
+            while (true)
+            {
                 try
                 {
-                    if(_resultProvider.Result is ViewResult)
+                    if (_resultProvider.Result is ViewResult)
                     {
-                        (_resultProvider.Result as ViewResult).ViewModel.RenderViewModel();
+                        (_resultProvider.Result as ViewResult).View.RenderView();
                         _resultProvider.Result = null;
                     }
-                    else if(_resultProvider.Result is RedirectResult)
+                    else if (_resultProvider.Result is RedirectResult)
                     {
-                        _resultProvider.Result = (_resultProvider.Result as RedirectResult).Execute();
+
+                        _resultProvider.Result = Redirect(_resultProvider.Result as RedirectResult);
                     }
                     else
                     {
@@ -50,36 +62,54 @@ namespace NetMastery.Lab05.FileManager.UI
                 }
                 catch (CommandParsingException e)
                 {
-                    Log.Logger.Information($"Wrong command input");
                     e.Command.ShowHelp();
-                    foreach (var options in e.Command.Options)
-                    {
-                        options.Values.Clear();
-                    }
-                    Console.WriteLine();
+                    ClearCmd(e.Command);
                 }
-                catch (ServiceArgumentException e)
+                catch (BusinessException e)
                 {
-                    Log.Logger.Debug(e.Message);
-                    Console.WriteLine();
                     Console.WriteLine(e.Message);
-                    Console.WriteLine();
                 }
-                catch (ArgumentException e)
+                catch (UIException e)
                 {
-                    Log.Logger.Debug(e.Message);
-                    Console.WriteLine();
-                    Console.WriteLine("Operation is failed");
-                    Console.WriteLine();
+                    Console.WriteLine(e.Message);
                 }
-                catch (DataException e)
+                catch (IOException e)
                 {
-                    Log.Logger.Debug(e.Message);
-                    Console.WriteLine();
-                    Console.WriteLine("Operation is failed");
-                    Console.WriteLine();
+                    Console.WriteLine(e.Message);
                 }
             }
-        }   
+        }
+        
+        private ActionResult Redirect(RedirectResult result)
+        {
+            if (result.ControllerType == null)
+            {
+                Log.Logger.Debug("Execute controller type is null");
+                throw new ArgumentNullException();
+            }
+            var controller = _controller(result.ControllerType);
+            var executedMethod = result.Parameters == null
+                ? result.ControllerType.GetMethod(result.Method)
+                : result.ControllerType.GetMethod(result.Method, result.Parameters
+                                                  .Select(x => x.GetType()).ToArray());
+
+            if (executedMethod == null)
+            {
+                Log.Logger.Debug("Execute controller method is null");
+                throw new ArgumentNullException();
+            }
+            return executedMethod.Invoke(controller, result.Parameters) as ActionResult;
+        }
+        private void ClearCmd(CommandLineApplication e)
+        {
+            foreach (var argument in e.Arguments)
+            {
+                argument.Values.Clear();
+            }
+            foreach (var option in e.Options)
+            {
+                option.Values.Clear();
+            }
+        }
     }
 }

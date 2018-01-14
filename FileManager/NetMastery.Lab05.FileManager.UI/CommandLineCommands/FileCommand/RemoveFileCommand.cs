@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class RemoveFileCommand : FileCommand
+    public class RemoveFileCommand : CommandLineApplication
     {
         public Func<FileController> Controller;
         IResultProvider _resultProvider;
@@ -14,11 +15,22 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Controller = getController;
             Name = "remove";
             Description = "remove <path>";
-            var arguments = Argument("path", "Path to remove file", false);
+            var path = Argument("Path", "Path to file into virtual storage", false);
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().Remove(arguments.Values[arguments.Values.Count - 1]);
-                return 0;
+                try
+                {
+                    if (path.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().Remove(path.Value);
+                    return 0;
+                }
+                finally
+                {
+                    path.Values.Clear();
+                }
             });
         }
     }

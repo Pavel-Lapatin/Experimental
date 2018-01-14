@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class ChangeWorkDirectoryCommand : DirectoryCommand
+    public class ChangeWorkDirectoryCommand : CommandLineApplication
     {
         public Func<DirectoryController> Controller;
         IResultProvider _resultProvider;
@@ -14,14 +15,22 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Controller = getController;
             Name = "cd";
             Description = "cd <path>";
-            Argument("path", "Path to current directory", false);
+            var path = Argument("path", "Path to current directory", false);
             OnExecute(() =>
             {
-                var path = Arguments[0].Value;
-                Arguments[0].Values.Clear();
-
-                _resultProvider.Result = Controller().ChangeWorkingDirectory(path);
-                return 0;
+                try
+                {
+                    if (path.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().ChangeWorkingDirectory(path.Value);
+                    return 0;
+                }
+                finally
+                {
+                    path.Values.Clear();
+                }
             });
         }
     }

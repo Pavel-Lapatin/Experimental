@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class DownloadFileCommand : FileCommand
+    public class DownloadFileCommand : CommandLineApplication
     { 
         public Func<FileController> Controller;
         IResultProvider _resultProvider;
@@ -13,12 +14,25 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             _resultProvider = resultProvider;
             Controller = getController;
             Name = "download";
-            Description = "download <path to file> <path to folder>";
-            var arguments = Argument("arguments", "Paths to download file and destination folder", true);
+            Description = "download <path to folder> <path to file>";
+            var pathToFile = Argument("PathToFile", "Paths to the file which located into the virtual storage ", false);
+            var pathToFolder = Argument("PathToFolder", "Paths to the folder located outside the virual storage", false);
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().Download(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
-                return 0;
+                try
+                {
+                    if (pathToFile.Value == null || pathToFolder.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().Download(pathToFile.Value, pathToFolder.Value);
+                    return 0;
+                }
+                finally
+                {
+                    pathToFile.Values.Clear();
+                    pathToFolder.Values.Clear();
+                }
             });
         }
     }

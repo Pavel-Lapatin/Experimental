@@ -50,20 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Exceptions\DirectoryDoesNotExistException.cs" />
-    <Compile Include="Exceptions\DirectoryExistsException.cs" />
-    <Compile Include="Exceptions\FileDoesNotExist.cs" />
-    <Compile Include="Exceptions\ServiceArgumentException.cs" />
-    <Compile Include="Exceptions\ServiceArgumentNullException.cs" />
-    <Compile Include="Exceptions\ServiceUnathorizedtAccessException.cs" />
+    <Compile Include="Exceptions\BusinessException.cs" />
     <Compile Include="Helpers\PathExtension.cs" />
     <Compile Include="Interfaces\IAuthenticationService.cs" />
     <Compile Include="Interfaces\IDirectoryService.cs" />
     <Compile Include="Interfaces\IFileService.cs" />
+    <Compile Include="Interfaces\IUserContext.cs" />
     <Compile Include="Interfaces\IUserService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicies\AuthenticationService.cs" />
     <Compile Include="Servicies\FileService.cs" />
+    <Compile Include="Servicies\UserContext.cs" />
     <Compile Include="Servicies\UserService.cs" />
     <Compile Include="Servicies\DirectoryService.cs" />
   </ItemGroup>

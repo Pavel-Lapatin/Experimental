@@ -2,7 +2,7 @@
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class UserCommand : CommandLineApplicationRoot
+    public class UserCommand : CommandLineApplication
     {
         public UserCommand(params CommandLineApplication[] commands) 
         {

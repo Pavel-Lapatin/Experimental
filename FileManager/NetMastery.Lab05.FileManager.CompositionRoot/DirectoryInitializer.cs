@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot
+namespace NetMastery.Lab05.FileManager.Composition
 {
     public static class DirectoryInitializer
     {

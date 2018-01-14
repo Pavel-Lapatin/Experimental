@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace NetMastery.Lab05.FileManager.CompositionRoot.AutoMapping.Configuration
+namespace NetMastery.Lab05.FileManager.Composition.AutoMapping.Configuration
 {
     class FileStructureOnFileInfoMapping : Profile
     {

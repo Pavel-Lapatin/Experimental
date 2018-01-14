@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class UploadFileCommand : FileCommand
+    public class UploadFileCommand : CommandLineApplication
     {
         public Func<FileController> Controller;
         IResultProvider _resultProvider;
@@ -14,11 +15,24 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Controller = getController;
             Name = "upload";
             Description = "upload <path to file> <path to folder>";
-            var arguments = Argument("path", "Paths", true);
+            var pathToFile = Argument("PathToFile", "Paths to the file which located outside the virtual storage ", false);
+            var pathToFolder = Argument("PathToFolder", "Paths to the folder located into the virual storage", false);
             OnExecute(() => 
             {
-                _resultProvider.Result = Controller().Upload(arguments.Values[arguments.Values.Count - 2], arguments.Values[arguments.Values.Count - 1]);
-                return 0;
+                try
+                {
+                    if (pathToFile.Value == null || pathToFolder.Value == null)
+                    {
+                        throw new CommandParsingException(this, "");
+                    }
+                    _resultProvider.Result = Controller().Upload(pathToFile.Value, pathToFolder.Value);
+                    return 0;
+                }
+                finally
+                {
+                    pathToFile.Values.Clear();
+                    pathToFolder.Values.Clear();
+                }
             });
         }
     }

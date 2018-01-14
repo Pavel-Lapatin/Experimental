@@ -6,6 +6,7 @@ using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Domain;
 using NetMastery.Lab05.FileManager.Dto;
 using NUnit.Framework;
+using System;
 
 namespace NetMastery.Lab05.FileManager.UnitTests
 {
@@ -34,7 +35,6 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         }
 
         [Test]
-        [TestCase("")]
         [TestCase(null)]
         public void When_LoginIsNullOrEmpty_Expected_ServiceNullArgumentException(string login)
         {
@@ -42,7 +42,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var autoMapper = new Mock<IMapper>();
             var userService = new UserService(unitOfWork.Object, autoMapper.Object);
             Assert.That(() => userService.GetInfoByLogin(login),
-                Throws.TypeOf<ServiceArgumentNullException>());
+                Throws.TypeOf<ArgumentNullException>());
         }
     }
 }

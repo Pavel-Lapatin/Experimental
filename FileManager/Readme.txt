@@ -11,7 +11,6 @@
 Notes. 
 	There are two users in data base:
 	1) login: admin; password: admin;
-	2) login: Pasha; password: Pasha the best; 
 
 #Examples.
 
@@ -21,10 +20,6 @@ Notes.
 	---------Output---------------
 	Messages:
 	Welcome to the system, admin
-
-	Account info:
-	Login: admin
-	Root directory: ~\adminRoot
 	
 	~\adminRoot-->_
 	------------------------------
@@ -34,11 +29,7 @@ Notes.
 	
 	---------Output---------------
 	Messages: 
-	admin is a current user of the system
-
-	Account info:
-	Login: admin
-	Root directory: ~\adminRoot
+	admin has already signed in th the system
 	
 	~\adminRoot-->_
 	------------------------------
@@ -47,13 +38,9 @@ Notes.
 ~\adminRoot--> logoff
 	
 	---------Output---------------
-	Messages:
-	Goodbay admin
+	Goodby!
 
-	Please, signin in the system
-	Command: login -l <userName> -p <password>
-
-	--> login -l_
+	--> 
 	------------------------------
 		
 #login nonexisting user
@@ -62,10 +49,7 @@ Notes.
 	---------Output---------------
 	Account with such login doesn't exist
 
-	Please, signin in the system
-	Command: login -l <userName> -p <password>
-
-	--> login -l
+	-->
 	------------------------------
 	
 #login the existing user with incorrect password
@@ -74,10 +58,15 @@ Notes.
 	---------Output---------------
 	Password is wrong
 
-	Please, signin in the system
-	Command: login -l <userName> -p <password>
+	-->
+	------------------------------
+#login the with password which consist of less than thre characters 
+--> login -l admin -p so
+	---------Output---------------
+	Errors assosiated with Password:
+	Password mustn't be more than 3 characters
 
-	--> login -l
+	-->
 	------------------------------
 
 
@@ -108,12 +97,14 @@ Notes.
 Notes.
 
 The storage is located on the disk according to the relative path by folder with .exe. 
-It is located in app.Config file. In virtual storage system such path presents as “~\”.
+It is located in app.Config file. In virtual storage path presents as “~\”.
 When you registered in the system, you start working from your root directory, 
 which called login+"Root" and its current path is "~\login+"Root"".
 Authenticated user can change the current directory using "directory cd <path>" command.
 If path contains whiteSpacies, you shoul use double quotes "...".
 If path don't have ~ at the beginnin it is considered as absolute path.
+In virtual storage you can work only using virtual pathes.
+Absolute pathes used during uploading and downloading files.
 
 #Commands:
 	directory cd <path> - change working path
@@ -135,8 +126,6 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot--> directory cd ..\
 	
 	---------Output---------------
-	DestinationPath errors:
-	----------------------
 	Access is denied
 
 	~\adminRoot-->_
@@ -145,8 +134,6 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot--> directory cd ..\..\..\..\
 	
 	---------Output---------------
-	DestinationPath errors:
-	----------------------
 	Access is denied
 
 	~\adminRoot-->_
@@ -155,8 +142,6 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot--> directory cd ~\PashaRoot
 	
 	---------Output---------------
-	DestinationPath errors:
-	----------------------
 	Access is denied
 
 	~\adminRoot-->_
@@ -165,19 +150,14 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot--> directory cd ~\adminR<oot
 	
 	---------Output---------------
-
-	DestinationPath errors:
-	----------------------
+	Errors assosiated with Path:
 	The characters: /,|,*,<,>,\,~" are not allowed
 
 	~\adminRoot-->_
 	------------------------------
-
-~\adminRoot--> directory cd "E:\Godel\new fold\p-lapatin\FileManager\CommonStorage\PashaRoot"
+	~\adminRoot--> directory cd "E:\Godel\new fold\p-lapatin\FileManager\CommonStorage\PashaRoot"
 
 	---------Output---------------
-	DestinationPath errors:
-	----------------------
 	Access is denied
 
 	~\adminRoot-->_
@@ -186,10 +166,10 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot--> directory cd "E:\Godel\p-lapatin\FileManager\CommonStorage\adminRoot"
 
 	---------Output---------------
-	Directory doesn't exists
+	Access is denied
 
 	~\adminRoot-->_	
-#This is happens because cd works with virtual paths not absolute.
+	#You couldn't use absolute paths when you work with virtual storage.
 	------------------------------
 
 ~\adminRoot--> directory cd .\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2
@@ -274,7 +254,7 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot\delete1--> directory create .\delete3
 	
 	---------Output---------------
-	This directory already exists
+	Directory with "~\adminRoot\delete1" has already existed
 	
 	
 	~\adminRoot\delete1-->_
@@ -283,7 +263,7 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot\delete1--> directory create ~\adminRoot\delete5\delete3 delete8
 	
 	---------Output---------------
-	Directory doesn't exist
+	Directory with "~\adminRoot\delete5\delete3" doesn't exist
 		
 	~\adminRoot\delete1-->_
 	------------------------------
@@ -348,7 +328,7 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 ~\adminRoot-->directory cd .\delete1
 
 	---------Output---------------
-	Directory dosen't exist
+	Directory with "~\adminRoot\delete1" doesn't exist
 	
 	~\adminRoot-->_
 	------------------------------
@@ -378,6 +358,13 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 	~\adminRoot-->_
 	------------------------------
 
+	~\adminRoot-->directory cd .\admin-Dir1-Lvl1\delete1
+	---------Output---------------
+	Directory with "~\adminRoot\admin-Dir1-Lvl1\delete1" doesn't exist
+	
+	~\adminRoot-->_
+	------------------------------
+	
 
 #File service commands:
 
@@ -402,7 +389,13 @@ If path don't have ~ at the beginnin it is considered as absolute path.
 	~\adminRoot-->_
 	------------------------------
 	
+~\adminRoot-->file upload .\file2.html .\
+Access is denied
+#Path to file should be absolute
+
 ~\adminRoot--> file upload E:\Godel\NetMastery\Lab_02_CLR\README.md ~\adminRoot\admin-Dir1-Lvl1
+File uploaded successfully
+
 
 ~\adminRoot--> file download  ~\adminRoot\file2.html E:\
 

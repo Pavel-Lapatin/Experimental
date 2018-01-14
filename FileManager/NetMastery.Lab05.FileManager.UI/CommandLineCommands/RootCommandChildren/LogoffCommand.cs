@@ -1,10 +1,11 @@
-﻿using NetMastery.Lab05.FileManager.UI.Controllers;
+﻿using Microsoft.Extensions.CommandLineUtils;
+using NetMastery.Lab05.FileManager.UI.Controllers;
 using NetMastery.Lab05.FileManager.UI.Interfaces;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 { 
-    public class LogoffCommand : CommandLineApplicationRoot
+    public class LogoffCommand : CommandLineApplication
     {
         public Func<LoginController> Controller;
         IResultProvider _resultProvider;

@@ -1,16 +1,16 @@
 ﻿using System;
 using Serilog;
+using NetMastery.Lab05.FileManager.Composition;
 
 namespace NetMastery.Lab05.FileManager
 {
-   
     class Program
     {
         static void Main()
         {
             try
             {
-                CompositionRoot.CompRoot.Initialize().StartupUI();
+                CompositionRoot.Initialize().StartupUI();
             }
             catch (Exception e)
             {
@@ -18,6 +18,6 @@ namespace NetMastery.Lab05.FileManager
                 Console.WriteLine("Fatal undefined exception. Sorry, call to the support +1111111111");
                 Console.ReadKey();
             }
-}
+        }
     }
 }

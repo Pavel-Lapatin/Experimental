@@ -1,7 +1,9 @@
 ﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
+using NetMastery.Lab05.FileManager.Helpers;
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
 using NetMastery.Lab05.FileManager.UI.ViewModels.Directory;
+using NetMastery.Lab05.FileManager.UI.Views;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -12,84 +14,93 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
 
 
         public FileController(IFileService fileService,
-                              IUserContext context,
-                              Func<Type, string, object[], RedirectResult> redirect,
-                              Func<ViewModel, ViewResult> viewResult
-                              ) : base(context, redirect, viewResult)
+                              IUserContext context) : base(context)
         {
             _fileService = fileService;
         }
 
-        public ActionResult Upload(string destinationPath, string sourcePath)
+        public ActionResult Upload(string pathToFile, string pathToStorage)
         {
             if (_userContext.IsAuthenticated)
             {
-                var model = new FileUploadViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                var model = new TwoPathViewModel(pathToFile, pathToStorage);
                 if (model.IsValid)
                 {
-                    _fileService.Upload(model.SourcePath, model.Path);
+                    var absolutePathToFile = model.Path.CreatePath(_userContext.CurrentPath);
+                    var virtualPathToStorage = model.SecondPath.CreatePath(_userContext.CurrentPath);
+                    _fileService.Upload(absolutePathToFile, virtualPathToStorage);
+                    return new ViewResult(new InfoView("File uploaded successfully"));
                 }
-                return _viewResult(model);
+                return new ViewResult(new ErrorView(model.Errors));
             }
-            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
-        public ActionResult Download(string destinationPath, string sourcePath)
+        public ActionResult Download(string pathToFile, string pathToStorage)
         {
             if (_userContext.IsAuthenticated)
             {
-                var model = new FileDownloadViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                var model = new TwoPathViewModel(pathToFile, pathToStorage);
                 if (model.IsValid)
                 {
-                    _fileService.Download(model.Path, model.SourcePath);
+                    var absolutePathToFile = model.Path.CreatePath(_userContext.CurrentPath);
+                    var virtualPathToStorage = model.SecondPath.CreatePath(_userContext.CurrentPath);
+                    _fileService.Download(absolutePathToFile, virtualPathToStorage);
+                    return new ViewResult(new InfoView("File downloaded successfully"));
                 }
-                return _viewResult(model);
+                return new ViewResult(new ErrorView(model.Errors)); ;
             }
-            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     
 
-        public ActionResult Move(string destinationPath, string sourcePath)
+        public ActionResult Move(string pathFrom, string pathTo)
         {
             if (_userContext.IsAuthenticated)
             {
-                var model = new FileMoveViewModel(_userContext.CurrentPath, destinationPath, sourcePath);
+                var model = new TwoPathViewModel(pathFrom, pathTo);
                 if (model.IsValid)
                 {
-                    _fileService.Move(model.Path, model.SourcePath);
+                    var virtualPathFrom = model.Path.CreatePath(_userContext.CurrentPath);
+                    var virtualPathTo = model.SecondPath.CreatePath(_userContext.CurrentPath);
+                    _fileService.Move(virtualPathFrom, virtualPathTo);
+                    return new ViewResult(new InfoView("File moved successfully"));
                 }
-                return _viewResult(model);
+                return new ViewResult(new ErrorView(model.Errors));
             }
-            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult Remove(string destinationPath)
         {
             if (_userContext.IsAuthenticated)
             {
-                var model = new FileRemoveViewModel(_userContext.CurrentPath, destinationPath);
+                var model = new PathViewModel(destinationPath);
                 if (model.IsValid)
                 {
-                    _fileService.Remove(model.Path);
+                    var virtualPath = model.Path.CreatePath(_userContext.CurrentPath);
+                    _fileService.Remove(virtualPath);
+                    return new ViewResult(new InfoView("File removed successfully"));
                 }
-                return _viewResult(model);
+                return new ViewResult(new ErrorView(model.Errors));
             }
-            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
 
         public ActionResult GetFileInfo(string destinationPath)
         {
             if (_userContext.IsAuthenticated)
             {
-                var model = new FileInfoVieModel(_userContext.CurrentPath, destinationPath);
-
+                var model = new PathViewModel(destinationPath);
                 if (model.IsValid)
                 {
-                    model.File =_fileService.GetFileByPath(model.Path);
+                    var virtualPath = model.Path.CreatePath(_userContext.CurrentPath);
+                    var result =_fileService.GetFileByPath(virtualPath);
+                    return new ViewResult(new FileInfoView(result));
                 }
-                return _viewResult(model);
+                return new ViewResult(new ErrorView(model.Errors));
             }
-            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     }
 }

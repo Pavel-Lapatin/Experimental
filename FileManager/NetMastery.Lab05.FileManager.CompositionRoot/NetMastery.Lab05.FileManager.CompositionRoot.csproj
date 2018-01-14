@@ -72,8 +72,8 @@
     <Compile Include="AutoMapping\Configuration\DirectoryMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileMapping.cs" />
     <Compile Include="AutoMapping\Configuration\FileStructureOnFileInfoMapping.cs" />
-    <Compile Include="CompRoot.cs" />
-    <Compile Include="ContainerConfig.cs" />
+    <Compile Include="CompositionRoot.cs" />
+    <Compile Include="ContainerConfiguration.cs" />
     <Compile Include="DirectoryInitializer.cs" />
     <Compile Include="Logger\LoggerConfiguration.cs" />
     <Compile Include="Logger\ProcessIdEnriacher.cs" />

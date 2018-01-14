@@ -2,7 +2,7 @@
 
 namespace NetMastery.Lab05.FileManager.UI.Commands
 {
-    public class DirectoryCommand : CommandLineApplicationRoot
+    public class DirectoryCommand : CommandLineApplication
     {
         public DirectoryCommand(params CommandLineApplication[] commands)
         { 

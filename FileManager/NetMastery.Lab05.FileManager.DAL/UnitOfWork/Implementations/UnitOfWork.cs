@@ -1,4 +1,5 @@
-﻿using NetMastery.Lab05.FileManager.DAL.Interfacies;
+﻿using AutoMapper;
+using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.DAL.UnitOfWork.Factory;
 using System;
 
@@ -7,16 +8,18 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
 
     public class UnitOfWork : IUnitOfWork
     {
+        IMapper _mapper;
         private readonly FileManagerDbContext _context;
         private bool disposed;
 
         IRepositoryFactory _repositoryFactory;
       
         public UnitOfWork(FileManagerDbContext context,
-            IRepositoryFactory repositoryFactory)
+            IRepositoryFactory repositoryFactory, IMapper mapper)
         {
             _repositoryFactory = repositoryFactory;
             _context = context;
+            _mapper = mapper;
         }
 
         public void Commit()

@@ -1,15 +1,10 @@
 ﻿using NetMastery.Lab05.FileManager.Dto;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.UI.ViewModels
 {
     public class SigninPostViewModel : ViewModel
     {
-        public AccountDto Account { get; set; }
         private string login;
 
         public string Login
@@ -44,16 +39,6 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels
         {
             Login = login;
             Password = password;
-        }
-
-        public override void RenderViewModel()
-        {
-            base.RenderViewModel();
-            if(Account != null)
-            {
-                Console.WriteLine($"Hi, {Account.Login}");
-            }
-           
         }
     }
 }

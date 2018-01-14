@@ -7,16 +7,10 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
     public class Controller
     {
         protected readonly IUserContext _userContext;
-        protected readonly Func<Type, string, object[], RedirectResult> _redirect;
-        protected readonly Func<ViewModel, ViewResult> _viewResult;
 
-        protected Controller(IUserContext userContext,
-                          Func<Type, string, object[], RedirectResult> redirect,
-                          Func<ViewModel, ViewResult> viewResult)
+        protected Controller(IUserContext userContext)
         {
             _userContext = userContext;
-            _redirect = redirect;
-            _viewResult = viewResult;
         }
 
         public string GetCurrentPath()

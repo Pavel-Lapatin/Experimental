@@ -59,18 +59,18 @@
     <Compile Include="Configurations\DirectoryStructMap.cs" />
     <Compile Include="Configurations\FileStructMap.cs" />
     <Compile Include="FileManagerDbContext.cs" />
-    <Compile Include="FileSystemManagers\Interfaces\FileManager.cs" />
+    <Compile Include="FileSystemManagers\Implementations\FileManager.cs" />
     <Compile Include="DataBaseRepository\Interfacies\IAccountRepository.cs" />
     <Compile Include="DataBaseRepository\Interfacies\IFileRepository.cs" />
     <Compile Include="DataBaseRepository\Interfacies\IRepository.cs" />
-    <Compile Include="FileSystemManagers\Implementations\IDirectoryManager.cs" />
-    <Compile Include="FileSystemManagers\Implementations\IFileManager.cs" />
-    <Compile Include="FileSystemManagers\Implementations\IFileSystemManager.cs" />
+    <Compile Include="FileSystemManagers\Interfaces\IDirectoryManager.cs" />
+    <Compile Include="FileSystemManagers\Interfaces\IFileManager.cs" />
+    <Compile Include="FileSystemManagers\Interfaces\IFileSystemManager.cs" />
     <Compile Include="Migrations\201712231751169_UniqueFullPath.cs" />
     <Compile Include="Migrations\201712231751169_UniqueFullPath.Designer.cs">
       <DependentUpon>201712231751169_UniqueFullPath.cs</DependentUpon>
     </Compile>
-    <Compile Include="FileSystemManagers\Interfaces\DirectoryManager.cs" />
+    <Compile Include="FileSystemManagers\Implementations\DirectoryManager.cs" />
     <Compile Include="DataBaseRepository\Interfacies\IDirectoryRepository.cs" />
     <Compile Include="DataBaseRepository\Implementations\AccountRepository.cs" />
     <Compile Include="DataBaseRepository\Implementations\DirectoryRepository.cs" />

@@ -4,6 +4,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
     using System;
     using System.Data.Entity.Migrations;
     using System.IO;
+    using System.Linq;
     using System.Reflection;
 
     public sealed class Configuration : DbMigrationsConfiguration<NetMastery.Lab05.FileManager.DAL.FileManagerDbContext>
@@ -136,8 +137,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 }
             };
 
-            context.Files.AddOrUpdate<FileStructure>(files);
-
             var accounts = new[]
             {
                 new Account
@@ -161,11 +160,10 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                    RootDirectory = rootDirectories[1]
                 },
             };
-
-            context.Accounts.AddOrUpdate(accounts);
-            context.Directories.AddOrUpdate(rootDirectories);
-            context.Directories.AddOrUpdate(directories);
-            context.Files.AddOrUpdate(files);
+            accounts.ToList().ForEach(u => context.Accounts.AddOrUpdate(p => p.AccountId, u));
+            rootDirectories.ToList().ForEach(u => context.Directories.AddOrUpdate(p => p.FullPath, u));
+            directories.ToList().ForEach(u => context.Directories.AddOrUpdate(p => p.FullPath, u));
+            files.ToList().ForEach(u => context.Files.AddOrUpdate(p => p.FileId, u));
             context.SaveChanges();
 
             //  This method will be called after migrating to the latest version.

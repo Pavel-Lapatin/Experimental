@@ -25,7 +25,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var autoMapper = new Mock<IMapper>();
             var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
             Assert.That(() => authenticateService.Signin(login, password),
-                Throws.TypeOf<ServiceArgumentNullException>());
+                Throws.TypeOf<BusinessException>());
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(Repository.Object);
             var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
             Assert.That(() => authenticateService.Signin("admin", "admin"),
-                Throws.TypeOf<ServiceArgumentNullException>());
+                Throws.TypeOf<BusinessException>());
         }
 
         [Test]
@@ -82,7 +82,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(Repository.Object);
             var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
             Assert.That(() => authenticateService.Signin("admin", "something"),
-                Throws.TypeOf<ServiceArgumentException>());
+                Throws.TypeOf<BusinessException>());
 
         }
 

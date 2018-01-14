@@ -1,6 +1,7 @@
 ﻿using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using NetMastery.Lab05.FileManager.UI.Results;
 using NetMastery.Lab05.FileManager.UI.ViewModels;
+using NetMastery.Lab05.FileManager.UI.Views;
 using System;
 
 namespace NetMastery.Lab05.FileManager.UI.Controllers
@@ -10,25 +11,19 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
         private readonly IUserService _userService;
 
         public UserController(IUserService userService,
-                              IUserContext context,
-                              Func<Type, string, object[], RedirectResult> redirect,
-                              Func<ViewModel, ViewResult> viewResult
-                              ) : base(context, redirect, viewResult)
+                              IUserContext context) : base(context)
         {
             _userService = userService;
         }
 
         public ActionResult GetUserInfo()
         {
-            if(_userContext.IsAuthenticated)
+            if (_userContext.IsAuthenticated)
             {
-                var model = new UserInfoViewModel
-                {
-                    Account = _userService.GetInfoByLogin(_userContext.Login)
-                };
-                return _viewResult(model);
+                var result = _userService.GetInfoByLogin(_userContext.Login);
+                return new ViewResult(new UserInfoView(result));
             }
-            return _redirect(typeof(LoginController), nameof(LoginController.SigninGet), null);
+            return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
     }
 }

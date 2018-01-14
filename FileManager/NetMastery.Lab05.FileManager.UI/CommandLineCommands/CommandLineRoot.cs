@@ -12,7 +12,5 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             HelpOption("-?|-h|--help");
             Commands.AddRange(commands);
         }
-        public ActionResult Result { get; set; }
-        
     }
 }

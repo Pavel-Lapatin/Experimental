@@ -15,14 +15,12 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             _resultProvider = resultProvider;
             Controller = getController;
             Name = "info";
-            Description = "info <login>";
+            Description = "info about user signed in the system";
             OnExecute(() =>
             {
                 _resultProvider.Result = Controller().GetUserInfo();
                 return 0;
             });
         }
-
-        public ActionResult Result { get; set; }
     }
 }

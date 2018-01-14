@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace NetMastery.Lab05.FileManager.UI.ViewModels.Directory
 {
-    public class DirectoryAddViewModel : DirectoryViewModel
+    public class DirectoryAddViewModel : PathViewModel
     {
         private string name;
 
@@ -21,7 +16,7 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels.Directory
                 {
                     AddError(nameof(Name), "Directory name shouldn't be null or empty");
                 }
-                else if (!IsFolderOrFileNameIsValid(value))
+                else if (!IsNameValid(value))
                 {
                     AddError(nameof(Name), "The characters: /,|,:,*,<,>,\\,~\" are not allowed");
                 }
@@ -29,15 +24,9 @@ namespace NetMastery.Lab05.FileManager.UI.ViewModels.Directory
             }
         }
 
-        public DirectoryAddViewModel(string currentPath, string destinationPath, string name) : base(currentPath, destinationPath)
+        public DirectoryAddViewModel(string path, string name) : base(path)
         {
             Name = name;
-        }
-
-        public override void RenderViewModel()
-        {
-            base.RenderViewModel();
-            Console.WriteLine("Directory added seccessfully");
         }
     }
 }

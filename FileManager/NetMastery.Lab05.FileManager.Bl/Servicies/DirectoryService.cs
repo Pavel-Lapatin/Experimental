@@ -10,6 +10,8 @@ using Serilog;
 using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.DAL.Repository;
 using System;
+using NetMastery.Lab05.FileManager.UI;
+using NetMastery.Lab05.FileManager.Bl.Helpers;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -17,13 +19,14 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-
+        private readonly IUserContext _userContext;
         #region Constructors
 
-        public DirectoryService(IUnitOfWork unitOfWork, IMapper mapper)
+        public DirectoryService(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _userContext = userContext;
         }
         #endregion
 
@@ -33,14 +36,20 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (path == null || name == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("DirectoryService-->Add-->Input is null");
+                throw new ArgumentNullException();
+            }
+            if(!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
             }
 
-            var newDirectory = CreateNewDirectory(path, name);
             var currentDirectory = _unitOfWork
                  .Get<IDirectoryRepository>()
                  .FindByPath(path)
-                 ?? throw new DirectoryDoesNotExistException();
+                 ?? throw new BusinessException($"Directory with \"{path}\" doesn't exist");
+
+            var newDirectory = CreateNewDirectory(path, name);
             newDirectory.ParentDirectory = currentDirectory;
 
             try
@@ -61,22 +70,29 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (pathFrom == null || pathTo == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("DirectoryService-->Move-->Input is null");
+                throw new ArgumentNullException();
+            }
+
+            if (!pathFrom.HasAccessToVirtualStorage(_userContext.RootDirectory)
+                || !pathTo.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
             }
 
             var currentDirectoryFrom = _unitOfWork
                 .Get<IDirectoryRepository>()
-                .FindByPathEagerLoadingParentDirectory(pathFrom) 
-                ?? throw new DirectoryDoesNotExistException();
+                .FindByPathEagerLoadingParentDirectory(pathFrom)
+                ?? throw new BusinessException($"Directory with \"{pathFrom}\" doesn't exist");
 
             var currentDirectoryTo = _unitOfWork
                  .Get<IDirectoryRepository>()
                  .FindByPath(pathTo)
-                 ?? throw new DirectoryDoesNotExistException();
+                 ?? throw new BusinessException($"Directory with \"{pathTo}\" doesn't exist");
 
             if (currentDirectoryTo.FullPath.Contains(currentDirectoryFrom.FullPath))
             {
-                throw new ServiceArgumentException("Distanation directory is subfolder of source directory");
+                throw new BusinessException("Distanation directory is subfolder of source directory");
             }
 
             ChangeFullPath(currentDirectoryFrom.FullPath, 
@@ -102,13 +118,19 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (path == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("DirectoryService-->Remove-->Input is null");
+                throw new ArgumentNullException();
             }
+            if (!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
             var currentDirectory = _unitOfWork
                 .Get<IDirectoryRepository>()
-                .FindByPathEagerLoadingFiles(path) 
-                ?? throw new DirectoryDoesNotExistException();
-             
+                .FindByPathEagerLoadingFiles(path)
+                ?? throw new BusinessException($"Directory with \"{path}\" doesn't exist");
+
             RecursiveRemove(currentDirectory);
             try
             {
@@ -123,36 +145,45 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             }      
         }
 
-
         public IEnumerable<string> Search(string path, string pattern)
         {
             if (path == null || pattern == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("DirectoryService-->Search-->Input is null");
+                throw new ArgumentNullException();
             }
-               
+            if (!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
             var currentDirectory = _unitOfWork
                 .Get<IDirectoryRepository>()
-                .FindByPathEagerLoadingFull(path) 
-                ?? throw new DirectoryDoesNotExistException(); 
+                .FindByPathEagerLoadingFull(path)
+                ?? throw new BusinessException($"Directory with \"{path}\" doesn't exist");
 
             IList<string> results = new List<string>();
             RecursiveSearch(pattern, results, currentDirectory);
             return results;
         }
 
-
         public IDictionary<string, IList<string>> ShowContent(string path)
         {
             if (path == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("DirectoryService-->IDictionary-->Input is null");
+                throw new ArgumentNullException();
             }
+            if (!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
             var directory = _unitOfWork
                 .Get<IDirectoryRepository>()
-                .FindByPathEagerLoadingFull(path) 
-                ?? throw new DirectoryDoesNotExistException();
-   
+                .FindByPathEagerLoadingFull(path)
+                ?? throw new BusinessException($"Directory with \"{path}\" doesn't exist");
+
             var result = new Dictionary<string, IList<string>>();
             IList<string> files = directory.Files.Select(x => x.Name + x.Extension).ToList();
             IList<string> directories = directory.ChildrenDirectories.Select(x => x.Name).ToList();
@@ -165,12 +196,18 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             if (path == null)
             {
-                throw new ServiceArgumentNullException();
+                Log.Logger.Debug("DirectoryService-->GetInfoByPath-->Input is null");
+                throw new ArgumentNullException();
             }
+            if (!path.HasAccessToVirtualStorage(_userContext.RootDirectory))
+            {
+                throw new BusinessException("Access is denied");
+            }
+
             return _mapper.Map<DirectoryStructureDto>(_unitOfWork
                  .Get<IDirectoryRepository>()
                  .FindByPath(path)
-                 ?? throw new DirectoryDoesNotExistException());
+                 ?? throw new BusinessException($"Directory with \"{path}\" doesn't exist"));
         }
 
         #endregion
@@ -189,7 +226,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                  .Get<IDirectoryRepository>()
                  .FindByPath(newDirectory.FullPath) != null)
             {
-                throw new DirectoryExistsException();
+                throw new BusinessException($"Directory with \"{path}\" has already existed");
             }
             return _mapper.Map<DirectoryStructure>(newDirectory);
         }

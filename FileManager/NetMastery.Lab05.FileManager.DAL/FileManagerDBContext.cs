@@ -1,13 +1,15 @@
 ﻿using System.Data.Entity;
 using NetMastery.Lab05.FileManager.DAL.Configurations;
 using NetMastery.Lab05.FileManager.Domain;
+using NetMastery.Lab05.FileManager.DAL.Migrations;
 
 namespace NetMastery.Lab05.FileManager.DAL
 {
     public class FileManagerDbContext : DbContext
     {
-        public FileManagerDbContext() : base("name=FileManagerDB")
+        public FileManagerDbContext() : base("name=FileManagerDb")
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<FileManagerDbContext, Configuration>());
         }
         public FileManagerDbContext(string connectionString) : base(connectionString)
         {
