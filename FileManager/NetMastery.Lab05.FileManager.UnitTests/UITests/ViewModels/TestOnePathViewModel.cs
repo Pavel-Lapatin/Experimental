@@ -49,7 +49,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests.UITests.ViewModels
         [TestCase(@"E:\adminRoot\Folder1\File1.txt")]
         [TestCase(@".\Folder1\File1.txt")]
         [TestCase(@"..\..\Folder1\File1.txt")]
-        public void When_path1_Expected_ModelIsValidFalse(string path)
+        public void When_PathIsCorrect_Expected_ModelIsValidFalse(string path)
         {
             var viewModel = new PathViewModel(path);
 

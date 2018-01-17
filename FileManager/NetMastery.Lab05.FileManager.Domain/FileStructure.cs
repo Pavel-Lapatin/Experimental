@@ -16,6 +16,8 @@ namespace NetMastery.Lab05.FileManager.Domain
         public long FileSize { get; set; }
         public int DownloadsNumber { get; set; }
         public string Extension { get; set; }
+
+        public virtual int FolderId { get; set; }
         public virtual DirectoryStructure Directory { get; set; }
     }
 }

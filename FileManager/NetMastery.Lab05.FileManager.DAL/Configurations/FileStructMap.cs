@@ -16,7 +16,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
 
             HasRequired(p => p.Directory)
                 .WithMany(c => c.Files)
-                .Map(x => x.MapKey("Directory"));
+                .HasForeignKey(x=>x.FolderId);
         }
     }
 }

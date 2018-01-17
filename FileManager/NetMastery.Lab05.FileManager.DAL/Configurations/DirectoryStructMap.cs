@@ -12,7 +12,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Configurations
 
             HasOptional(x => x.ParentDirectory)
             .WithMany(x => x.ChildrenDirectories)
-            .Map(x=>x.MapKey("ParantDirectory"));
+            .HasForeignKey(x=>x.ParentFolderId);
 
             Property(p => p.CreationDate).IsRequired();
             Property(p => p.ModificationDate).IsRequired();

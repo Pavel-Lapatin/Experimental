@@ -26,7 +26,8 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FullPath = "~\\adminRoot",
-                    DirectorySize = 3072
+                    DirectorySize = 3072,
+                    ParentFolderId = null
                 },
 
                 new DirectoryStructure
@@ -35,10 +36,15 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     Name = "PashaRoot",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    FullPath = "~\\PashaRoot"
+                    FullPath = "~\\PashaRoot",
+                    ParentFolderId = null
                 },
 
             };
+
+            
+            rootDirectories.ToList().ForEach(u => context.Directories.AddOrUpdate(p => p.FullPath, u));
+            context.SaveChanges();
 
             var directories = new[]
             {
@@ -49,8 +55,8 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     Name = "admin-Dir1-Lvl1",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectory = rootDirectories[0],
-                    FullPath = "~\\adminRoot\\admin-Dir2-Lvl1"
+                    FullPath = "~\\adminRoot\\admin-Dir2-Lvl1",
+                    ParentFolderId = 1
                 },
 
                 new DirectoryStructure
@@ -59,7 +65,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     Name = "admin-Dir2-Lvl1",
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    ParentDirectory = rootDirectories[0],
+                    ParentFolderId = 1,
                     FullPath = "~\\adminRoot\\admin-Dir1-Lvl1"
                 },
 
@@ -75,7 +81,11 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 }
             };
 
-            directories[2].ParentDirectory = directories[1];
+           
+            directories.ToList().ForEach(u => context.Directories.AddOrUpdate(p => p.FullPath, u));
+            context.SaveChanges();
+
+            directories[2].ParentFolderId = 3;
 
             var files = new[]
             {
@@ -84,7 +94,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FileId = 1,
                     Extension = ".txt",
                     Name = "file1",
-                    Directory = directories[2],
+                    FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 1024,
@@ -96,7 +106,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FileId = 2,
                     Extension = ".html",
                     Name = "file2",
-                    Directory = rootDirectories[0],
+                    FolderId = 1,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 2048,
@@ -107,7 +117,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FileId = 3,
                     Extension = ".txt",
                     Name = "file3",
-                    Directory = rootDirectories[0],
+                    FolderId = 1,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 1024,
@@ -118,7 +128,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FileId = 4,
                     Extension = ".txt",
                     Name = "file4",
-                    Directory = directories[2],
+                    FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 18000,
@@ -129,13 +139,16 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FileId = 5,
                     Extension = ".pdf",
                     Name = "file5",
-                    Directory = directories[2],
+                    FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FileSize = 15000,
                     DownloadsNumber = 10
                 }
             };
+
+            context.Files.AddOrUpdate(p => new { p.FolderId, p.Name, p.Extension }, files);
+            context.SaveChanges();
 
             var accounts = new[]
             {
@@ -161,9 +174,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 },
             };
             accounts.ToList().ForEach(u => context.Accounts.AddOrUpdate(p => p.AccountId, u));
-            rootDirectories.ToList().ForEach(u => context.Directories.AddOrUpdate(p => p.FullPath, u));
-            directories.ToList().ForEach(u => context.Directories.AddOrUpdate(p => p.FullPath, u));
-            files.ToList().ForEach(u => context.Files.AddOrUpdate(p => p.FileId, u));
             context.SaveChanges();
 
             //  This method will be called after migrating to the latest version.
