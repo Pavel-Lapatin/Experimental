@@ -10,7 +10,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
     {
         IMapper _mapper;
         private readonly FileManagerDbContext _context;
-        private bool disposed;
+        private bool disposed = false;
 
         IRepositoryFactory _repositoryFactory;
       

@@ -131,6 +131,17 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
                 return new ViewResult(new ErrorView(model.Errors));
             }
             return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
-        }             
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                _directoryService.Dispose();
+            }
+            disposed = true;
+        }
     }
 }

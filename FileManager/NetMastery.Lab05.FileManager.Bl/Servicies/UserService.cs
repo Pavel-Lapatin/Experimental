@@ -11,6 +11,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
     {
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        protected bool disposed = false;
 
         #region Constructors
 
@@ -18,6 +19,22 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }
+        private void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                _unitOfWork.Dispose();
+            }
+            disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
         }
         #endregion
 

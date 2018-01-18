@@ -25,7 +25,11 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         throw new CommandParsingException(this, "");
                     }
-                    _resultProvider.Result = Controller().Download(pathToFile.Value, pathToFolder.Value);
+                    using (var controller = Controller())
+                    {
+                        _resultProvider.Result = controller.Download(pathToFile.Value, pathToFolder.Value);
+                    }
+                    
                     return 0;
                 }
                 finally

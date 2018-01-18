@@ -24,7 +24,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         throw new CommandParsingException(this, "");
                     }
-                    _resultProvider.Result = Controller().Remove(path.Value);
+                    using (var controller = Controller())
+                    {
+                        _resultProvider.Result = controller.Remove(path.Value);
+                    }
                     return 0;
                 }
                 finally

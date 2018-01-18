@@ -17,7 +17,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Description = "Logoff from the system";
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().Signoff();
+                using (var controller = Controller())
+                {
+                    _resultProvider.Result = controller.Signoff();
+                }
                 return 0;
             });
         }

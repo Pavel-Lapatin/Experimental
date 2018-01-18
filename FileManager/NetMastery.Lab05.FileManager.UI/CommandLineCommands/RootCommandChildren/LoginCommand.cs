@@ -27,7 +27,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         throw new CommandParsingException(this, "");
                     }
-                    _resultProvider.Result = Controller().SinginPost(login.Value(), password.Value());
+                    using (var controller = Controller())
+                    {
+                        _resultProvider.Result = controller.SinginPost(login.Value(), password.Value());
+                    }
                     return 0;
                 } finally
                 {

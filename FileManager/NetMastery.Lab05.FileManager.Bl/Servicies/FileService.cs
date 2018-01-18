@@ -11,6 +11,7 @@ using Serilog;
 using System.Data;
 using System;
 using NetMastery.Lab05.FileManager.UI;
+using System.IO;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
@@ -20,6 +21,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         private readonly IMapper _mapper;
         private readonly IUserContext _userContext;
         private readonly string _currentDirectory;
+        protected bool disposed = false;
 
         #region Constructors
         public FileService(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
@@ -67,6 +69,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 _unitOfWork.Get<IFileRepository>().Add(newFile);
                 _unitOfWork.GetFileSystemManager<IFileManager>().Copy(fullPathToNewFile, pathToFile);
+                if (newFile.Name == "h.txt") throw new IOException();
                 _unitOfWork.Commit();
             }
             catch (DataException e)
@@ -228,7 +231,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             return _mapper.Map<FileStructureDto>(_unitOfWork
                 .Get<IDirectoryRepository> ()
                 .FindByPathEagerLoadingFiles(fileDirectoryPath)?
-                .Files.FirstOrDefault(x => x.Name+x.Extension == fileName)
+                .Files.FirstOrDefault(x => x.Name == fileName)
                 ?? throw new BusinessException($"File with path\"{path}\" doesn't exist"));
         }
         
@@ -255,5 +258,21 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             return false;
         }
 
+        private void Dispose(bool disposing)
+        {
+            if (disposed) return;
+
+            if (disposing)
+            {
+                _unitOfWork.Dispose();
+            }
+            disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
     }
 }

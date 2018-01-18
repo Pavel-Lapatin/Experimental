@@ -15,5 +15,21 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             return new ViewResult(new StartView());
         }
 
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                Dispose();
+                // Free any other managed objects here.
+                //
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
+        }
     }
 }

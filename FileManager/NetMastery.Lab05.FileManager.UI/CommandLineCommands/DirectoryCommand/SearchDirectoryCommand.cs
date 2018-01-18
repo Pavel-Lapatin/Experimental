@@ -25,7 +25,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         throw new CommandParsingException(this, "");
                     }
-                    _resultProvider.Result = Controller().Search(path.Value, pattern.Value);
+                    using (var controller = Controller())
+                    {
+                        _resultProvider.Result = controller.Search(path.Value, pattern.Value);
+                    }
                     return 0;
                 }
                 finally

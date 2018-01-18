@@ -26,7 +26,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         throw new CommandParsingException(this, "");
                     }
-                    _resultProvider.Result = Controller().Move(pathFrom.Value, pathTo.Value);
+                    using (var controller = Controller())
+                    {
+                        _resultProvider.Result = controller.Move(pathFrom.Value, pathTo.Value);
+                    }
                     return 0;
                 }
                 finally

@@ -57,5 +57,22 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
             return false;
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                _authenticationService.Dispose();
+                // Free any other managed objects here.
+                //
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
+        }
     }
 }

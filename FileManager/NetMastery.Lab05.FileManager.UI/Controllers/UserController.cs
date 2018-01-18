@@ -25,5 +25,22 @@ namespace NetMastery.Lab05.FileManager.UI.Controllers
             }
             return new RedirectResult(typeof(LoginController), nameof(LoginController.SigninGet), null);
         }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposed)
+                return;
+
+            if (disposing)
+            {
+                _userService.Dispose();
+                // Free any other managed objects here.
+                //
+            }
+
+            // Free any unmanaged objects here.
+            //
+            disposed = true;
+        }
     }
 }

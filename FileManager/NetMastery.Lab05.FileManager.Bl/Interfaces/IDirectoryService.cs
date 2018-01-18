@@ -1,10 +1,11 @@
 ﻿using NetMastery.Lab05.FileManager.Dto;
+using System;
 using System.Collections.Generic;
 
 
 namespace NetMastery.Lab05.FileManager.Bl.Interfaces
 {
-    public interface IDirectoryService
+    public interface IDirectoryService : IDisposable
     {
         void Add(string path, string name);
         void Move(string pathFrom, string pathTo);

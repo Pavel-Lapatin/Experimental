@@ -24,7 +24,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         throw new CommandParsingException(this, "");
                     }
-                    _resultProvider.Result = Controller().GetDirectoryInfo(path.Value);
+                    using (var controller = Controller())
+                    {
+                        _resultProvider.Result = controller.GetDirectoryInfo(path.Value);
+                    }
                     return 0;
                 }
                 finally

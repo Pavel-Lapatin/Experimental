@@ -20,6 +20,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
         private readonly IUserContext _userContext;
+        protected bool disposed = false;
         #region Constructors
 
         public DirectoryService(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
@@ -185,7 +186,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 ?? throw new BusinessException($"Directory with \"{path}\" doesn't exist");
 
             var result = new Dictionary<string, IList<string>>();
-            IList<string> files = directory.Files.Select(x => x.Name + x.Extension).ToList();
+            IList<string> files = directory.Files.Select(x => x.Name).ToList();
             IList<string> directories = directory.ChildrenDirectories.Select(x => x.Name).ToList();
             result.Add("Directories", directories);
             result.Add("Files", files);
@@ -248,7 +249,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 if (file.Name.Contains(pattern))
                 {
-                    results.Add(directory.FullPath + "\\" + file.Name + file.Extension);
+                    results.Add(directory.FullPath + "\\" + file.Name);
                 }
             }
         }
@@ -277,10 +278,21 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
                 dir[i].FullPath = dir[i].FullPath.Replace(pattern, pathTo);
             }
         }
+        private void Dispose(bool disposing)
+        {
+            if (disposed) return;
 
+            if (disposing)
+            {
+                _unitOfWork.Dispose();
+            }
+            disposed = true;
+        }
         public void Dispose()
         {
-            _unitOfWork?.Dispose();
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
         }
     }
 }

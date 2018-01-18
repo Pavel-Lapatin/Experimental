@@ -93,7 +93,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 {
                     FileId = 1,
                     Extension = ".txt",
-                    Name = "file1",
+                    Name = "file1.txt",
                     FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
@@ -105,7 +105,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 {
                     FileId = 2,
                     Extension = ".html",
-                    Name = "file2",
+                    Name = "file2.html",
                     FolderId = 1,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
@@ -116,7 +116,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 {
                     FileId = 3,
                     Extension = ".txt",
-                    Name = "file3",
+                    Name = "file3.txt",
                     FolderId = 1,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
@@ -127,7 +127,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 {
                     FileId = 4,
                     Extension = ".txt",
-                    Name = "file4",
+                    Name = "file4.txt",
                     FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
@@ -138,7 +138,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 {
                     FileId = 5,
                     Extension = ".pdf",
-                    Name = "file5",
+                    Name = "file5.pdf",
                     FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),

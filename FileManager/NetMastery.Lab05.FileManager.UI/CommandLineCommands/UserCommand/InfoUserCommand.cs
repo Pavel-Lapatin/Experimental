@@ -18,7 +18,10 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
             Description = "info about user signed in the system";
             OnExecute(() =>
             {
-                _resultProvider.Result = Controller().GetUserInfo();
+                using (var controller = Controller())
+                {
+                    _resultProvider.Result = controller.GetUserInfo();
+                }
                 return 0;
             });
         }

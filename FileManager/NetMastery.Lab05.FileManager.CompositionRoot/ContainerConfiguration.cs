@@ -32,6 +32,8 @@ namespace NetMastery.Lab05.FileManager.Composition
             builder.RegisterType<ResultProvider>()
                 .As<IResultProvider>()
                 .SingleInstance();
+            builder.RegisterType<FileManagerDbContext>()
+                .InstancePerDependency();
 
             var userInterfaceAssembly = Assembly.GetAssembly(typeof(Controller));
             builder.RegisterAssemblyTypes(userInterfaceAssembly)
@@ -60,29 +62,27 @@ namespace NetMastery.Lab05.FileManager.Composition
 
             builder.RegisterType<RepositoryFactory>()
                    .As<IRepositoryFactory>()
-                   .InstancePerLifetimeScope(); ;
+                   .InstancePerDependency();
 
             builder.RegisterType<AuthenticationService>()
-                   .As<IAuthenticationService>();
+                   .As<IAuthenticationService>()
+                   .InstancePerDependency();
 
             builder.RegisterType<FileService>()
                    .As<IFileService>()
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType<UserService>()
                    .As<IUserService>()
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType<DirectoryService>()
                    .As<IDirectoryService>()
-                   .InstancePerLifetimeScope();
+                   .InstancePerDependency();
 
             builder.RegisterType<UnitOfWork>()
                    .As<IUnitOfWork>()
-                   .InstancePerLifetimeScope()
-                   .WithParameter(new TypedParameter(
-                       typeof(FileManagerDbContext),
-                       new FileManagerDbContext()));
+                   .InstancePerDependency();
 
             builder.Register(c => new DirectoryCommand(
                 c.Resolve<AddDirectoryCommand>(),

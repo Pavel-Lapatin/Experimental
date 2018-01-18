@@ -15,7 +15,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
     {
         IUnitOfWork _unitOfWork;
         IMapper _mapper;
-
+        protected bool disposed = false;
         #region Constructors
 
         public AuthenticationService(IUnitOfWork unitOfWork, IMapper mapper)
@@ -24,7 +24,22 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             _mapper = mapper;
         }
 
+        private void Dispose(bool disposing)
+        {
+            if (disposed) return;
 
+            if (disposing)
+            {
+                _unitOfWork.Dispose();
+            }
+            disposed = true;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
         #endregion
 
         public AccountDto Signin(string login, string password)

@@ -11,6 +11,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
     {
         public DirectoryRepository(FileManagerDbContext context) : base(context)
         {
+            Find(x => x.FullPath == "~\\adminRoot").FirstOrDefault();
         }
 
         public DirectoryStructure FindByPath(string path)

@@ -8,16 +8,16 @@ namespace NetMastery.Lab05.FileManager
     {
         static void Main()
         {
-            try
-            {
+            //try
+            //{
                 CompositionRoot.Initialize().StartupUI();
-            }
-            catch (Exception e)
-            {
-                Log.Logger.Fatal(e.Message);
-                Console.WriteLine("Fatal undefined exception. Sorry, call to the support +1111111111");
-                Console.ReadKey();
-            }
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Logger.Fatal(e.Message);
+            //    Console.WriteLine("Fatal undefined exception. Sorry, call to the support +1111111111");
+            //    Console.ReadKey();
+            //}
         }
     }
 }
