@@ -77,6 +77,10 @@ namespace NetMastery.Lab05.FileManager.UI
                 {
                     Console.WriteLine(e.Message);
                 }
+                catch (UnauthorizedAccessException e)
+                {
+                    Console.WriteLine(e.Message);
+                }
             }
         }
         

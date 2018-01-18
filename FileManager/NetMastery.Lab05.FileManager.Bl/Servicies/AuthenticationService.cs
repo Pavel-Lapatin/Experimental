@@ -8,37 +8,18 @@ using NetMastery.Lab05.FileManager.Domain;
 using Serilog;
 using NetMastery.Lab05.FileManager.Bl.Exceptions;
 using NetMastery.Lab05.FileManager.DAL.Repository;
+using NetMastery.Lab05.FileManager.UI;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
-    public class AuthenticationService : IAuthenticationService
+    public class AuthenticationService : BusinessService, IAuthenticationService
     {
-        IUnitOfWork _unitOfWork;
-        IMapper _mapper;
-        protected bool disposed = false;
         #region Constructors
 
-        public AuthenticationService(IUnitOfWork unitOfWork, IMapper mapper)
+        public AuthenticationService(IUnitOfWork unitOfWork, 
+                                     IMapper mapper, 
+                                     IUserContext userContext) :base(unitOfWork, mapper, userContext)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposed) return;
-
-            if (disposing)
-            {
-                _unitOfWork.Dispose();
-            }
-            disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
         }
         #endregion
 

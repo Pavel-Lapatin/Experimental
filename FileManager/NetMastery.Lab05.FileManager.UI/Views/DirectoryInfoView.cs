@@ -23,7 +23,7 @@ namespace NetMastery.Lab05.FileManager.UI.Views
                 Console.WriteLine($"Directory name: {_directory.Name}");
                 Console.WriteLine($"Creation date: {_directory.CreationDate.ToString("yy-MM-dd")}");
                 Console.WriteLine($"Modification date: {_directory.ModificationDate.ToString("yy-MM-dd")}");
-                Console.WriteLine($"DirectorySize: {_directory.DirectorySize}");
+                Console.WriteLine($"DirectorySize: {_directory.DirectorySize / 1024} kB");
                 Console.WriteLine($"FullPath: {_directory.FullPath}");
                 Console.WriteLine();
             }

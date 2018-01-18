@@ -15,21 +15,16 @@ using System.IO;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
-    public class FileService : IFileService
+    public class FileService : BusinessService, IFileService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IUserContext _userContext;
         private readonly string _currentDirectory;
-        protected bool disposed = false;
 
         #region Constructors
-        public FileService(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
+        public FileService(IUnitOfWork unitOfWork, 
+                           IMapper mapper, 
+                           IUserContext userContext) : base(unitOfWork, mapper, userContext)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
             _currentDirectory = _unitOfWork.GetFileSystemManager<IDirectoryManager>().GetCurrentPath();
-            _userContext = userContext; 
         }
         #endregion
 
@@ -69,7 +64,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 _unitOfWork.Get<IFileRepository>().Add(newFile);
                 _unitOfWork.GetFileSystemManager<IFileManager>().Copy(fullPathToNewFile, pathToFile);
-                if (newFile.Name == "h.txt") throw new IOException();
                 _unitOfWork.Commit();
             }
             catch (DataException e)
@@ -104,7 +98,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             var fileInfo = _unitOfWork
             .Get<IDirectoryRepository>()
             .FindByPathEagerLoadingFiles(fileDirectoryPath)?
-            .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+            .Files.FirstOrDefault(x => x.Name == fileName)
             ?? throw new BusinessException($"File with path\"{pathToFile}\" doesn't exist");
 
             if (!IsFileValid(fileForDownload, fileInfo))
@@ -152,7 +146,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             var fileStructure = _unitOfWork
             .Get<IDirectoryRepository>()
             .FindByPathEagerLoadingFiles(fileDirectoryPath)?
-            .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+            .Files.FirstOrDefault(x => x.Name == fileName)
             ?? throw new BusinessException($"File with path\"{pathFrom}\" doesn't exist");
 
             var storage = _unitOfWork
@@ -197,7 +191,7 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             var fileStructure = _unitOfWork
             .Get<IDirectoryRepository>()
             .FindByPathEagerLoadingFiles(fileDirectoryPath)?
-            .Files.FirstOrDefault(x => x.Name + x.Extension == fileName)
+            .Files.FirstOrDefault(x => x.Name == fileName)
             ?? throw new BusinessException($"File with path\"{path}\" doesn't exist");
             try
             {
@@ -251,28 +245,11 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
 
         private bool IsFileValid(FileStructure fileInfo, FileStructure fileStructure)
         {
-            if (fileStructure.FileSize * 1024 == fileInfo.FileSize)
+            if (fileStructure.FileSize == fileInfo.FileSize)
             {
                 return true;
             }
             return false;
-        }
-
-        private void Dispose(bool disposing)
-        {
-            if (disposed) return;
-
-            if (disposing)
-            {
-                _unitOfWork.Dispose();
-            }
-            disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
         }
     }
 }

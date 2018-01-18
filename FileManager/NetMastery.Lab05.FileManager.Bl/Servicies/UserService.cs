@@ -4,37 +4,18 @@ using AutoMapper;
 using NetMastery.Lab05.FileManager.Dto;
 using NetMastery.Lab05.FileManager.Bl.Interfaces;
 using System;
+using NetMastery.Lab05.FileManager.UI;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
-    public class UserService : IUserService
+    public class UserService : BusinessService, IUserService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        protected bool disposed = false;
-
         #region Constructors
 
-        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
-        {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-        }
-        private void Dispose(bool disposing)
-        {
-            if (disposed) return;
-
-            if (disposing)
-            {
-                _unitOfWork.Dispose();
-            }
-            disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
+        public UserService(IUnitOfWork unitOfWork,
+                           IMapper mapper,
+                           IUserContext userContext) : base(unitOfWork, mapper, userContext)
+        { 
         }
         #endregion
 

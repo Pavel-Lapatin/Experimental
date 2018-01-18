@@ -19,8 +19,8 @@ namespace NetMastery.Lab05.FileManager.UI.Views
                 Console.WriteLine("User info:");
                 Console.WriteLine($"Login: { _account.Login}");
                 Console.WriteLine($"Creation date: {_account.CreationDate.ToString("yy-MM-dd")}");
-                Console.WriteLine($"Current Storage Size: { _account.CurentStorageSize}");
-                Console.WriteLine($"Max Storage Size: { _account.MaxStorageSize }");
+                Console.WriteLine($"Current Storage Size: { _account.CurentStorageSize / 1024} kB");
+                Console.WriteLine($"Max Storage Size: { _account.MaxStorageSize / 1024} kB");
                 Console.WriteLine($"Root directory: { _account.RootDirectory}");
                 Console.WriteLine();
             }

@@ -26,7 +26,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FullPath = "~\\adminRoot",
-                    DirectorySize = 3072,
+                    DirectorySize = 3072 * 1024,
                     ParentFolderId = null
                 },
 
@@ -76,7 +76,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     CreationDate = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
                     FullPath = "~\\adminRoot\\admin-Dir1-Lvl1\\admin-Dir2.1-Lvl2",
-                    DirectorySize = 34024,
+                    DirectorySize = 34024 * 1024,
 
                 }
             };
@@ -97,7 +97,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    FileSize = 1024,
+                    FileSize = 1024 * 1024,
                     DownloadsNumber = 5
                      
                 },
@@ -109,7 +109,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FolderId = 1,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    FileSize = 2048,
+                    FileSize = 2048 * 1024,
                     DownloadsNumber = 0
                 },
                 new FileStructure
@@ -120,7 +120,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FolderId = 1,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    FileSize = 1024,
+                    FileSize = 1024 * 1024,
                     DownloadsNumber = 5
                 },
                 new FileStructure
@@ -131,7 +131,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    FileSize = 18000,
+                    FileSize = 18000 * 1024,
                     DownloadsNumber = 2
                 },
                 new FileStructure
@@ -142,7 +142,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                     FolderId = 5,
                     CreationTime = new DateTime(2016,2,6),
                     ModificationDate = new DateTime(2016,2,6),
-                    FileSize = 15000,
+                    FileSize = 15000 * 1024,
                     DownloadsNumber = 10
                 }
             };
@@ -159,7 +159,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                    Password = "$2a$10$q4Tpdy6rhVqWAIQgWNCzd.04Td7g4xy55RikeKYJP0CBHWtGBoJkW",
                    CreationDate = DateTime.Now,
                    MaxStorageSize = 256000000,
-                   CurentStorageSize = 37096,
+                   CurentStorageSize = 37096 * 1024,
                    RootDirectory = rootDirectories[0],
                 },
                 new Account
@@ -168,7 +168,7 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                    Login = "Pasha",
                    Password = "$2a$10$euq/KV3PAGkUsfqc3kA7Zu0qNXr5SHZ97Y57lo1n7qzYR9vLTgJWG",
                    MaxStorageSize = 256000000,
-                   CurentStorageSize = 37096,
+                   CurentStorageSize = 37096 *1024,
                    CreationDate = new DateTime(2015,01,18),
                    RootDirectory = rootDirectories[1]
                 },
@@ -198,15 +198,15 @@ namespace NetMastery.Lab05.FileManager.DAL.Migrations
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1");
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir2-Lvl1");
                 Directory.CreateDirectory(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2");
-                var file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2\" + files[0].Name + files[0].Extension);
+                var file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2\" + files[0].Name);
                 file.SetLength(1024 * 1024);
-                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\" + files[1].Name + files[1].Extension);
+                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\" + files[1].Name);
                 file.SetLength(2048 * 1024);
-                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\" + files[2].Name + files[2].Extension);
+                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\" + files[2].Name);
                 file.SetLength(1024 * 1024);
-                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2\" + files[3].Name + files[3].Extension);
+                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2\" + files[3].Name);
                 file.SetLength(1024 * 18000);
-                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2\" + files[4].Name + files[4].Extension);
+                file = File.Create(Directory.GetCurrentDirectory() + @"\adminRoot\admin-Dir1-Lvl1\admin-Dir2.1-Lvl2\" + files[4].Name);
                 file.SetLength(1024 * 15000);
             }
         }

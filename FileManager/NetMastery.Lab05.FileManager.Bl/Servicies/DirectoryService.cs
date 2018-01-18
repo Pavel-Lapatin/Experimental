@@ -15,19 +15,14 @@ using NetMastery.Lab05.FileManager.Bl.Helpers;
 
 namespace NetMastery.Lab05.FileManager.Bl.Servicies
 {
-    public class DirectoryService : IDirectoryService, IDisposable
+    public class DirectoryService : BusinessService, IDirectoryService
     {
-        private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
-        private readonly IUserContext _userContext;
-        protected bool disposed = false;
         #region Constructors
 
-        public DirectoryService(IUnitOfWork unitOfWork, IMapper mapper, IUserContext userContext)
+        public DirectoryService(IUnitOfWork unitOfWork, 
+                                IMapper mapper, 
+                                IUserContext userContext) : base(unitOfWork, mapper, userContext)
         {
-            _unitOfWork = unitOfWork;
-            _mapper = mapper;
-            _userContext = userContext;
         }
         #endregion
 
@@ -277,22 +272,6 @@ namespace NetMastery.Lab05.FileManager.Bl.Servicies
             {
                 dir[i].FullPath = dir[i].FullPath.Replace(pattern, pathTo);
             }
-        }
-        private void Dispose(bool disposing)
-        {
-            if (disposed) return;
-
-            if (disposing)
-            {
-                _unitOfWork.Dispose();
-            }
-            disposed = true;
-        }
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
         }
     }
 }

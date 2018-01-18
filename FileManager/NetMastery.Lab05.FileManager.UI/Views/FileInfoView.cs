@@ -24,7 +24,7 @@ namespace NetMastery.Lab05.FileManager.UI.Views
                 Console.WriteLine($"File name: {_file.Name}");
                 Console.WriteLine($"Creation date: {_file.CreationTime.ToString("yy-MM-dd")}");
                 Console.WriteLine($"Modification date: {_file.ModificationDate.ToString("yy-MM-dd")}");
-                Console.WriteLine($"File Size: {_file.FileSize}");
+                Console.WriteLine($"File Size: {_file.FileSize / 1024} kB");
                 Console.WriteLine($"Extenson: {_file.Extension}");
                 Console.WriteLine($"Download Numbers: {_file.DownloadsNumber}");
                 Console.WriteLine();
