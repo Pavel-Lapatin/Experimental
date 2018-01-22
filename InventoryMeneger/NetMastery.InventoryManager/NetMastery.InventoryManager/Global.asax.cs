@@ -13,6 +13,7 @@ namespace NetMastery.InventoryManager
         {
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+            NinjectConfig.RegisterNinject();
         }
     }
 }

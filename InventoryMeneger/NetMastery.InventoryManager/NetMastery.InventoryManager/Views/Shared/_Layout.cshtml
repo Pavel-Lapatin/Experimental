@@ -1,0 +1,50 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale =1.0" />
+    <title>@ViewBag.Title - Inventory Manager</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/InventoryManager.css" rel="stylesheet" />   
+</head>
+<body>
+        <div class="card">
+            <div class="card-header">
+                <nav class="navbar navbar-expand flex-column flex-md-row">
+                    <a class="navbar-brand mr-0 mr-md-2">
+                        Inventory Manager
+                    </a>
+                    <div class="navbar-nav-scroll" id="navbarNav">
+                        <ul class="navbar-nav flex-row">
+                            <li class="nav-item active">
+                                <a class="nav-link" href="#">Home </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Features</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Pricing</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Disabled</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </div>
+            <div class="card-body bgimg">
+                @RenderBody()
+        </div>
+        <div class="card-footer text-muted">
+            2 days ago
+        </div>
+    </div>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+</body>
+</html>

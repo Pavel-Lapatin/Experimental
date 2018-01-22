@@ -5,6 +5,12 @@ VisualStudioVersion = 15.0.26730.12
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.InventoryManager", "NetMastery.InventoryManager\NetMastery.InventoryManager.csproj", "{20FA67BA-C389-4628-8CB6-1F4C2BB85983}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.InventoryManager.Domain", "Domain\NetMastery.InventoryManager.Domain.csproj", "{BD91BDE6-7C0D-474D-8AFC-D35E06ACAFA8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetMastery.InventoryManager.DAL", "NetMastery.InventoryManager.DAL\NetMastery.InventoryManager.DAL.csproj", "{6A07726D-E9D4-47C6-B2C1-8CC8660D9A91}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{050841CA-7E41-4AC6-A4C2-B005773A6097}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +21,18 @@ Global
 		{20FA67BA-C389-4628-8CB6-1F4C2BB85983}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20FA67BA-C389-4628-8CB6-1F4C2BB85983}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20FA67BA-C389-4628-8CB6-1F4C2BB85983}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD91BDE6-7C0D-474D-8AFC-D35E06ACAFA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD91BDE6-7C0D-474D-8AFC-D35E06ACAFA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD91BDE6-7C0D-474D-8AFC-D35E06ACAFA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD91BDE6-7C0D-474D-8AFC-D35E06ACAFA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A07726D-E9D4-47C6-B2C1-8CC8660D9A91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A07726D-E9D4-47C6-B2C1-8CC8660D9A91}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A07726D-E9D4-47C6-B2C1-8CC8660D9A91}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A07726D-E9D4-47C6-B2C1-8CC8660D9A91}.Release|Any CPU.Build.0 = Release|Any CPU
+		{050841CA-7E41-4AC6-A4C2-B005773A6097}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{050841CA-7E41-4AC6-A4C2-B005773A6097}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{050841CA-7E41-4AC6-A4C2-B005773A6097}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{050841CA-7E41-4AC6-A4C2-B005773A6097}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
