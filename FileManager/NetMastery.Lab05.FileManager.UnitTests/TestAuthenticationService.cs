@@ -5,6 +5,7 @@ using NetMastery.Lab05.FileManager.Bl.Servicies;
 using NetMastery.Lab05.FileManager.DAL.Interfacies;
 using NetMastery.Lab05.FileManager.Domain;
 using NetMastery.Lab05.FileManager.Dto;
+using NetMastery.Lab05.FileManager.UI;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -23,7 +24,8 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             var unitOfWork = new Mock<IUnitOfWork>();
             var autoMapper = new Mock<IMapper>();
-            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
+            var userContext = new Mock<IUserContext>();
+            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object, userContext.Object);
             Assert.That(() => authenticateService.Signin(login, password),
                 Throws.TypeOf<BusinessException>());
         }
@@ -35,11 +37,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             
             autoMapper.Setup(m => m.Map<Account, AccountDto>(It.IsAny<Account>())).Returns((AccountDto)null);
             var Repository = new Mock<IAccountRepository>();
+            var userContext = new Mock<IUserContext>();
             Repository.Setup(u => u.Find(It.IsAny<Expression<Func<Account, bool>>>()))
                 .Returns(new List<Account>());
             var unitOfWork = new Mock<IUnitOfWork>();
             unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(Repository.Object);
-            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
+            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object, userContext.Object);
             Assert.That(() => authenticateService.Signin("admin", "admin"),
                 Throws.TypeOf<BusinessException>());
         }
@@ -53,6 +56,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 Password = "$2a$10$q4Tpdy6rhVqWAIQgWNCzd.04Td7g4xy55RikeKYJP0CBHWtGBoJkW"
             };
             var autoMapper = new Mock<IMapper>();
+            var userContext = new Mock<IUserContext>();
             autoMapper.Setup(m => m.Map<AccountDto>(It.IsAny<Account>()))
                       .Returns(accountDto);
             var Repository = new Mock<IAccountRepository>();
@@ -60,7 +64,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 .Returns(new List<Account>(new[] { new Account() }));
             var unitOfWork = new Mock<IUnitOfWork>();
             unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(Repository.Object);
-            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
+            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object, userContext.Object);
             Assert.AreEqual(authenticateService.Signin("admin", "admin"), accountDto);
                
         }
@@ -73,6 +77,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 Password = "$2a$10$q4Tpdy6rhVqWAIQgWNCzd.04Td7g4xy55RikeKYJP0CBHWtGBoJkR"
             };
             var autoMapper = new Mock<IMapper>();
+            var userContext = new Mock<IUserContext>();
             autoMapper.Setup(m => m.Map<AccountDto>(It.IsAny<Account>()))
                       .Returns(accountDto);
             var Repository = new Mock<IAccountRepository>();
@@ -80,7 +85,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 .Returns(new List<Account>(new[] { new Account() }));
             var unitOfWork = new Mock<IUnitOfWork>();
             unitOfWork.Setup(x => x.Get<IAccountRepository>()).Returns(Repository.Object);
-            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object);
+            var authenticateService = new AuthenticationService(unitOfWork.Object, autoMapper.Object, userContext.Object);
             Assert.That(() => authenticateService.Signin("admin", "something"),
                 Throws.TypeOf<BusinessException>());
 

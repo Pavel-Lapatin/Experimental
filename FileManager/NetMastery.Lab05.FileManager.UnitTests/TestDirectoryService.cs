@@ -482,12 +482,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File1",
+                                        Name = "File1.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File2",
+                                        Name = "File2.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -497,12 +497,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File11",
+                                        Name = "File11.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File12",
+                                        Name = "File12.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -521,12 +521,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File31",
+                                        Name = "File31.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File32",
+                                        Name = "File32.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -536,12 +536,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File21",
+                                        Name = "File21.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File22",
+                                        Name = "File22.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -552,12 +552,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 {
                     new FileStructure
                     {
-                        Name = "File1",
+                        Name = "File1.txt",
                         Extension = ".txt"
                     },
                     new FileStructure
                     {
-                        Name = "File2",
+                        Name = "File2.html",
                         Extension = ".html"
                     }
                 }
@@ -648,12 +648,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File1",
+                                        Name = "File1.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File2",
+                                        Name = "File2.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -663,12 +663,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File11",
+                                        Name = "File11.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File12",
+                                        Name = "File12.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -687,12 +687,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File31",
+                                        Name = "File31.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File32",
+                                        Name = "File32.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -702,12 +702,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                                 {
                                     new FileStructure
                                     {
-                                        Name = "File21",
+                                        Name = "File21.txt",
                                         Extension = ".txt"
                                     },
                                     new FileStructure
                                     {
-                                        Name = "File22",
+                                        Name = "File22.html",
                                         Extension = ".html"
                                     }
                                 }
@@ -718,12 +718,12 @@ namespace NetMastery.Lab05.FileManager.UnitTests
                 {
                     new FileStructure
                     {
-                        Name = "File1",
+                        Name = "File1.txt",
                         Extension = ".txt"
                     },
                     new FileStructure
                     {
-                        Name = "File2",
+                        Name = "File2.html",
                         Extension = ".html"
                     }
                 }

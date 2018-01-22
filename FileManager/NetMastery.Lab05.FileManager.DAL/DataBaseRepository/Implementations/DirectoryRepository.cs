@@ -1,9 +1,6 @@
 ﻿using NetMastery.Lab05.FileManager.Domain;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.Lab05.FileManager.DAL.Repository
 {
@@ -11,7 +8,6 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
     {
         public DirectoryRepository(FileManagerDbContext context) : base(context)
         {
-            Find(x => x.FullPath == "~\\adminRoot").FirstOrDefault();
         }
 
         public DirectoryStructure FindByPath(string path)
