@@ -22,7 +22,6 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             var Repository = new Mock<IAccountRepository>();
             var userContext = new Mock<IUserContext>();
             var autoMapper = new Mock<IMapper>();
-            var userContext = new Mock<IUserContext>();
             Repository.Setup(u => u.FindByLogin(It.Is<string>(s => s == login)))
                 .Returns(new Account());
             autoMapper.Setup(u => u.Map<AccountDto>(It.IsAny<Account>()))

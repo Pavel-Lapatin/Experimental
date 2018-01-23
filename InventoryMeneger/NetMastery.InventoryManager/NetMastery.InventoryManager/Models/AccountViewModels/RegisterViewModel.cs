@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NetMastery.InventoryManager.Bl.DtoEntities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -9,9 +10,19 @@ namespace NetMastery.InventoryManager.Models.AccountViewModels
     public class RegisterViewModel
     {
         [Required]
+        [StringLength(256, ErrorMessage = "The {0} Should be less then 256 characters")]
+        [Display(Name = "Name")]
+        public string UserName { get; set; }
+
+        [Required]
         [EmailAddress]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Phone]
+        [Display(Name = "Phone")]
+        public string PhoneNumber { get; set; }
 
         [Required]
         [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]

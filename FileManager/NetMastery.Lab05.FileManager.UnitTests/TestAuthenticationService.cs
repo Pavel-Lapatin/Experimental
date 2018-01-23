@@ -60,7 +60,6 @@ namespace NetMastery.Lab05.FileManager.UnitTests
             autoMapper.Setup(m => m.Map<AccountDto>(It.IsAny<Account>()))
                       .Returns(accountDto);
             var Repository = new Mock<IAccountRepository>();
-            var userContext = new Mock<IUserContext>();
             Repository.Setup(u => u.Find(It.IsAny<Expression<Func<Account, bool>>>()))
                 .Returns(new List<Account>(new[] { new Account() }));
             var unitOfWork = new Mock<IUnitOfWork>();

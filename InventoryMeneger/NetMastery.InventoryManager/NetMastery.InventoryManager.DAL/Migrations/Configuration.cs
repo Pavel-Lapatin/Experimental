@@ -1,18 +1,15 @@
+using System.Data.Entity.Migrations;
+
 namespace NetMastery.InventoryManager.DAL.Migrations
 {
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.InventoryManager.DAL.InventoryManagerDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<NetMastery.InventoryManager.DAL.InventoryDbContext>
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = false;
+            AutomaticMigrationsEnabled = true;
         }
 
-        protected override void Seed(NetMastery.InventoryManager.DAL.InventoryManagerDbContext context)
+        protected override void Seed(NetMastery.InventoryManager.DAL.InventoryDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

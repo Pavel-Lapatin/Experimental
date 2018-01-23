@@ -1,0 +1,30 @@
+﻿@using NetMastery.InventoryManager.Models.Dashboard
+@model OrganizationCard
+
+@{ 
+    Layout = null;
+}
+
+<link href="~/Content/organizationCard.css" rel="stylesheet" />
+
+<div class="card">
+    <div class="form-check">
+        @Html.CheckBoxFor(m => m.IsSelected)
+
+    </div>
+    <!--Card image-->
+    <img class="img-fluid" src="~/imgs/CardOrganizationDefault.jpg" alt="Card image cap" />
+    <h6> Photo from http://moziru.com</h6>
+
+    <!--Card content-->
+    <div class="card-body">
+        <!--Title-->
+        <h4 class="card-title">@Model.Name</h4>
+        <!--Text-->
+        <p class="card-text">Address: @Model.Address</p>
+        <p class="card-text">Telephone: @Model.Phone</p>
+        <p class="card-text">Email: @Model.Email</p>
+        
+        
+    </div>
+</div>
