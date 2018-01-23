@@ -29,7 +29,6 @@ namespace NetMastery.Lab05.FileManager.UI.Commands
                     {
                         _resultProvider.Result = controller.Download(pathToFile.Value, pathToFolder.Value);
                     }
-                    
                     return 0;
                 }
                 finally

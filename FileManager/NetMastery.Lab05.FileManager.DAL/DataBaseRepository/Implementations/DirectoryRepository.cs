@@ -34,6 +34,5 @@ namespace NetMastery.Lab05.FileManager.DAL.Repository
         {
             return Find(x => x.FullPath.Contains(path));
         }
-
     }
 }

@@ -20,6 +20,7 @@ namespace NetMastery.Lab05.FileManager.UnitTests
         {
             var unitOfWork = new Mock<IUnitOfWork>();
             var Repository = new Mock<IAccountRepository>();
+            var userContext = new Mock<IUserContext>();
             var autoMapper = new Mock<IMapper>();
             var userContext = new Mock<IUserContext>();
             Repository.Setup(u => u.FindByLogin(It.Is<string>(s => s == login)))
