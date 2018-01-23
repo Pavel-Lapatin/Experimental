@@ -10,8 +10,8 @@ namespace NetMastery.InventoryManager
     {
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
-            filters.Add(new System.Web.Mvc.AuthorizeAttribute());
+            filters.Add(new HandleErrorAttribute());
+            filters.Add(new AuthorizeAttribute());
         }
-
     }
 }

@@ -1,0 +1,106 @@
+﻿@using NetMastery.InventoryManager.Models.AccountViewModels
+@model RegisterViewModel
+@{
+    ViewBag.Title = "Create New Account";
+    Layout = "~/Views/Shared/_mainPage.cshtml";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="wrap">
+                @using (Html.BeginForm("CreateNewAccount", "Account", FormMethod.Post, new { @class = "login form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <p class="form-title">Sign Up</p>
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "user-name form-control", placeholder = "User name" })
+                    </div>
+
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "user-name form-control", placeholder = "Email" })
+                    </div>
+                    <div class="form-group">
+                        @Html.PasswordFor(m => m.Password, new { @class = "password form-control", placeholder = "Password" })
+                    </div>
+                    <div class="form-group">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "password form-control", placeholder = "Confirm password" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "user-name form-control", placeholder = "Phone number" })
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success btn-sm btn-login" value="Sign Up" />
+                    </div>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+@*<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale =1.0" />
+    <title>@ViewBag.Title - Inventory Manager</title>
+    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/InventoryManager.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="row">
+        <div class="col-md-8">
+        </div>
+        <section id="loginForm">
+            @using (Html.BeginForm("CreateNewAccount", "Account", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+            {
+                @Html.AntiForgeryToken()
+                <h4>Create a new account.</h4>
+                <hr />
+                @Html.ValidationSummary("", new { @class = "text-danger" })
+                <div class="form-group">
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ConfirmPassword, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" class="btn btn-default" value="Register" />
+                    </div>
+                </div>
+            }
+        </section>
+    </div>
+    <script src="~/Scripts/bootstrap.js"></script>
+    <script src="~/Scripts/jquery-3.0.0.js"></script>
+</body>
+</html>*@
