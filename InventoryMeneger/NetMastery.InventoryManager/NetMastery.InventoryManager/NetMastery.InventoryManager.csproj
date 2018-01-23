@@ -190,7 +190,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\IdentityConfig.cs" />
     <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
@@ -201,7 +200,6 @@
     </Compile>
     <Compile Include="Models\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="Models\AccountViewModels\RegisterViewModel.cs" />
-    <Compile Include="Models\InventoryManagerUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="Utils\Ninjectregistrations.cs" />
@@ -239,6 +237,16 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\NetMastery.InventoryManager.Domain.csproj">
+      <Project>{BD91BDE6-7C0D-474D-8AFC-D35E06ACAFA8}</Project>
+      <Name>NetMastery.InventoryManager.Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NetMastery.InventoryManager.DAL\NetMastery.InventoryManager.DAL.csproj">
+      <Project>{6A07726D-E9D4-47C6-B2C1-8CC8660D9A91}</Project>
+      <Name>NetMastery.InventoryManager.DAL</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

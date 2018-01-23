@@ -5,19 +5,20 @@ using System.Web;
 using System.Web.Mvc;
 using System.Threading.Tasks;
 using NetMastery.InventoryManager.Models.AccountViewModels;
+using NetMastery.InventoryManager.DAL.IdentityManager;
 
 namespace NetMastery.InventoryManager.Controllers
 {
     public class AccountController : Controller
     {
         #region Properties
-        InventoryManagerUserManager _userManager;
+        UserManager _userManager;
 
-        public InventoryManagerUserManager UserManager
+        public UserManager UserManager
         {
             get
             {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<InventoryManagerUserManager>();
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<UserManager>();
             }
             private set
             {
@@ -25,13 +26,13 @@ namespace NetMastery.InventoryManager.Controllers
             }
         }
 
-        InventoryManagerSignInManager _signInManager;
+        SignInManager _signInManager;
 
-        public InventoryManagerSignInManager SignInManager
+        public SignInManager SignInManager
         {
             get
             {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<InventoryManagerSignInManager>();
+                return _signInManager ?? HttpContext.GetOwinContext().Get<SignInManager>();
             }
             private set
             {
@@ -45,7 +46,7 @@ namespace NetMastery.InventoryManager.Controllers
         {
         }
 
-        public AccountController(InventoryManagerUserManager userManager, InventoryManagerSignInManager signInManager)
+        public AccountController(UserManager userManager, SignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;

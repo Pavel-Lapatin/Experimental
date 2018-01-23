@@ -1,17 +1,26 @@
-﻿using Domain;
+﻿using NetMastery.InventoryManager.Domain;
+using NetMastery.InventoryManager.DAL.DbConfiguration;
 using System.Data.Entity;
+using Microsoft.AspNet.Identity.EntityFramework;
+using Microsoft.AspNet.Identity;
 
 namespace NetMastery.InventoryManager.DAL
 {
-    public class InventoryManagerDbContext : DbContext
+    public class InventoryManagerDbContext : IdentityDbContext<User>
     {
-        public InventoryManagerDbContext() : base("name=InventoryManagerConnection")
+        public InventoryManagerDbContext() 
+            : base("name=InventoryManagerConnection", throwIfV1Schema: false)
         {
         }
         public InventoryManagerDbContext(string connectionString) : base(connectionString)
         {
         }
-        public DbSet<Card> Accounts { get; set; }
+
+        public static InventoryManagerDbContext Create()
+        {
+            return new InventoryManagerDbContext();
+        }
+        public DbSet<Card> Cards { get; set; }
         public DbSet<Inventory> Directories { get; set; }
         public DbSet<InventoryType> Files { get; set; }
         public DbSet<InventoryInCard> InventoryInCards { get; set; }
@@ -22,11 +31,12 @@ namespace NetMastery.InventoryManager.DAL
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
-            //modelBuilder.Configurations.Add(new AccountsMap());
-            //modelBuilder.Configurations.Add(new FileStructMap());
-            //modelBuilder.Configurations.Add(new DirectoryStructMap());
-
+            
+            modelBuilder.Configurations.Add(new AccountMap());
+            modelBuilder.Configurations.Add(new InventoryInCardMap());
+            modelBuilder.Configurations.Add(new PersonInChargeMap());
+            modelBuilder.Configurations.Add(new UserMap());
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

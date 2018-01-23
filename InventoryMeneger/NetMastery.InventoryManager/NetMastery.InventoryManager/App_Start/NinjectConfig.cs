@@ -12,11 +12,9 @@ namespace NetMastery.InventoryManager
 {
     public class NinjectConfig
     {
-        public static void RegisterNinject()
+        public static void RegisterNinject(IKernel kernrl)
         {
-            var registrations = new Ninjectregistrations();
-            var kernel = new StandardKernel(registrations);
-            DependencyResolver.SetResolver(new NinjectDependencyResolver(kernel));
+            
         }
     }
 }

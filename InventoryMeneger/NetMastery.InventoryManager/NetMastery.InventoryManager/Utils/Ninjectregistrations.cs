@@ -10,7 +10,7 @@ namespace NetMastery.InventoryManager.Utils
     {
         public override void Load()
         {
-            throw new NotImplementedException();
+           
         }
     }
 }

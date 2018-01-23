@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace NetMastery.InventoryManager.Models.AccountViewModels
 {
     public class LoginViewModel
     {
-
         [Required]
-        [Display(Name = "User Name")]
+        [Display(Name = "Email")]
         [EmailAddress]
         public string Email { get; set; }
 
