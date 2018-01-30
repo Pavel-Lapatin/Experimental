@@ -25,20 +25,28 @@ namespace NetMastery.InventoryManager.Controllers
         // GET: Dashboar
         public ActionResult Index()
         {
+            
             return View();
         }
 
-        public ActionResult ListOrganizations(int page=1)
+        public ActionResult Search(DashboardViewModel model)
         {
-            if(Session["Account"] == null)
+            if (!ModelState.IsValid)
             {
-                return RedirectToAction("Login", "Account");
+                return View(model);
             }
-            var organisation = _organizationService.GetAll((int)Session["Account"]);
+            return RedirectToAction("ListOrganisation", new { page = 1, pattern = model.SearchString });
+        }
+
+        public ActionResult ListOrganizations(int page=1, string pattern = null)
+        {
+             var organisation = pattern == null 
+                ? _organizationService.GetAll((int)Session["Account"]) 
+                : _organizationService.Search((int)Session["Account"], pattern);
             var cards = organisation
                 .Select(x => _mapper.Map<OrganizationCardViewModel>(x))
                 .OrderBy(x => x.Name)
-                .ToList(); ;
+                .ToList();
             var model = PageListViewModel<OrganizationCardViewModel>.CreatePage(cards, page, pageSize);
             if (Request.IsAjaxRequest())
             {
@@ -46,7 +54,7 @@ namespace NetMastery.InventoryManager.Controllers
             }
             else
             {
-                return  PartialView("Organizations", model);
+                return  View(model);
             }
         }
     }

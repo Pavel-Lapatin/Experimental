@@ -6,7 +6,7 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
 {
     public interface IOrganizationService : IBusinessService
     {
-
+        IEnumerable<OrganizationDto> Search(int accountId, string pattern);
         IEnumerable<OrganizationDto> GetAll(int accountId);
     }
 }

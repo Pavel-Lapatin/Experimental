@@ -1,5 +1,6 @@
 ﻿
 @{
+    ViewBag.Title = "Index";
     Layout = null;
 }
 
@@ -10,7 +11,6 @@
     <meta name="viewport" content="width=device-width" />
     <title>@ViewBag.Title - Inventory Manager</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/InventoryManager.css" rel="stylesheet" />   
     <link href="~/Content/mainPage.css" rel="stylesheet" />
 </head>
 <body class="text-center bgimg">
@@ -18,16 +18,33 @@
         <div class="cover-container d-flex h-100 p-3 mx-auto flex-column ">
             <div class="row">
                 <nav class="col nav nav-main form-inline justify-content-end">
-                    @Ajax.ActionLink("Sign in", "Login", "Account", null, 
-                   new  AjaxOptions{  UpdateTargetId = "body-content" }, new { @class = "nav-link" })
-                    @Ajax.ActionLink("New Account", "CreateNewAccount", "Account", null, new { @class = "nav-link" })
+                    @Ajax.ActionLink("Sign in", "Login", "Account", null,
+                                                      new AjaxOptions
+                                                      {
+                                                          HttpMethod = "GET",
+                                                          UpdateTargetId = "result",
+                                                          InsertionMode = InsertionMode.Replace
+                                                      }, new { @class = "nav-link" })
+                    @Ajax.ActionLink("New Account", "CreateAccount", "Account", null,
+                                                      new AjaxOptions
+                                                      {
+                                                          UpdateTargetId = "result",
+                                                          InsertionMode = InsertionMode.Replace
+                                                      },
+                                                      new { @class = "nav-link" })
                 </nav>
             </div>
             <div class="row">
                 <div class="col text-left brand-main"><h3> Inventory Manager</h3></div>
                 <div class="col text-right">
                     <nav class="nav form-inline nav-main justify-content-end">
-                        @Html.ActionLink("Home", "Index", "Home", null, new { @class = "nav-link" })
+                        @Ajax.ActionLink("Home", "Body", "Home", null,
+                                    new AjaxOptions
+                                    {
+                                        HttpMethod = "GET",
+                                        UpdateTargetId = "result",
+                                        InsertionMode = InsertionMode.Replace
+                                    }, new { @class = "nav-link" })
                         <a class="nav-link" href="#">Contact</a>
                         <a class="nav-link" href="#">Help</a>
                     </nav>
@@ -35,17 +52,23 @@
             </div>
         </div>
     </header>
-    <main id="body-content" class="main-body">
-        @PartialView("Login", "Account")
+    <main>
+        <div id="result">
+            @RenderBody()
+        </div>
     </main>
     <footer class="footer">
         Made by plapatin@gmail.com
     </footer>
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+    <script src="~/Scripts/jquery.unobtrusive-ajax.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script>
         $(".nav a").on("click", function () {
             $(".nav").find(".active").removeClass("active");
-            $(this).parent().addClass("active");
+            $(this).addClass("active");
         });
     </script>
 </body>

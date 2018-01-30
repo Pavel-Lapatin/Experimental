@@ -5,6 +5,8 @@ using NetMastery.InventoryManager.Domain;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using System.Linq;
+using System.Data.Entity;
 
 namespace NetMastery.InventoryManager.DAL.IdentityManagers
 {
@@ -78,11 +80,19 @@ namespace NetMastery.InventoryManager.DAL.IdentityManagers
             }
             return manager;
         }
-
-        public async Task<int> GetAccountIdAsync(string userId)
+        public async Task<User> FindUserByRoleAsync(int accountId, string roleName)
         {
-            var user = await Store.FindByIdAsync(userId);
-            return user.AccountId;
+            using (var context = new InventoryDbContext())
+            {
+                var role = await context.Roles.Where(x => x.Name == roleName)
+                                        .SingleAsync();
+                if (role == null) return null;
+                var user = await context.Users.Where(x => x.AccountId == accountId 
+                    && x.Roles.FirstOrDefault(y => y.RoleId == role.Id) != null)
+                    .FirstOrDefaultAsync();
+                return user;
+            }
+                
         }
     }
 }

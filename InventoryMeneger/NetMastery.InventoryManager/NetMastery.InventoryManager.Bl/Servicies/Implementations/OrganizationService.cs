@@ -25,5 +25,12 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             return y;
 
         }
+        public IEnumerable<OrganizationDto> Search(int accountId, string pattern)
+        {
+            var y = _unitOfWork.OrganizationRepository
+                .FindByPredicate(x => x.AccountId == accountId && x.Name.Contains(pattern))
+                .Select(x => _mapper.Map<OrganizationDto>(x));
+            return y;
+        }
     }
 }

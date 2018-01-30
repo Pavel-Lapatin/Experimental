@@ -17,7 +17,7 @@ namespace NetMastery.InventoryManager
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
-            new InventoryDbContext().Database.Initialize(true);
+            new InventoryDbContext().Database.Initialize(false);
         }
 
         protected override IKernel CreateKernel()

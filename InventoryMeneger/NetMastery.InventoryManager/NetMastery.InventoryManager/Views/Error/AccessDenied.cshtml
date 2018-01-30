@@ -1,0 +1,15 @@
+﻿
+@{
+    Layout = "~/Views/Shared/_inventoryLayout.cshtml";
+    var adminName = ViewData["Name"];
+    var adminPhone = ViewData["Phone"];
+    var adminEmail = ViewData["Email"];
+}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+    <h1>Access to this part of site is denied is denied</h1>
+    <h2>Please keep in touch with admin:</h2>
+    <h2>Name: @adminName</h2>
+    <h2>Phone: @adminPhone</h2>
+    <h2>Email: @adminEmail</h2>
+</main>

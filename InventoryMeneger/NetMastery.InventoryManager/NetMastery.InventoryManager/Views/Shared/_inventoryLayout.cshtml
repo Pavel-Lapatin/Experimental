@@ -2,7 +2,7 @@
 @using NetMastery.InventoryManager.Models.Dashboard
 @model DashboardViewModel
 @{ 
-
+    ViewData["SearchString"] = "";
 }
 <!doctype html>
 <html lang="en">
@@ -25,11 +25,13 @@
         
             <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
                 <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Inventory manager</a>
-                @using (Html.BeginForm("Search", "Dashboard", FormMethod.Post, new { @class = "form-control form-control-dark w-100" }))
-            {
+                @using (@Ajax.BeginForm("ListOrganizations", "Dashboard",
+                    new AjaxOptions { UpdateTargetId = "content-body",
+                        HttpMethod = "POST",  }, new { @class = "form-control form-control-dark w-100" }))
+                {
                     <div class="row w-100">
                         <div class="col">
-                            @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control-dark w-100", arial_label = "Search", placeholder = "Search" })
+                            @Html.TextBoxFor(x=>x.SearchString, new { @class = "form-control-dark w-100", arial_label = "Search", placeholder = "Search" })
                         </div>
                         <div class="col-auto">
                             <input type="submit" class="btn btn-default btn-sm btn-login" value="Search" />
@@ -80,7 +82,9 @@
                 </div>
             </nav>
             <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                @RenderBody()            
+                <div id="content-body">
+                    @RenderBody()        
+                </div>
             </main>
         </div>
     </div>
@@ -94,7 +98,5 @@
     </script>
     <script src="~/Scripts/jquery-3.3.1.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
-    <!-- Graphs -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 </body>
 </html>

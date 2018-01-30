@@ -12,6 +12,7 @@ namespace NetMastery.InventoryManager.DAL.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            ContextKey = "NetMastery.InventoryManager.DAL.InventoryDbContext";
         }
 
         protected override void Seed(NetMastery.InventoryManager.DAL.InventoryDbContext context)
@@ -37,19 +38,42 @@ namespace NetMastery.InventoryManager.DAL.Migrations
             {
                 roleManager.Create(new Role { Name = "admin" });
             }
-            if (userManager.Find("Demo", "Demo_123") == null)
+            if (userManager.FindByName("Admin") == null)
             {
                 var user = new User
                 {
-                    UserName = "Demo",
+                    UserName = "Admin",
                     AccountId = 1,
-                    Email = "demo@gmail.com",
+                    Email = "admin@gmail.com",
                     PhoneNumber = "+375292615084"
                 };
                 userManager.Create(user, "Demo_123");
                 userManager.AddToRole(user.Id, "admin");
             }
-
+            if (userManager.FindByName("Manager") == null)
+            {
+                var user = new User
+                {
+                    UserName = "Manager",
+                    AccountId = 1,
+                    Email = "manager@gmail.com",
+                    PhoneNumber = "+375292615084"
+                };
+                userManager.Create(user, "Manager_123");
+                userManager.AddToRole(user.Id, "manager");
+            }
+            if (userManager.FindByName("Accountant") == null)
+            {
+                var user = new User
+                {
+                    UserName = "Accountant",
+                    AccountId = 1,
+                    Email = "accountant@gmail.com",
+                    PhoneNumber = "+375292615084"
+                };
+                userManager.Create(user, "Accountant");
+                userManager.AddToRole(user.Id, "accountant");
+            }
             #region addOrganization
             var organisation = new[]
             {

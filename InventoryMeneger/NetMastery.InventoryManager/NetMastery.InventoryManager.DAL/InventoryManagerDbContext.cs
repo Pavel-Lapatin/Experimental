@@ -3,6 +3,7 @@ using NetMastery.InventoryManager.DAL.DbConfiguration;
 using System.Data.Entity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity;
+using NetMastery.InventoryManager.DAL.Migrations;
 
 namespace NetMastery.InventoryManager.DAL
 {
@@ -11,15 +12,11 @@ namespace NetMastery.InventoryManager.DAL
         public InventoryDbContext() 
             : base("name=InventoryManagerConnection", throwIfV1Schema: false)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<InventoryDbContext, Configuration>());
         }
         public InventoryDbContext(string connectionString) : base(connectionString)
         {
-        }
-
-        public static InventoryDbContext Create()
-        {
-            return new InventoryDbContext();
-        }
+        } 
         public IDbSet<Card> Cards { get; set; }
         public IDbSet<Inventory> Directories { get; set; }
         public IDbSet<InventoryType> Files { get; set; }
@@ -30,6 +27,11 @@ namespace NetMastery.InventoryManager.DAL
         public IDbSet<Subdivision> Subdivisions { get; set; }
         public IDbSet<Organization> Organizations { get; set; }
         public IDbSet<Account> Accounts { get; set; }
+
+        public static InventoryDbContext Create()
+        {
+            return new InventoryDbContext();
+        }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
