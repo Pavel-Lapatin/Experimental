@@ -28,14 +28,14 @@ namespace NetMastery.InventoryManager.Controllers
         public ActionResult Login(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView();
         }
 
         [AllowAnonymous]
         public ActionResult CreateNewAccount(string returnUrl)
         {
             ViewBag.ReturnUrl = returnUrl;
-            return View();
+            return PartialView();
         }
 
         // GET: /Account/VerifyCode
@@ -95,6 +95,8 @@ namespace NetMastery.InventoryManager.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    var accountId = await _userService.GetAccountIdAsync(User.Identity.GetUserId());
+                    Session["Account"] = accountId;
                     return RedirectToAction("Index", "Dashboard");
                 case SignInStatus.RequiresVerification:
                     return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });

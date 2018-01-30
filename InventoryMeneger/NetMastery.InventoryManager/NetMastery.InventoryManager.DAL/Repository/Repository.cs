@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -25,6 +26,22 @@ namespace NetMastery.InventoryManager.DAL.Repository
         {
             return _dbSet.Find(id);
         }
+
+        public async Task<IEnumerable<TEntity>> FindByPredicaterAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
+
+        public IEnumerable<TEntity> FindByPredicate(Expression<Func<TEntity, bool>> predicate)
+        {
+            var x = _dbSet.Where(predicate).ToList();
+            return  _dbSet.Where(predicate).ToList();
+        }
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+             return await _dbSet.AsNoTracking().ToListAsync();    
+        }
+
 
         public IEnumerable<TEntity> Get()
         {

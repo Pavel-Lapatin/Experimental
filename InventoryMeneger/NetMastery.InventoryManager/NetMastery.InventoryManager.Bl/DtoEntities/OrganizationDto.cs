@@ -1,8 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace NetMastery.InventoryManager.Domain
+namespace NetMastery.InventoryManager.Bl.DtoEntities
 {
-    public class Organization
+    public class OrganizationDto
     {
         public int OrganizationId { get; set; }
         public string Name { get; set; }
@@ -11,8 +15,5 @@ namespace NetMastery.InventoryManager.Domain
         public string Phone { get; set; }
         public byte[] image { get; set; }
         public string MimeType { get; set; }
-        public virtual ICollection<Subdivision> Subdivisions { get; set; }
-        public virtual int AccountId { get; set; }
-        public virtual Account Account { get; set; }
     }
 }

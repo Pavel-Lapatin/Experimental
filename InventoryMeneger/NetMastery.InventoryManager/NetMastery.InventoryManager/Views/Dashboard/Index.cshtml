@@ -1,8 +1,19 @@
-﻿
+﻿@using NetMastery.InventoryManager.Models.Dashboard
+@model IEnumerable<OrganizationCardViewModel>
+
 @{
-    ViewBag.Title = "Index";
     Layout = "~/Views/Shared/_inventoryLayout.cshtml";
 }
 
-<h2>Index</h2>
+
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+        <div class="container-fluid">
+            <div class="row">
+                <h1 class="h2">Dashboard</h1>
+            </div>
+            <div class="row mt-3 px-5">
+                @Html.Action("ListOrganizations")
+            </div>
+        </div>
+    </div>
 

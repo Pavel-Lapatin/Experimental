@@ -18,5 +18,6 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
         Task<bool> HasBeenVerifiedAsync();
         Task<SignInStatus> TwoFactorSignInAsync(string provider, string code, bool isPersistent, bool rememberBrowser);
         Task<IdentityResult> RegisterNewAccount(string email, string name, string phone, string password);
+        Task<int> GetAccountIdAsync(string userId);
     }
 }

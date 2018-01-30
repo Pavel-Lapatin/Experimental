@@ -78,5 +78,11 @@ namespace NetMastery.InventoryManager.DAL.IdentityManagers
             }
             return manager;
         }
+
+        public async Task<int> GetAccountIdAsync(string userId)
+        {
+            var user = await Store.FindByIdAsync(userId);
+            return user.AccountId;
+        }
     }
 }

@@ -1,0 +1,59 @@
+﻿@using NetMastery.InventoryManager.Models
+@using NetMastery.InventoryManager.Bl.DtoEntities
+@using System.Text
+@model PageListViewModel<NetMastery.InventoryManager.Models.Dashboard.OrganizationCardViewModel>
+@{
+    var result = new StringBuilder();
+    var liPrevNext = new TagBuilder("li");
+    liPrevNext.InnerHtml = Html.ActionLink("<<", "List", new
+    {
+        page = Model.CurrentPage - 1
+    },
+    new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "Organizations"
+    }).ToString();
+    if (Model.CurrentPage == 1)
+    {
+        liPrevNext.AddCssClass("disabled");
+    }
+    result.Append(liPrevNext.ToString());
+
+    for (int i = 1; i <= Model.TotalPages; i++)
+    {
+        var li = new TagBuilder("li");
+        if (i == Model.CurrentPage)
+        {
+            liPrevNext.AddCssClass("active");
+        }
+        li.InnerHtml = Ajax.RouteLink(i.ToString(),
+            new
+            {
+                action = "list",
+                page = i
+            },
+            new AjaxOptions
+            {
+                InsertionMode = InsertionMode.Replace,
+                UpdateTargetId = "Organization"
+            }).ToString();
+    }
+    liPrevNext.InnerHtml = Html.ActionLink(">>", "ListOrganizations", new
+    {
+        page = Model.CurrentPage + 1
+    },
+    new AjaxOptions
+    {
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "Organizations"
+    }).ToString();
+    if (Model.TotalPages == Model.CurrentPage)
+    {
+        liPrevNext.AddCssClass("disabled");
+    }
+    result.Append(liPrevNext.ToString());
+}
+<ul class="paginatin">
+    @MvcHtmlString.Create(result.ToString());
+</ul>

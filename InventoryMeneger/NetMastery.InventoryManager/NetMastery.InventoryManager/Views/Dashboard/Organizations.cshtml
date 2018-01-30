@@ -1,0 +1,32 @@
+﻿@using NetMastery.InventoryManager.Models
+@using System.Text
+@model PageListViewModel<NetMastery.InventoryManager.Models.Dashboard.OrganizationCardViewModel>
+
+@{
+    StringBuilder result = new StringBuilder();
+    var i = 0;
+    TagBuilder row = new TagBuilder("div");
+    foreach (var item in Model)
+    {
+        i++;
+        if (i == 1)
+        {
+            row = new TagBuilder("div");
+            row.AddCssClass("row");
+            row.AddCssClass("item-row");
+        }
+        row.InnerHtml += Html.Partial("OrganizationCard", item);
+        if (i == 4)
+        {
+            result.Append(row.ToString());
+            i = 0;
+        }
+    }
+    result.Append(row.ToString());
+}
+<div class="row">
+    @MvcHtmlString.Create(result.ToString())
+    </div>
+    <div class="row">
+        @Html.Partial("PagerPartial", Model);
+    </div>

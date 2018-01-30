@@ -1,114 +1,100 @@
-﻿
-@using Microsoft.AspNet.Identity
-@{
-    Layout = null;
+﻿﻿@using Microsoft.AspNet.Identity
+@using NetMastery.InventoryManager.Models.Dashboard
+@model DashboardViewModel
+@{ 
+
 }
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Dashboard Template for Bootstrap</title>
 
-<!DOCTYPE html>
+    <!-- Bootstrap core CSS -->
 
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>Main page</title>
-    @*<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">*@
-    <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-    <link href="~/Content/InventoryManager.css" rel="stylesheet" />
-</head>
-<body class="text-center">
-    
-    <div class="header-strip">
-        <div class="container">
-            <h3>Inventory Manager</h3>
-            @using (Html.BeginForm("logOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-riight" }))
-             {
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        @Html.ActionLink(User.Identity.GetUserName(), "Info", "Profile")
-                    </li>
-                </ul>
-             }
-        </div> 
-    </div>
-    <div class="main-body">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-3">
-                    @*<div class="nav-side-menu">
-                        <div class="brand">Inventory Manager</div>
-                        <i class="fa fa-bars fa-2x toggle-btn" data-toggle="collapse" data-target="#menu-content"></i>
+      <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
 
-                        <div class="menu-list">
+    <!-- Custom styles for this template -->
+      <link href="~/Content/dashboard.css" rel="stylesheet" />
+  </head>
 
-                            <ul id="menu-content" class="menu-content collapse out">
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-dashboard fa-lg"></i> Dashboard
-                                    </a>
-                                </li>
-                                <li data-toggle="collapse" data-target="#products" class="collapsed active">
-                                    <a href="#"><i class="fa fa-gift fa-lg"></i> UI Elements <span class="arrow"></span></a>
-                                </li>
-                                <li>
-                                    <ul class="sub-menu collapse" id="products">
-                                        <li class="active"><a href="#">CSS3 Animation</a></li>
-                                        <li><a href="#">General</a></li>
-                                        <li><a href="#">Buttons</a></li>
-                                        <li><a href="#">Tabs & Accordions</a></li>
-                                        <li><a href="#">Typography</a></li>
-                                        <li><a href="#">FontAwesome</a></li>
-                                        <li><a href="#">Slider</a></li>
-                                        <li><a href="#">Panels</a></li>
-                                        <li><a href="#">Widgets</a></li>
-                                        <li><a href="#">Bootstrap Model</a></li>
-                                    </ul>
-                                </li>
-                                <li data-toggle="collapse" data-target="#service" class="collapsed">
-                                    <a href="#"><i class="fa fa-globe fa-lg"></i> Services <span class="arrow"></span></a>
-                                </li>
-                                <li>
-                                    <ul class="sub-menu collapse" id="service">
-                                        <li>New Service 1</li>
-                                        <li>New Service 2</li>
-                                        <li>New Service 3</li>
-                                    </ul>
-                                </li>
-                                <li data-toggle="collapse" data-target="#new" class="collapsed">
-                                    <a href="#"><i class="fa fa-car fa-lg"></i> New <span class="arrow"></span></a>
-                                </li>
-                                <li>
-                                    <ul class="sub-menu collapse" id="new">
-                                        <li>New New 1</li>
-                                        <li>New New 2</li>
-                                        <li>New New 3</li>
-                                    </ul>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-user fa-lg"></i> Profile
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="#">
-                                        <i class="fa fa-users fa-lg"></i> Users
-                                    </a>
-                                </li>
-                            </ul>
+<body>
+        
+            <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+                <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Inventory manager</a>
+                @using (Html.BeginForm("Search", "Dashboard", FormMethod.Post, new { @class = "form-control form-control-dark w-100" }))
+            {
+                    <div class="row w-100">
+                        <div class="col">
+                            @Html.TextBoxFor(x => x.SearchString, new { @class = "form-control-dark w-100", arial_label = "Search", placeholder = "Search" })
                         </div>
-                    </div>*@
-                </div>
-                <div class="col-md-9">
-                    @RenderBody()
-                </div>
-            </div>
-        </div>
-     </div>
-    <div class="footer-strip">
-        <div class="container">
+                        <div class="col-auto">
+                            <input type="submit" class="btn btn-default btn-sm btn-login" value="Search" />
+                        </div>
+                    </div>
+                }
 
+                <div class="dropdown">
+                    <button class="btn btn-dark dropdown-toggle user-dropdown" type="button" id="menu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        @User.Identity.GetUserName()
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu user-dropdown" role="menu">
+                        <li role="presentation">@Html.ActionLink("Profile", "Info", "Profile", new { @class = "nav-link text-left" })</li>
+                        <li role="presentation" class="divider"></li>
+                        <li role="presentation">@Html.ActionLink("Log off", "Logoff", "Account", new { @class = "nav-link text-left" })</li>
+                    </ul>
+                </div>
+            </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+                <div class="sidebar-sticky">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href='@Url.Action("Index", "Dashboard")'>
+                                <span data-feather="home"></span>
+                                Dashboard <span class="sr-only">(current)</span>
+                            </a> 
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="file"></span>
+                                Organizations
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="shopping-cart"></span>
+                                Inventory Items
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">
+                                <span data-feather="bar-chart-2"></span>
+                                Statistic
+                            </a>         
+                </div>
+            </nav>
+            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+                @RenderBody()            
+            </main>
         </div>
     </div>
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- Icons -->
+    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
+    <script src="~/Scripts/jquery-3.3.1.js"></script>
     <script src="~/Scripts/bootstrap.js"></script>
-    <script src="~/Scripts/jquery-3.3.1.min.js"></script>
-
+    <!-- Graphs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 </body>
 </html>

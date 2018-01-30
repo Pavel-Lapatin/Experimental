@@ -20,6 +20,7 @@ namespace NetMastery.InventoryManager
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();
+            kernel.Bind<IOrganizationService>().To<OrganizationService>();
             //kernel.Bind<IMapper>().To<RoleService>();
             kernel.Bind<IOwinContext>().ToMethod(ctx => HttpContext.Current.GetOwinContext()).InRequestScope();
 

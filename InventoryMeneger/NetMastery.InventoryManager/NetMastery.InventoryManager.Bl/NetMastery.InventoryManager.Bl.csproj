@@ -78,13 +78,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DtoEntities\OrganizationDto.cs" />
     <Compile Include="DtoEntities\RoleDto.cs" />
     <Compile Include="DtoEntities\UserDto.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicies\Implementations\BusinessService.cs" />
+    <Compile Include="Servicies\Implementations\OrganizationService.cs" />
     <Compile Include="Servicies\Implementations\RoleService.cs" />
     <Compile Include="Servicies\Implementations\UserService.cs" />
     <Compile Include="Servicies\Interfaces\IBusinessService.cs" />
+    <Compile Include="Servicies\Interfaces\IOrganizationService.cs" />
     <Compile Include="Servicies\Interfaces\IRoleService.cs" />
     <Compile Include="Servicies\Interfaces\IUserService.cs" />
   </ItemGroup>

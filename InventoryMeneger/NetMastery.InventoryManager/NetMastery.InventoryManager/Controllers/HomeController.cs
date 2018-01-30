@@ -14,5 +14,18 @@ namespace NetMastery.InventoryManager.Controllers
         {
             return View();
         }
+
+        [AllowAnonymous]
+        public ActionResult Body()
+        {
+            if (Request.IsAjaxRequest())
+            {
+                return PartialView("BodyPartial");
+            }
+            else
+            {
+                return View();
+            }
+        }
     }
 }

@@ -18,8 +18,6 @@ namespace NetMastery.InventoryManager.DAL
 
         public static InventoryDbContext Create()
         {
-            var context = new InventoryDbContext();
-            CreateRoles(context);
             return new InventoryDbContext();
         }
         public IDbSet<Card> Cards { get; set; }
@@ -30,6 +28,8 @@ namespace NetMastery.InventoryManager.DAL
         public IDbSet<PersonInCharge> PersonInChargies { get; set; }
         public IDbSet<Storage> Storagies { get; set; }
         public IDbSet<Subdivision> Subdivisions { get; set; }
+        public IDbSet<Organization> Organizations { get; set; }
+        public IDbSet<Account> Accounts { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -39,30 +39,6 @@ namespace NetMastery.InventoryManager.DAL
             modelBuilder.Configurations.Add(new PersonInChargeMap());
             modelBuilder.Configurations.Add(new UserMap());
             base.OnModelCreating(modelBuilder);
-        }
-
-        public static void CreateRoles(InventoryDbContext context)
-        {
-            RoleManager<Role> roleManager = new RoleManager<Role>(new RoleStore<Role>(context));
-            UserManager<User> userManager = new UserManager<User>(new UserStore<User>(context));
-            Role roleAdmin, roleUser = null;
-            User userAdmin = null;
-            // поиск роли admin
-            roleAdmin = roleManager.FindByName("admin");
-            if (roleAdmin == null)
-            {
-                // создаем, если на нашли
-                roleAdmin = new Role { Name = "admin" };
-                var result = roleManager.Create(roleAdmin);
-            }
-            // поиск роли user
-            roleUser = roleManager.FindByName("manager");
-            if (roleUser == null)
-            {
-                // создаем, если на нашли
-                roleUser = new Role { Name = "manager" };
-                var result = roleManager.Create(roleUser);
-            }
-        }
+        } 
     }
 }

@@ -18,6 +18,13 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
         public UserService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
+       
+        public async Task<int> GetAccountIdAsync(string userId)
+        {
+            return await _unitOfWork.UserManager.GetAccountIdAsync(userId);
+        }
+
+
         public async Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool rememberMe)
         {
             return await _unitOfWork.SignInManager.PasswordSignInAsync(userName, password, rememberMe, false);
