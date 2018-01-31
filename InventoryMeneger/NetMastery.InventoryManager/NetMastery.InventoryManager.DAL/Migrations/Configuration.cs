@@ -14,7 +14,6 @@ namespace NetMastery.InventoryManager.DAL.Migrations
             AutomaticMigrationsEnabled = true;
             ContextKey = "NetMastery.InventoryManager.DAL.InventoryDbContext";
         }
-
         protected override void Seed(NetMastery.InventoryManager.DAL.InventoryDbContext context)
         {
             var account = new Account { AccountId = 1 };
@@ -47,7 +46,7 @@ namespace NetMastery.InventoryManager.DAL.Migrations
                     Email = "admin@gmail.com",
                     PhoneNumber = "+375292615084"
                 };
-                userManager.Create(user, "Demo_123");
+                userManager.Create(user, "Admin_123");
                 userManager.AddToRole(user.Id, "admin");
             }
             if (userManager.FindByName("Manager") == null)
@@ -71,7 +70,7 @@ namespace NetMastery.InventoryManager.DAL.Migrations
                     Email = "accountant@gmail.com",
                     PhoneNumber = "+375292615084"
                 };
-                userManager.Create(user, "Accountant");
+                userManager.Create(user, "Accountant_123");
                 userManager.AddToRole(user.Id, "accountant");
             }
             #region addOrganization

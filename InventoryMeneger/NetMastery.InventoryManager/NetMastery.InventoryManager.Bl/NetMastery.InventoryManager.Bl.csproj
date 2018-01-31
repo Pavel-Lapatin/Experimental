@@ -78,17 +78,39 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DtoEntities\CardDto.cs" />
+    <Compile Include="DtoEntities\InventoryDto.cs" />
+    <Compile Include="DtoEntities\InventoryTypeDto.cs" />
+    <Compile Include="DtoEntities\ManufactureDto.cs" />
     <Compile Include="DtoEntities\OrganizationDto.cs" />
+    <Compile Include="DtoEntities\PersonDto.cs" />
     <Compile Include="DtoEntities\RoleDto.cs" />
+    <Compile Include="DtoEntities\StorageDto.cs" />
+    <Compile Include="DtoEntities\SubdivisionDto.cs" />
     <Compile Include="DtoEntities\UserDto.cs" />
+    <Compile Include="Exceptions\InventoryServiceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicies\Implementations\BusinessService.cs" />
+    <Compile Include="Servicies\Implementations\CardService.cs" />
+    <Compile Include="Servicies\Implementations\InventoryService.cs" />
+    <Compile Include="Servicies\Implementations\InventoryTypeService.cs" />
+    <Compile Include="Servicies\Implementations\ManufactureService.cs" />
     <Compile Include="Servicies\Implementations\OrganizationService.cs" />
+    <Compile Include="Servicies\Implementations\PersonService.cs" />
     <Compile Include="Servicies\Implementations\RoleService.cs" />
+    <Compile Include="Servicies\Implementations\StorageService.cs" />
+    <Compile Include="Servicies\Implementations\SubdivisionService.cs" />
     <Compile Include="Servicies\Implementations\UserService.cs" />
     <Compile Include="Servicies\Interfaces\IBusinessService.cs" />
+    <Compile Include="Servicies\Interfaces\ICardService.cs" />
+    <Compile Include="Servicies\Interfaces\IInventoryService.cs" />
+    <Compile Include="Servicies\Interfaces\IInventoryTypeService.cs" />
+    <Compile Include="Servicies\Interfaces\IManufactureService.cs" />
     <Compile Include="Servicies\Interfaces\IOrganizationService.cs" />
+    <Compile Include="Servicies\Interfaces\IPersonService.cs" />
     <Compile Include="Servicies\Interfaces\IRoleService.cs" />
+    <Compile Include="Servicies\Interfaces\IStorageService.cs" />
+    <Compile Include="Servicies\Interfaces\ISubdivisionService.cs" />
     <Compile Include="Servicies\Interfaces\IUserService.cs" />
   </ItemGroup>
   <ItemGroup />

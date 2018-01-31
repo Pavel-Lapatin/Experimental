@@ -20,14 +20,12 @@ namespace NetMastery.InventoryManager.DAL
         public IDbSet<Card> Cards { get; set; }
         public IDbSet<Inventory> Directories { get; set; }
         public IDbSet<InventoryType> Files { get; set; }
-        public IDbSet<InventoryInCard> InventoryInCards { get; set; }
         public IDbSet<Manufacture> Manufactures { get; set; }
         public IDbSet<PersonInCharge> PersonInChargies { get; set; }
         public IDbSet<Storage> Storagies { get; set; }
         public IDbSet<Subdivision> Subdivisions { get; set; }
         public IDbSet<Organization> Organizations { get; set; }
         public IDbSet<Account> Accounts { get; set; }
-
         public static InventoryDbContext Create()
         {
             return new InventoryDbContext();
@@ -37,7 +35,6 @@ namespace NetMastery.InventoryManager.DAL
         {
             
             modelBuilder.Configurations.Add(new AccountMap());
-            modelBuilder.Configurations.Add(new InventoryInCardMap());
             modelBuilder.Configurations.Add(new PersonInChargeMap());
             modelBuilder.Configurations.Add(new UserMap());
             base.OnModelCreating(modelBuilder);

@@ -12,10 +12,9 @@ namespace NetMastery.InventoryManager.Domain
         public string Phone { get; set; }
         public string Email { get; set; }
         public string Position { get; set; }
-        
         public virtual int SubdivisionId { get; set; }
-        public Subdivision Subdivision { get; set; }
+        public virtual Subdivision Subdivision { get; set; }
 
-        public ICollection<Storage> Storages;
+        public virtual ICollection<Storage> Storages { get; set; }
     }
 }

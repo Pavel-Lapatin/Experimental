@@ -233,31 +233,45 @@
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
-    <Compile Include="App_Start\MapperConfig\OrganizationMapOrganizationDto.cs" />
-    <Compile Include="App_Start\MapperConfig\RoleMapRoleDto.cs" />
-    <Compile Include="App_Start\MapperConfig\UserMapUserDto.cs" />
+    <Compile Include="App_Start\MapperConfig\CardMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\InventoryMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\InventoryTypeMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\ManufactureMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\OrganizationMaping.cs" />
+    <Compile Include="App_Start\MapperConfig\PersonMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\RoleMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\StorageMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\SubdivisionMapping.cs" />
+    <Compile Include="App_Start\MapperConfig\UserMapping.cs" />
     <Compile Include="App_Start\NinjectConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AdminController.cs" />
+    <Compile Include="Controllers\CardController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Inventory.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
+    <Compile Include="Controllers\OrganizationController.cs" />
+    <Compile Include="Controllers\PersonController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\PagingHelpers.cs" />
     <Compile Include="Models\AccountViewModels\LoginViewModel.cs" />
     <Compile Include="Models\AccountViewModels\RegisterViewModel.cs" />
     <Compile Include="Models\AccountViewModels\ResetPasswordViewModel.cs" />
     <Compile Include="Models\AccountViewModels\VerifyCodeViewModel.cs" />
-    <Compile Include="Models\Dashboard\DashboardViewModel.cs" />
-    <Compile Include="Models\Dashboard\OrganizationCardViewModel.cs" />
+    <Compile Include="Models\Card\CardViewModel.cs" />
+    <Compile Include="Models\Inventory\InventtoryViewModel.cs" />
+    <Compile Include="Models\Organization\OrganizationListViewModel.cs" />
+    <Compile Include="Models\Organization\OrganizationViewModel.cs" />
     <Compile Include="Models\PageListViewModel.cs" />
+    <Compile Include="Models\Paging\PagingInfo.cs" />
+    <Compile Include="Models\Person\PersonViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
-    <Compile Include="Utils\Ninjectregistrations.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\web.config" />
@@ -280,16 +294,18 @@
     <Content Include="Views\Account\CreateAccount.cshtml" />
     <Content Include="Views\Shared\_inventoryLayout.cshtml" />
     <Content Include="Views\Shared\_sideBarMenu.cshtml" />
-    <Content Include="Views\Dashboard\Dashboard.cshtml" />
     <Content Include="Views\Dashboard\Index.cshtml" />
-    <Content Include="Views\Dashboard\OrganizationCard.cshtml" />
-    <Content Include="Views\Dashboard\Organizations.cshtml" />
+    <Content Include="Views\Organization\Organization.cshtml" />
     <Content Include="Views\Shared\PagerPartial.cshtml" />
     <Content Include="Views\Home\BodyPartial.cshtml" />
     <Content Include="Views\Account\LoginPartial.cshtml" />
     <Content Include="Views\Account\CreateAccountPartial.cshtml" />
     <Content Include="Views\Error\AccessDenied.cshtml" />
-    <Content Include="Views\Dashboard\ListOrganizations.cshtml" />
+    <Content Include="Views\Organization\ListOrganizations.cshtml" />
+    <Content Include="Views\Organization\Edit.cshtml" />
+    <Content Include="Views\Organization\Index.cshtml" />
+    <Content Include="Views\Organization\Add.cshtml" />
+    <Content Include="Views\Organization\AddPartial.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -299,7 +315,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\Dashboard\" />
     <Folder Include="Views\Admin\" />
+    <Folder Include="Views\Card\" />
+    <Folder Include="Views\Inventory\" />
+    <Folder Include="Views\Person\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

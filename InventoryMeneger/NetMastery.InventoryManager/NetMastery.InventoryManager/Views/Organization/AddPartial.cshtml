@@ -1,0 +1,29 @@
+﻿@using NetMastery.InventoryManager.Models
+@model OrganizationViewModel
+@{ 
+    Layout = null;
+}
+
+<div>
+    @using (Html.BeginForm("Add", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+        <p class="form-title">Sign in</p>
+                    @Html.ValidationSummary("", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control", placeholder = "Organization name" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Address, new { @class = "user-name form-control", placeholder = "Address" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "user-name form-control", placeholder = "Email" })
+                    </div>
+                    <div class="form-group">
+                        @Html.TextBoxFor(m => m.Phone, new { @class = "user-name form-control", placeholder = "Phone" })
+                    </div>
+                    <div class="form-group">
+                        <input type="submit" class="btn btn-success btn-sm btn-login" value="Add organization" />
+                    </div>
+    }
+</div>

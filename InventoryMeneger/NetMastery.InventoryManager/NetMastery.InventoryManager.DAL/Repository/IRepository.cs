@@ -8,13 +8,18 @@ namespace NetMastery.InventoryManager.DAL.Repository
     public interface IRepository<TEntity> where TEntity : class
     {
         void Create(TEntity item);
-        TEntity Find(int id);
-        IEnumerable<TEntity> Get();
-        IEnumerable<TEntity> Get(Func<TEntity, bool> predicate);
+        //Task CreateAsync(TEntity item);
         void Remove(TEntity item);
+        //Task RemoveAsync(TEntity item);
+        void RemoveRange(IEnumerable<TEntity> items);
+        //Task RemoveRangeAsync(IEnumerable<TEntity> item);
         void Update(TEntity item);
+        //Task UpdateAsync(TEntity item);
+        TEntity FindById(params object[] key);
+        Task<TEntity> FindByIdAsync(params object[] key);
+        IEnumerable<TEntity> GetAll();
         Task<IEnumerable<TEntity>> GetAllAsync();
-        Task<IEnumerable<TEntity>> FindByPredicaterAsync(Expression<Func<TEntity, bool>> predicate);
         IEnumerable<TEntity> FindByPredicate(Expression<Func<TEntity, bool>> predicate);
+        Task<IEnumerable<TEntity>> FindByPredicateAsync(Expression<Func<TEntity, bool>> predicate);
     }
 }

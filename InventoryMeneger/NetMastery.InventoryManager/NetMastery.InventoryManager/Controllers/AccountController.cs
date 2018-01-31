@@ -2,9 +2,11 @@
 using Microsoft.AspNet.Identity.Owin;
 using System.Web.Mvc;
 using System.Threading.Tasks;
-using NetMastery.InventoryManager.Models.AccountViewModels;
+using NetMastery.InventoryManager.Models;
 using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using AutoMapper;
+using Microsoft.Owin.Security;
+using System.Web;
 
 namespace NetMastery.InventoryManager.Controllers
 {
@@ -20,6 +22,7 @@ namespace NetMastery.InventoryManager.Controllers
             _roleService = roleService;
         }
 
+        
         // GET: /Account/Login
         [AllowAnonymous]
         public ActionResult Login(string returnUrl)
@@ -53,26 +56,26 @@ namespace NetMastery.InventoryManager.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl)
+        public ActionResult Login(LoginViewModel model, string returnUrl)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
 
-            // This doesn't count login failures towards account lockout
-            // To enable password failures to trigger account lockout, change to shouldLockout: true
-            var result = await _userService.PasswordSignInAsync(model.UserName, model.Password, model.RememberMe);
+            var result = _userService.PasswordSignIn(model.UserName, model.Password, model.RememberMe);
             switch (result)
             {
                 case SignInStatus.Success:
-                    var str = User.Identity.GetUserId();
-                    var accountId = await _userService.GetAccountIdAsync(User.Identity.GetUserId());
-                    Session["Account"] = accountId;
+
+                    var user = _userService.FindByName(model.UserName);
+                    if(user == null)
+                    {
+                        ModelState.AddModelError("", "Invallid login attempt");
+                        return View(model);
+                    }
+                    Session["Account"] = user.AccountId;
                     return RedirectToAction("Index", "Dashboard");
-                case SignInStatus.RequiresVerification:
-                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                case SignInStatus.Failure:
                 default:
                     ModelState.AddModelError("", "Invalid login attempt.");
                     return View(model);
@@ -83,7 +86,7 @@ namespace NetMastery.InventoryManager.Controllers
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateNewAccount(RegisterViewModel model)
+        public async Task<ActionResult> CreateAccount(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -91,6 +94,7 @@ namespace NetMastery.InventoryManager.Controllers
                     model.Email, model.PhoneNumber, model.Password);
                 if (res.Succeeded)
                 {
+                    Session["Account"] = _userService.GetAccountId(User.Identity.GetUserId());
                     return RedirectToAction("Index", "Dashboard");
                 }
                 AddErrors(res);
@@ -99,9 +103,25 @@ namespace NetMastery.InventoryManager.Controllers
             return View(model);
         }
 
-       
+        //
+        // POST: /Account/LogOff
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            return RedirectToAction("Index", "Home");
+        }
+
         #region Helpers
-        
+
+        private IAuthenticationManager AuthenticationManager
+        {
+            get
+            {
+                return HttpContext.GetOwinContext().Authentication;
+            }
+        }
 
         private void AddErrors(IdentityResult result)
         {
@@ -112,5 +132,11 @@ namespace NetMastery.InventoryManager.Controllers
         }
         #endregion
 
+        protected override void Dispose(bool disposing)
+        {
+            _userService.Dispose();
+            _roleService.Dispose();
+            base.Dispose(disposing);
+        }
     }
 }

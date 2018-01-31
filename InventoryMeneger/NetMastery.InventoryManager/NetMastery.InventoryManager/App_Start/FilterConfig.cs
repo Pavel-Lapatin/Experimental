@@ -12,24 +12,26 @@ namespace NetMastery.InventoryManager
         public static void RegisterGlobalFilters(GlobalFilterCollection filters)
         {
             filters.Add(new HandleErrorAttribute());
-            filters.Add(new AuthorizeAttribute());
+            filters.Add(new InventoryAuthorizeAttribute());
         }
     }
-    public class InventoryAthorizeAttribute : AuthorizeAttribute
+    public class InventoryAuthorizeAttribute : AuthorizeAttribute
     {
         public override void OnAuthorization(AuthorizationContext filterContext)
         {
-            if (!filterContext.HttpContext.User.Identity.IsAuthenticated 
-                && filterContext.HttpContext.Session["AccountId"] != null)
-            {
-                base.HandleUnauthorizedRequest(filterContext);
-            }
-            else
+            bool skipAuthorization = filterContext
+                .ActionDescriptor
+                .IsDefined(typeof(AllowAnonymousAttribute), true)
+                || filterContext.ActionDescriptor
+                .ControllerDescriptor
+                .IsDefined(typeof(AllowAnonymousAttribute), true);
+            if (filterContext.HttpContext.Session["Account"] == null
+                && !skipAuthorization)
             {
                 filterContext.Result = new RedirectToRouteResult(new
-                RouteValueDictionary(new { controller = "Error", action = "AccessDenied" }));
+                RouteValueDictionary(new { controller = "Account", action = "Login" }));
             }
-
+            base.OnAuthorization(filterContext);
         }
     }
 }

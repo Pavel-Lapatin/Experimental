@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace NetMastery.InventoryManager.Models.AccountViewModels
+namespace NetMastery.InventoryManager.Models
 {
     public class LoginViewModel
     {

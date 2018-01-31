@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
 namespace NetMastery.InventoryManager.Domain
@@ -13,8 +14,6 @@ namespace NetMastery.InventoryManager.Domain
         public decimal FullCost { get; set; }
         [Required]
         public decimal WearCost { get; set; }
-        [Required]
-        public decimal ResidiualCost { get; set; }
-
+        public ICollection<Inventory> Inventories { get; set; }
     }
 }

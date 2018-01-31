@@ -56,7 +56,6 @@
     <Compile Include="Account.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="Inventory.cs" />
-    <Compile Include="InventoryInCard.cs" />
     <Compile Include="InventoryType.cs" />
     <Compile Include="Manufacture.cs" />
     <Compile Include="Organization.cs" />

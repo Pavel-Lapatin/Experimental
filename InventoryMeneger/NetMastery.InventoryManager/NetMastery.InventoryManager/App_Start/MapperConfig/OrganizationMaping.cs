@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using NetMastery.InventoryManager.Bl.DtoEntities;
 using NetMastery.InventoryManager.Domain;
-using NetMastery.InventoryManager.Models.Dashboard;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using NetMastery.InventoryManager.Models;
 
 namespace NetMastery.InventoryManager.App_Start.MapperConfig
 {
@@ -16,17 +12,18 @@ namespace NetMastery.InventoryManager.App_Start.MapperConfig
             CreateMap<Organization, OrganizationDto>();
 
             CreateMap<OrganizationDto, Organization>()
-                .ForMember(x => x.Subdivisions, y => y.Ignore());
+                .ForMember(x => x.Subdivisions, y => y.Ignore())
+                .ForMember(x => x.Account, y => y.Ignore());
         }
     }
 
-    public class OrganizationDtoMapOrganizationCard : Profile
+    public class OrganizationDtoMapOrganizationViewModel : Profile
     {
-        public OrganizationDtoMapOrganizationCard()
+        public OrganizationDtoMapOrganizationViewModel()
         {
-            CreateMap<OrganizationDto, OrganizationCardViewModel>()
+            CreateMap<OrganizationDto, OrganizationViewModel>()
              .ForMember(x => x.IsSelected, y => y.Ignore());
-            CreateMap<OrganizationCardViewModel, OrganizationDto>();
+            CreateMap<OrganizationViewModel, OrganizationDto>();
         }
     }
 }

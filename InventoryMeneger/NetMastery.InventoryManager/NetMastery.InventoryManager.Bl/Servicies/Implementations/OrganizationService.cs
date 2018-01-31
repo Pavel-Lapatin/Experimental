@@ -1,13 +1,12 @@
 ﻿using AutoMapper;
 using NetMastery.InventoryManager.Bl.DtoEntities;
+using NetMastery.InventoryManager.Bl.Exceptions;
 using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using NetMastery.InventoryManager.DAL.UnitOfWork;
 using NetMastery.InventoryManager.Domain;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
@@ -17,20 +16,61 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
         public OrganizationService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {
         }
+        public void Add(OrganizationDto item)
+        {
+            try
+            {
+                _unitOfWork.OrganizationRepository.Create(_mapper.Map<Organization>(item));
+            }
+            catch (Exception)
+            {
+                throw new InventoryServiceException();
+            }
+        }
+        public void Delete(OrganizationDto item)
+        {
+            try
+            {
+                _unitOfWork.OrganizationRepository.Remove(_mapper.Map<Organization>(item));
+            }
+            catch (Exception)
+            {
+                throw new InventoryServiceException();
+            }
+        }
+        public void DeleteRange(IEnumerable<OrganizationDto> items)
+        {
+            try
+            {
+                _unitOfWork.OrganizationRepository.RemoveRange( items.Select(item => _mapper.Map<Organization>(item)));
+            }
+            catch (Exception)
+            {
+                throw new InventoryServiceException();
+            }
+        }
+        public void Update(OrganizationDto item)
+        {
+            try
+            {
+                _unitOfWork.OrganizationRepository.Update(_mapper.Map<Organization>(item));
+            }
+            catch (Exception)
+            {
+                throw new InventoryServiceException();
+            }
+        }
         public IEnumerable<OrganizationDto> GetAll(int accountId)
         {
-            var y = _unitOfWork.OrganizationRepository
+            return _unitOfWork.OrganizationRepository
                 .FindByPredicate(x => x.AccountId == accountId)
-                .Select(x => _mapper.Map<OrganizationDto>(x));
-            return y;
-
+                .Select(x => _mapper.Map<OrganizationDto>(x)).ToArray();
         }
         public IEnumerable<OrganizationDto> Search(int accountId, string pattern)
         {
-            var y = _unitOfWork.OrganizationRepository
+            return _unitOfWork.OrganizationRepository
                 .FindByPredicate(x => x.AccountId == accountId && x.Name.Contains(pattern))
-                .Select(x => _mapper.Map<OrganizationDto>(x));
-            return y;
+                .Select(x => _mapper.Map<OrganizationDto>(x)).ToArray();
         }
     }
 }

@@ -1,11 +1,7 @@
 ﻿using AutoMapper;
 using NetMastery.InventoryManager.Bl.DtoEntities;
 using NetMastery.InventoryManager.Domain;
-using NetMastery.InventoryManager.Models.AccountViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using NetMastery.InventoryManager.Models;
 
 namespace NetMastery.InventoryManager.App_Start.MapperConfig
 {
@@ -20,7 +16,6 @@ namespace NetMastery.InventoryManager.App_Start.MapperConfig
                 .ForMember(x => x.AccountId, y => y.MapFrom(t => t.AccountId))
                 .ForMember(x => x.Email, y => y.MapFrom(t => t.Email))
                 .ForMember(x => x.PhoneNumber, y => y.MapFrom(t => t.PhoneNumber))
-                .ForMember(x => x.Roles, y => y.MapFrom(t => t.Roles))
                 .ForAllOtherMembers(x => x.Ignore());
         }
     }

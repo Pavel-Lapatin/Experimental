@@ -1,19 +1,64 @@
-﻿@using NetMastery.InventoryManager.Models.Dashboard
-@model IEnumerable<OrganizationCardViewModel>
-
-@{
+﻿@{
     Layout = "~/Views/Shared/_inventoryLayout.cshtml";
 }
 
+<h1>Dashboard In progress ...</h1>
 
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <div class="container-fluid">
-            <div class="row">
-                <h1 class="h2">Dashboard</h1>
-            </div>
-            <div class="row mt-3 px-5">
-                @Html.Action("ListOrganizations")
-            </div>
-        </div>
+@section SideBar{
+<div class="sidebar">
+    <div class="sidebar-sticky">
+        <h3 class="text-center">Inventory Manager</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href=@Url.Action("Index", "Dashboard")>
+                    <span data-feather="home"></span>
+                    Dashboard <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <h3 class="nav-link">
+                    <span data-feather="shield"></span>
+                    Admin Area
+                </h3>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link secondary" href=@Url.Action("Index", "Users")>
+                    Users
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link secondary" href=@Url.Action("Index", "Organization")>
+                    Organization
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=@Url.Action("Index", "Organisation")>
+                    <span data-feather="inbox"></span>
+                    Managment
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link secondary" href=@Url.Action("Index", "Users")>
+                    Inventory cards
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link secondary" href=@Url.Action("Index", "Organizations")>
+                    Search Inventory
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href=@Url.Action("Index", "Organisation")>
+                    <span data-feather="bar-chart-2"></span>
+                    Statistic
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link secondary" href=@Url.Action("Index", "Users")>
+                    Get statistic
+                </a>
+            </li> 
+        </ul>
     </div>
-
+</div>
+}

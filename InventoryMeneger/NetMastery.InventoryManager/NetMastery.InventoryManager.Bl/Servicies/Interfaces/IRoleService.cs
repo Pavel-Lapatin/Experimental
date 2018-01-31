@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
 {
-    public interface IRoleService
+    public interface IRoleService : IDisposable
     {
         Task<IdentityResult> CreateAsync(RoleDto role);
         Task<IdentityResult> UpdateAsync(RoleDto role);

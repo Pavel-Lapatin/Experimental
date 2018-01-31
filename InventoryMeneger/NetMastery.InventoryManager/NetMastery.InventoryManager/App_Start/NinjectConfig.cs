@@ -16,7 +16,7 @@ namespace NetMastery.InventoryManager
     {
         public static void RegisterNinject(IKernel kernel)
         {
-            kernel.Bind<IBusinessService>().To<BusinessService>();
+            kernel.Bind(typeof(IBusinessService<>)).To(typeof(IBusinessService<>));
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();

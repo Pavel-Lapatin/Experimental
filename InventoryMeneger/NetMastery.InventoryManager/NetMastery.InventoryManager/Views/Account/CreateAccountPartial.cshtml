@@ -1,5 +1,5 @@
 ﻿
-@using NetMastery.InventoryManager.Models.AccountViewModels
+@using NetMastery.InventoryManager.Models
 @model RegisterViewModel
 @{
     ViewBag.Title = "Create New Account";
@@ -10,7 +10,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="wrap">
-                @using (Html.BeginForm("CreateNewAccount", "Account", FormMethod.Post, new { @class = "login form-horizontal", role = "form" }))
+                @using (Html.BeginForm("CreateAccount", "Account", FormMethod.Post, new { @class = "login form-horizontal", role = "form" }))
                 {
                     @Html.AntiForgeryToken()
                     <p class="form-title">Sign Up</p>

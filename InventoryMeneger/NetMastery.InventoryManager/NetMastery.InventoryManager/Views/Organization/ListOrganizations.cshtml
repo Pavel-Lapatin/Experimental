@@ -1,0 +1,25 @@
+﻿@using NetMastery.InventoryManager.Models
+@model OrganizationListViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_inventoryLayout.cshtml";
+}
+<div>
+    <nav>
+        <nav>
+            @Html.ActionLink("Add", "Add", new { @class = "btn btn-default" })
+            @Html.BeginForm("Delete selected", "Delete", new { @class = "btn btn-default" })
+        </nav>
+    </nav>
+</div>
+
+@foreach (var organization in Model.Organizations)
+{
+    <div>
+        @Html.Partial("Organization", organization)
+    </div>
+}
+<div>
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("OrganisationList", new { page = x }))
+</div>

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace NetMastery.InventoryManager.Models.AccountViewModels
+namespace NetMastery.InventoryManager.Models
 {
     public class VerifyCodeViewModel
     {

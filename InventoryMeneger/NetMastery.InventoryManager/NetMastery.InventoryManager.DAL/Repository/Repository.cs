@@ -17,40 +17,10 @@ namespace NetMastery.InventoryManager.DAL.Repository
             _context = context;
             _dbSet = context.Set<TEntity>();
         }
+
         public void Create(TEntity item)
         {
             _dbSet.Add(item);
-        }
-
-        public TEntity Find(int id)
-        {
-            return _dbSet.Find(id);
-        }
-
-        public async Task<IEnumerable<TEntity>> FindByPredicaterAsync(Expression<Func<TEntity, bool>> predicate)
-        {
-            return await _dbSet.Where(predicate).ToListAsync();
-        }
-
-        public IEnumerable<TEntity> FindByPredicate(Expression<Func<TEntity, bool>> predicate)
-        {
-            var x = _dbSet.Where(predicate).ToList();
-            return  _dbSet.Where(predicate).ToList();
-        }
-        public async Task<IEnumerable<TEntity>> GetAllAsync()
-        {
-             return await _dbSet.AsNoTracking().ToListAsync();    
-        }
-
-
-        public IEnumerable<TEntity> Get()
-        {
-            return _dbSet.AsNoTracking().ToList();
-        }
-
-        public IEnumerable<TEntity> Get(Func<TEntity, bool> predicate)
-        {
-            return _dbSet.AsNoTracking().Where(predicate).ToList();
         }
 
         public void Remove(TEntity item)
@@ -61,6 +31,47 @@ namespace NetMastery.InventoryManager.DAL.Repository
         public void Update(TEntity item)
         {
             _context.Entry(item).State = EntityState.Modified;
+        }
+
+        public void RemoveRange(IEnumerable<TEntity> items)
+        {
+            _dbSet.RemoveRange(items);
+        }
+
+        public TEntity Find(int id)
+        {
+            return _dbSet.Find(id);
+        }
+        public async Task<TEntity> FindAsync(int id)
+        {
+            return await _dbSet.FindAsync(id);
+        }
+
+        public IEnumerable<TEntity> FindByPredicate(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbSet.Where(predicate).ToList();
+        }
+        public async Task<IEnumerable<TEntity>> FindByPredicateAsync(Expression<Func<TEntity, bool>> predicate)
+        {
+            return await _dbSet.Where(predicate).ToListAsync();
+        }
+        public IEnumerable<TEntity> GetAll()
+        {
+            return _dbSet.AsNoTracking().ToList();
+        }
+        public async Task<IEnumerable<TEntity>> GetAllAsync()
+        {
+             return await _dbSet.AsNoTracking().ToListAsync();    
+        }
+
+        public TEntity FindById(params object[] key)
+        {
+            return _dbSet.Find(key);
+        }
+
+        public async Task<TEntity> FindByIdAsync(params object[] key)
+        {
+            return await _dbSet.FindAsync(key);
         }
     }
 }

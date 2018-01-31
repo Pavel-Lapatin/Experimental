@@ -75,7 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DbConfiguration\AccountMap.cs" />
-    <Compile Include="DbConfiguration\InventoryInCardMap.cs" />
+    <Compile Include="DbConfiguration\InventoryMap.cs" />
     <Compile Include="DbConfiguration\PersonInChargeMap.cs" />
     <Compile Include="DbConfiguration\UserMap.cs" />
     <Compile Include="IdentityManagers\Extension\UserExtensions.cs" />
@@ -87,6 +87,10 @@
     <Compile Include="Migrations\201801292041268_v1.0.0.cs" />
     <Compile Include="Migrations\201801292041268_v1.0.0.Designer.cs">
       <DependentUpon>201801292041268_v1.0.0.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201801311247548_v.2.0.0.cs" />
+    <Compile Include="Migrations\201801311247548_v.2.0.0.Designer.cs">
+      <DependentUpon>201801311247548_v.2.0.0.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,6 +112,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201801292041268_v1.0.0.resx">
       <DependentUpon>201801292041268_v1.0.0.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201801311247548_v.2.0.0.resx">
+      <DependentUpon>201801311247548_v.2.0.0.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

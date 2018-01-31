@@ -2,14 +2,10 @@
 using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using NetMastery.InventoryManager.DAL.UnitOfWork;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
 {
-    public abstract class BusinessService : IBusinessService
+    public abstract class BusinessService
     {
         private bool disposed = false;
         protected readonly IUnitOfWork _unitOfWork;
@@ -19,6 +15,7 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
         protected virtual void Dispose(bool disposing)
         {
             if (!disposed)
@@ -34,6 +31,6 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
+        } 
     }
 }

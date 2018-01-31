@@ -23,15 +23,15 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             var user = await _unitOfWork.UserManager.FindUserByRoleAsync(accountId, roleName);
             return _mapper.Map<UserDto>(user);
         }
-        public async Task<int> GetAccountIdAsync(string userId)
+        public int GetAccountId(string userId)
         {
-            var user = await _unitOfWork.UserManager.FindByIdAsync(userId);
-            return user.AccountId;
+            return _unitOfWork.UserManager.FindById(userId).AccountId;
         }
 
-        public async Task<SignInStatus> PasswordSignInAsync(string userName, string password, bool rememberMe)
+        public SignInStatus PasswordSignIn(string userName, string password, bool rememberMe)
+
         {
-            return await _unitOfWork.SignInManager.PasswordSignInAsync(userName, password, rememberMe, false);
+            return  _unitOfWork.SignInManager.PasswordSignIn(userName, password, rememberMe, false);
         }
         public async Task<IdentityResult> Register(UserDto user, string password)
         {
@@ -41,25 +41,23 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
         {
              await _unitOfWork.SignInManager.SignInAsync(_mapper.Map<User>(user), false, false);
         }
-        public async Task<UserDto> FindByNameAsync(string userName)
+        public UserDto FindByName(string userName)
         {
-            return _mapper.Map<UserDto>(await _unitOfWork.UserManager.FindByNameAsync(userName));
+            var user = _unitOfWork.UserManager.FindByName(userName);
+            return _mapper.Map<UserDto>(user);
         }
         public async Task<bool> HasBeenVerifiedAsync()
         {
             return await _unitOfWork.SignInManager.HasBeenVerifiedAsync();
         }
-
         public async Task<SignInStatus> TwoFactorSignInAsync(string provider, string code, bool isPersistent, bool rememberBrowser)
         {
             return await _unitOfWork.SignInManager.TwoFactorSignInAsync(provider, code, isPersistent, rememberBrowser);
         }
-
         public async Task<IdentityResult> AddRoleAsync(string userId, string role)
         {
             return await _unitOfWork.UserManager.AddToRoleAsync(userId, role);
         }
-
         public async Task<IdentityResult> RegisterNewAccount(string name, string email, string phone, string password)
         {
             var user = new User { UserName = name, Email = email, PhoneNumber = phone, Account = new Account() };

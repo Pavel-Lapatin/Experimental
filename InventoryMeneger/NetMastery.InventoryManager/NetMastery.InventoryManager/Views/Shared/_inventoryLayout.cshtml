@@ -1,102 +1,43 @@
 ﻿﻿@using Microsoft.AspNet.Identity
-@using NetMastery.InventoryManager.Models.Dashboard
-@model DashboardViewModel
-@{ 
-    ViewData["SearchString"] = "";
-}
-<!doctype html>
+
+<!Doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <title>Dashboard Template for Bootstrap</title>
-
+    <meta name="viewport">
+    <title>@ViewBag.title - Invnentory manager</title>
     <!-- Bootstrap core CSS -->
-
       <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
-
     <!-- Custom styles for this template -->
       <link href="~/Content/dashboard.css" rel="stylesheet" />
   </head>
-
-<body>
-        
-            <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-                <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">Inventory manager</a>
-                @using (@Ajax.BeginForm("ListOrganizations", "Dashboard",
-                    new AjaxOptions { UpdateTargetId = "content-body",
-                        HttpMethod = "POST",  }, new { @class = "form-control form-control-dark w-100" }))
-                {
-                    <div class="row w-100">
-                        <div class="col">
-                            @Html.TextBoxFor(x=>x.SearchString, new { @class = "form-control-dark w-100", arial_label = "Search", placeholder = "Search" })
-                        </div>
-                        <div class="col-auto">
-                            <input type="submit" class="btn btn-default btn-sm btn-login" value="Search" />
-                        </div>
-                    </div>
-                }
-
-                <div class="dropdown">
-                    <button class="btn btn-dark dropdown-toggle user-dropdown" type="button" id="menu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        @User.Identity.GetUserName()
-                        <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu user-dropdown" role="menu">
-                        <li role="presentation">@Html.ActionLink("Profile", "Info", "Profile", new { @class = "nav-link text-left" })</li>
-                        <li role="presentation" class="divider"></li>
-                        <li role="presentation">@Html.ActionLink("Log off", "Logoff", "Account", new { @class = "nav-link text-left" })</li>
-                    </ul>
-                </div>
-            </nav>
-    <div class="container-fluid">
-        <div class="row">
-            <nav class="col-md-2 d-none d-md-block bg-light sidebar">
-                <div class="sidebar-sticky">
-                    <ul class="nav flex-column">
-                        <li class="nav-item">
-                            <a class="nav-link active" href='@Url.Action("Index", "Dashboard")'>
-                                <span data-feather="home"></span>
-                                Dashboard <span class="sr-only">(current)</span>
-                            </a> 
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="file"></span>
-                                Organizations
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="shopping-cart"></span>
-                                Inventory Items
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <span data-feather="bar-chart-2"></span>
-                                Statistic
-                            </a>         
-                </div>
-            </nav>
-            <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-                <div id="content-body">
-                    @RenderBody()        
-                </div>
-            </main>
-        </div>
-    </div>
-    <!-- Bootstrap core JavaScript
-    ================================================== -->
-    <!-- Placed at the end of the document so the pages load faster -->
-    <!-- Icons -->
-    <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
-    <script>
-        feather.replace()
-    </script>
-    <script src="~/Scripts/jquery-3.3.1.js"></script>
-    <script src="~/Scripts/bootstrap.js"></script>
-</body>
+  <body>
+      <div class="container-fluid">
+          <div class="row p-0 m-0">
+              <div class="col-2 p-0">
+                  @RenderSection("SideBar", required: false)
+              </div>
+              <div class="col-10 w-100 p-0">
+                  <div class="container-fluid m-0 p-0 dash">
+                       @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "login-form navbar-right" }))
+                       {
+                          @Html.AntiForgeryToken()
+                          <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 justify-content-end">
+                          @Html.ActionLink(User.Identity.GetUserName(), "Info", "Profile", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                          <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                          </nav>
+                       }
+                  </div>
+                  <div>
+                      @RenderBody()
+                  </div>
+              </div>
+          </div>
+      </div>
+      @Scripts.Render("~/bundles/jquery")
+      <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+      <script>
+          feather.replace()
+      </script>
+  </body>
 </html>

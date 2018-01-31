@@ -8,7 +8,8 @@ namespace NetMastery.InventoryManager.Domain
         public int SubdivisionId { get; set; }
         [Required]
         public string Name { get; set; }
-        public string Address { get; set; }
         public virtual ICollection<PersonInCharge> Persons { get; set; }
+        public virtual int OrganizationId { get; set; }
+        public virtual Organization Organization { get; set; }
     }
 }
