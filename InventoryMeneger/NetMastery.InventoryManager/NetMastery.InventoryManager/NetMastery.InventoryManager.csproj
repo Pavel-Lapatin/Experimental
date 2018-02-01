@@ -1,4 +1,5 @@
-﻿<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.8\build\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
   <Import Project="..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.2.6.1\build\Microsoft.Net.Compilers.props')" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props" Condition="Exists('$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.Default.props')" />
@@ -175,6 +176,7 @@
     <Content Include="Content\mainPage.css" />
     <Content Include="Content\organizationCard.css" />
     <Content Include="Global.asax" />
+    <Content Include="imgs\addPicDef.png" />
     <Content Include="imgs\background.jpg" />
     <Content Include="imgs\CardOrganizationDefault.jpg" />
     <Content Include="imgs\imag.jpg" />
@@ -265,11 +267,14 @@
     <Compile Include="Models\AccountViewModels\VerifyCodeViewModel.cs" />
     <Compile Include="Models\Card\CardViewModel.cs" />
     <Compile Include="Models\Inventory\InventtoryViewModel.cs" />
+    <Compile Include="Models\Organization\EditOrganizationViewModel.cs" />
     <Compile Include="Models\Organization\OrganizationListViewModel.cs" />
     <Compile Include="Models\Organization\OrganizationViewModel.cs" />
+    <Compile Include="Models\Organization\SearchViewModel.cs" />
     <Compile Include="Models\PageListViewModel.cs" />
     <Compile Include="Models\Paging\PagingInfo.cs" />
     <Compile Include="Models\Person\PersonViewModel.cs" />
+    <Compile Include="Models\Subdivision\SubdivisionViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -306,6 +311,9 @@
     <Content Include="Views\Organization\Index.cshtml" />
     <Content Include="Views\Organization\Add.cshtml" />
     <Content Include="Views\Organization\AddPartial.cshtml" />
+    <Content Include="Views\Organization\EditForm.cshtml" />
+    <Content Include="Views\Person\EditForm.cshtml" />
+    <Content Include="Views\Person\PersonSideBar.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>
@@ -319,7 +327,6 @@
     <Folder Include="Views\Admin\" />
     <Folder Include="Views\Card\" />
     <Folder Include="Views\Inventory\" />
-    <Folder Include="Views\Person\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="Scripts\index.d.ts" />

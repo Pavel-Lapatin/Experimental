@@ -7,13 +7,14 @@
 
 <link href="~/Content/organizationCard.css" rel="stylesheet" />
 
-<div class="card">
+<div class="card container-fluid w-100 h-100">
     <div class="form-check">
         @Html.CheckBoxFor(m => m.IsSelected)
-
     </div>
     <!--Card image-->
-    <img class="img-fluid" src="~/imgs/CardOrganizationDefault.jpg" alt="Card image cap" />
+    <div class="row w-100 justify-content-center">
+        <img class="img-fluid image" src="~/imgs/CardOrganizationDefault.jpg" alt="Card image cap" />
+    </div>
     <h6> Photo from http://moziru.com</h6>
 
     <!--Card content-->
@@ -24,7 +25,9 @@
         <p class="card-text">Address: @Model.Address</p>
         <p class="card-text">Telephone: @Model.Phone</p>
         <p class="card-text">Email: @Model.Email</p>
-        
-        
+        <div class="row w-100 justify-content-center">
+            @Html.ActionLink("Edit", "Edit", "Organistion", new { @class = "btn btn-info" })
+        </div>
     </div>
+
 </div>

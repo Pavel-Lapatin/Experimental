@@ -61,5 +61,12 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
                 throw new InventoryServiceException();
             }
         }
+
+        public IEnumerable<PersonDto> GetAll(int subdivisionId)
+        {
+            return _unitOfWork.PersonInChargeRepository
+                              .FindByPredicate(x => x.SubdivisionId == subdivisionId)
+                              .Select(item => _mapper.Map<PersonDto>(item)).ToArray();
+        }
     }
 }

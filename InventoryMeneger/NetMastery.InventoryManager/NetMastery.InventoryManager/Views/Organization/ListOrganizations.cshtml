@@ -3,23 +3,29 @@
 
 @{
     ViewBag.Title = "Index";
-    Layout = "~/Views/Shared/_inventoryLayout.cshtml";
+    Layout =null;
 }
-<div>
-    <nav>
-        <nav>
-            @Html.ActionLink("Add", "Add", new { @class = "btn btn-default" })
-            @Html.BeginForm("Delete selected", "Delete", new { @class = "btn btn-default" })
-        </nav>
-    </nav>
-</div>
-
-@foreach (var organization in Model.Organizations)
-{
+<div class="row w-100 justify-content-end">
     <div>
-        @Html.Partial("Organization", organization)
+        <div>
+            <nav>
+                <nav>
+                    <a class="btn btn-success" href=@Url.Action("Add", "Organization")>Add</a>
+                    <a class="btn btn-warning" href=@Url.Action("Delete", "Organization")>Deleted selected</a>
+                </nav>
+            </nav>
+        </div>
     </div>
-}
-<div>
+</div>
+<div class="row w-100">
+        @foreach (var organization in Model.Organizations)
+        {
+            <div class="col m-4">
+                @Html.Partial("Organization", organization)
+            </div>
+        }
+</div>
+<hr/>
+<div class="row w-100 justify-content-center">
     @Html.PageLinks(Model.PagingInfo, x => Url.Action("OrganisationList", new { page = x }))
 </div>

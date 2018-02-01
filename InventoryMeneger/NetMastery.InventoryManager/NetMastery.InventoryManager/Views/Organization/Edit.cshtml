@@ -1,34 +1,53 @@
-﻿@using 
+﻿@using NetMastery.InventoryManager.Models
+@model EditOrganizationViewModel
 
-<div class="row">
-    <div class="col-md-4">
-        <fieldset>
-            <legend>Добавить изображение</legend>
+@{
+    ViewBag.Title = "Organization - Edit";
+    Layout = "~/Views/Shared/_inventoryLayout.cshtml";
+}
 
-            <div class="editor-label">Название</div>
-            <div class="editor-field">
-                @Html.EditorFor(model => model.Name)
-                @Html.ValidationMessageFor(model => model.Name)
-            </div>
+<h2 class="text-center"> Edit Organization. Please, fill the form</h2>
 
-            <div class="editor-label">Файл изображения</div>
-            <div class="editor-field">
-                <input type="file" name="uploadImage" />
-            </div>
+@Html.Partial("EditForm", @Model.Organization)
 
-            <p>
-                <input type="submit" value="Добавить" />
-            </p>
-        </fieldset>
-        }
+@if (Model.Subdivisions != null)
+{
+    <h2 class="text-center"> Edit Subdivision. Please, fill the form</h2>
+    @Html.Partial("SubdevisionEditForm", Model.CurrentSubdivision)
+}
 
-        <div>
-            @Html.ActionLink("Вернуться к списку", "Index")
+
+@section SideBar{
+    <div class="sidebar">
+    <div class="sidebar-sticky">
+        <h3 class="text-center">Inventory Manager</h3>
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link active" href=@Url.Action("Index", "Dashboard")>
+                    <span data-feather="home"></span>
+                    Dashboard <span class="sr-only">(current)</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <div class="dropdown">
+                    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+                        Existed subdivisions
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        @foreach (var item in Model.Subdivisions)
+                        {
+                            <li>@Html.Action("ViewSubdivision", "Subdivision")@item.Name</li>
+                        }
+                    </ul>
+                </div>
+                </li>
+            @if(Model.CurrentSubdivision != null)
+            {
+                @Html.Action("PersonSideBar", "Person", Model.CurrentSubdivision)
+            }
+            </ul>
         </div>
 
-        @section Scripts {
-            @Scripts.Render("~/bundles/jqueryval")
-        }
     </div>
-
-</div>
+}

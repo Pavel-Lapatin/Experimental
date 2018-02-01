@@ -16,6 +16,7 @@ namespace NetMastery.InventoryManager.Models
         [Display(Name = "Phone")]
         public string Phone { get; set; }
         public byte[] Image { get; set; }
+        public string MimeType { get; set; }
         public bool IsSelected { get; set; }
     }
 }

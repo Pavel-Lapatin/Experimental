@@ -1,0 +1,22 @@
+﻿@using NetMastery.InventoryManager.Models
+@model SubdivisionViewModel
+
+@{
+    ViewBag.Title = "Subdevision - Edit";
+    Layout = null;
+}
+
+<li class="nav-item">
+    <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            Existed subdivisions
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            @foreach (var item in Model.Persons)
+            {
+                <li>@Html.ActionLink(@item.Name, "ViewSubdivision", "Subdivision")</li>
+            }
+        </ul>
+    </div>
+</li>

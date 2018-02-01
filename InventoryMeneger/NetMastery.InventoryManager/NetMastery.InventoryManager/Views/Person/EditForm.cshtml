@@ -1,0 +1,32 @@
+﻿@using NetMastery.InventoryManager.Models
+@model SubdivisionViewModel
+
+@{
+    ViewBag.Title = "Subdevision - Edit";
+    Layout = null;
+}
+
+<h3>Subdivision Edit form</h3>
+
+@using (Html.BeginForm("Add", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.SubdivisionId)
+    <div class="row">
+        <div class="col-8 offset-2">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success float-right w-25" value="Add" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+}

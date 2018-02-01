@@ -1,4 +1,9 @@
 ﻿.card {
-    max-height: 400px;
-    max-width: 200px;
+    min-height: 400px;
+    min-width: 300px;
+    max-width: 400px;
 }
+
+    .card .image {
+        max-width: 300px;
+    }

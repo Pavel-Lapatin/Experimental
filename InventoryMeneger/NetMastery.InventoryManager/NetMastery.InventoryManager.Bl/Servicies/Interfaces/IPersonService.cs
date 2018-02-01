@@ -9,5 +9,6 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
 {
     public interface IPersonService : IBusinessService<PersonDto>
     {
+        IEnumerable<PersonDto> GetAll(int subdivisionId);
     }
 }

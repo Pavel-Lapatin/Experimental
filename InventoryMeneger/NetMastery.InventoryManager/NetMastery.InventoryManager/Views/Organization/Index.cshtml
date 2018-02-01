@@ -1,16 +1,17 @@
-﻿@{
+﻿@using NetMastery.InventoryManager.Models
+@model OrganizationListViewModel
+@{
     ViewBag.Title = "Organization - Index";
     Layout = "~/Views/Shared/_inventoryLayout.cshtml";
 }
 
-<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-        <div class="row">
-            <h1>Organizations</h1>
-        </div>
-        @Html.Action("ListOrganizations")
-    </div>
-</main>
+ 
+            <div class="row p-0 m-0">
+                <h1>Your organizations</h1>
+            </div>
+            <div class="row p-0 m-0">
+                @Html.Action("ListOrganizations", new { pattern = Model.Pattern})
+            </div>
 
 @section SideBar{
     <div class="sidebar">
@@ -23,49 +24,17 @@
                         Dashboard <span class="sr-only">(current)</span>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <h3 class="nav-link">
-                        <span data-feather="shield"></span>
-                        Admin Area
-                    </h3>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link secondary" href=@Url.Action("Index", "Users")>
-                        Users
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link secondary" href=@Url.Action("Index", "Organizations")>
-                        Organization
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href=@Url.Action("Index", "Organisation")>
-                        <span data-feather="inbox"></span>
-                        Managment
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link secondary" href=@Url.Action("Index", "Users")>
-                        Inventory cards
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link secondary" href=@Url.Action("Index", "Organizations")>
-                        Search Inventory
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href=@Url.Action("Index", "Organisation")>
-                        <span data-feather="bar-chart-2"></span>
-                        Statistic
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link secondary" href=@Url.Action("Index", "Users")>
-                        Get statistic
-                    </a>
-                </li>
+                <li>
+               @using (Html.BeginForm("Search", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+               {
+                @Html.AntiForgeryToken()
+                    
+                        @Html.TextBoxFor(m =>m.Pattern, new { @class = "user-name form-control", placeholder = "Name" })
+                <div class="row w-100 justify-content-center p2">
+                    <input type="submit" class="btn btn-default btn-sm btn-login w-50 m-3" value="Search" />
+                </div>
+               }
+               </li>
             </ul>
         </div>
     </div>

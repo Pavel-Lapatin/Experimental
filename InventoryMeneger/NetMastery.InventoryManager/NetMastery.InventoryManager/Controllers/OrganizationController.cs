@@ -5,7 +5,7 @@ using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using NetMastery.InventoryManager.Models;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
+using System.Web;
 using System.Web.Mvc;
 
 namespace NetMastery.InventoryManager.Controllers
@@ -13,17 +13,24 @@ namespace NetMastery.InventoryManager.Controllers
     public class OrganizationController : Controller
     {
         private readonly IOrganizationService _organizationService;
+        private readonly ISubdivisionService _subdivisionService;
+        private readonly IPersonService _personService;
         private readonly IMapper _mapper;
         int pageSize = 3;
-        public OrganizationController(IOrganizationService organizationService, IMapper mapper)
+        public OrganizationController(IOrganizationService organizationService,
+                                      ISubdivisionService subdivisionService,
+                                      IPersonService personService,
+                                      IMapper mapper)
         {
             _organizationService = organizationService;
+            _subdivisionService = subdivisionService;
+            _personService = personService;
             _mapper = mapper;
         }
 
-        public ActionResult Index()
+        public ActionResult Index(OrganizationListViewModel model)
         {
-            return View();
+            return View(model);
         }
 
         public ActionResult ListOrganizations(int page = 1, string pattern = null)
@@ -54,8 +61,9 @@ namespace NetMastery.InventoryManager.Controllers
         }
 
         [Authorize(Roles ="admin, accountant")]
-        public ActionResult Edit()
+        public ActionResult Edit(EditOrganizationViewModel model)
         {
+            model.Subdivisions = _subdivisionService.GetAll(model.Organization.OrganizationId);
             if (Request.IsAjaxRequest())
             {
                 return PartialView("EditPartial");
@@ -66,6 +74,25 @@ namespace NetMastery.InventoryManager.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
+        public ActionResult UploadImage(HttpPostedFileBase file)
+        {
+            if (file != null)
+            {
+                var model = new OrganizationViewModel();
+                //attach the uploaded image to the object before saving to Database
+                model.Image = new byte[file.ContentLength];
+                return View("Add", model);
+            }
+            return View("Add");
+        }
+        [Authorize(Roles = "admin")]
+        public ActionResult Add()
+        {
+            return View();
+        }
         [HttpPost]
         [Authorize(Roles = "admin, accountant")]
         [ValidateAntiForgeryToken]
@@ -129,14 +156,14 @@ namespace NetMastery.InventoryManager.Controllers
                 return View(model);
             }
         }
-
+        [HttpPost]
         public ActionResult Search(OrganizationListViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 return View(model);
             }
-            return RedirectToAction("ListOrganisation", new {pattern = model.Pattern });
+            return RedirectToAction("Index", new {pattern = model.Pattern });
         }
 
         protected override void Dispose(bool disposing)

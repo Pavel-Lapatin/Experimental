@@ -11,25 +11,29 @@
     <!-- Custom styles for this template -->
       <link href="~/Content/dashboard.css" rel="stylesheet" />
   </head>
-  <body>
-      <div class="container-fluid">
+  <body class="p-0">
+      <div class="container-fluid m-0 p-0">
           <div class="row p-0 m-0">
               <div class="col-2 p-0">
                   @RenderSection("SideBar", required: false)
               </div>
               <div class="col-10 w-100 p-0">
-                  <div class="container-fluid m-0 p-0 dash">
-                       @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "login-form navbar-right" }))
-                       {
+                  <div class="row m-0 p-0 dash">
+                      @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "login-form navbar-right w-100" }))
+                      {
                           @Html.AntiForgeryToken()
                           <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 justify-content-end">
-                          @Html.ActionLink(User.Identity.GetUserName(), "Info", "Profile", routeValues: null, htmlAttributes: new { @class = "nav-link" })
-                          <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                              @Html.ActionLink(User.Identity.GetUserName(), "Info", "Profile", routeValues: null, htmlAttributes: new { @class = "nav-link" })
+                              <a class="nav-link" href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
                           </nav>
-                       }
+                      }
                   </div>
-                  <div>
-                      @RenderBody()
+                  <div class="row p-0 m-0">
+                      <main role="main" class="inventory-main m-1">
+                          <div class="border-bottom">
+                                  @RenderBody()
+                          </div>
+                      </main>
                   </div>
               </div>
           </div>

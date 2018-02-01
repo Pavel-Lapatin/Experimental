@@ -1,0 +1,115 @@
+﻿@using NetMastery.InventoryManager.Models
+@model OrganizationViewModel
+
+@{
+    ViewBag.Title = "Organization - Edit";
+    Layout = null;
+    string url = "";
+}
+@{
+    if (Model == null || Model.Image == null)
+    {
+        url = "/imgs/addPicDef.png";
+    }
+    else
+    {
+        url = $"data:image;base64,{@System.Convert.ToBase64String(Model.Image)}";
+    }
+}
+
+@using (Html.BeginForm("Add", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.OrganizationId)
+    <div class="row">
+        <div class="col-4 ">
+            <label for="file" class="text-center">Choose images to upload</label>
+            <div class="row w-100 justify-content-center">
+                <div class="preview">
+                    <img src="~/imgs/addPicDef.png" />
+                </div>
+            </div>
+            <div class="row w-100 justify-content-center">
+                <input type="file" class="file-loader" name="file" value="file" accept=".jpg, .jpeg, .png" />
+            </div>
+        </div>
+        <div class="col-8">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Name, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(m => m.Phone, new { @class = "col-md-2 control-label" })
+                <div class="col-md-10">
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group">
+                    <input type="submit" class="btn btn-success float-right w-25" value="Add" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+}
+
+
+
+@section SideBar{
+    <div class="sidebar">
+        <div class="sidebar-sticky">
+            <h3 class="text-center">Inventory Manager</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href=@Url.Action("Index", "Dashboard")>
+                        <span data-feather="home"></span>
+                        Dashboard <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+}
+
+<script>
+    var input = document.querySelector('.file-loader');
+    var preview = document.querySelector('.preview');
+    input.addEventListener('change', updateImageDisplay);
+
+    function updateImageDisplay() {
+        while(preview.firstChild) {
+            preview.removeChild(preview.firstChild);
+        }
+        var curFiles = input.files;
+        if (curFiles.length === 0) {
+            var para = document.createElement('img');
+            para.src = "~/imgs/addPicDef.png";
+            preview.appendChild(para);
+        } else {
+                var image = document.createElement('img');
+                image.setAttribute("class", "profile-image")
+                image.src = window.URL.createObjectURL(curFiles[0]);
+                preview.appendChild(image);
+        }
+    }
+</script>

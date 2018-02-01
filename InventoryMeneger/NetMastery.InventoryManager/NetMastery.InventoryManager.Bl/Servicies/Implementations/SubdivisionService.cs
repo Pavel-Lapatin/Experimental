@@ -50,6 +50,14 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
                 throw new InventoryServiceException();
             }
         }
+
+        public IEnumerable<SubdivisionDto> GetAll(int organizationId)
+        {
+            return _unitOfWork.SubdivisionRepository
+                              .FindByPredicate(x => x.OrganizationId == organizationId)
+                              .Select(item => _mapper.Map<SubdivisionDto>(item)).ToArray();
+        }
+
         public void Update(SubdivisionDto item)
         {
             try
