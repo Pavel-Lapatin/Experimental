@@ -21,6 +21,13 @@ namespace NetMastery.InventoryManager
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<IRoleService>().To<RoleService>();
             kernel.Bind<IOrganizationService>().To<OrganizationService>();
+            kernel.Bind<ISubdivisionService>().To<SubdivisionService>();
+            kernel.Bind<IPersonService>().To<PersonService>();
+            kernel.Bind<IInventoryService>().To<InventoryService>();
+            kernel.Bind<IInventoryTypeService>().To<InventoryTypeService>();
+            kernel.Bind<IStorageService>().To<StorageService>();
+            kernel.Bind<IManufactureService>().To<ManufactureService>();
+            kernel.Bind<ICardService>().To<CardService>();
             //kernel.Bind<IMapper>().To<RoleService>();
             kernel.Bind<IOwinContext>().ToMethod(ctx => HttpContext.Current.GetOwinContext()).InRequestScope();
 

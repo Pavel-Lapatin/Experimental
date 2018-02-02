@@ -12,7 +12,7 @@ using AutoMapper;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
 {
-    class CardService : BusinessService, ICardService
+    public class CardService : BusinessService, ICardService
     {
         public CardService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

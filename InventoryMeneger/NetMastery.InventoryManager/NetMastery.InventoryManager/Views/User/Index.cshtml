@@ -1,0 +1,41 @@
+﻿@using NetMastery.InventoryManager.Models
+@model UserListViewModel
+
+@{
+    ViewBag.Title = "User - Index";
+    Layout = "~/Views/Shared/_inventoryLayout.cshtml";
+}
+
+<div class="row p-0 m-0">
+    <h1>Users on the account</h1>
+</div>
+<div class="row p-0 m-0">
+    @Html.Action("ListUsers", Model)
+</div>
+
+@section SideBar{
+    <div class="sidebar">
+        <div class="sidebar-sticky">
+            <h3 class="text-center">Inventory Manager</h3>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active" href=@Url.Action("Index", "Dashboard")>
+                        <span data-feather="home"></span>
+                        Dashboard <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li>
+                    @using (Html.BeginForm("Search", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+
+                        @Html.TextBoxFor(m => m.{ @class = "user-name form-control", placeholder = "User Name" })
+                        <div class="row w-100 justify-content-center p2">
+                            <input type="submit" class="btn btn-default btn-sm btn-login w-50 m-3" value="Search" />
+                        </div>
+                    }
+                </li>
+            </ul>
+        </div>
+    </div>
+}

@@ -7,8 +7,10 @@ using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using NetMastery.InventoryManager.DAL.UnitOfWork;
 using NetMastery.InventoryManager.Domain;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
@@ -27,7 +29,6 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
         {
             return _unitOfWork.UserManager.FindById(userId).AccountId;
         }
-
         public SignInStatus PasswordSignIn(string userName, string password, bool rememberMe)
 
         {
@@ -90,6 +91,10 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
                 await _unitOfWork.SignInManager.SignInAsync(user, false, false);
             }
             return result;
+        }
+        public IEnumerable<UserDto> GetAll(int accountId)
+        {
+            return _unitOfWork.UserManager.GetAllForAccountId(accountId).Select(item => _mapper.Map<UserDto>(item));
         }
     }
 }

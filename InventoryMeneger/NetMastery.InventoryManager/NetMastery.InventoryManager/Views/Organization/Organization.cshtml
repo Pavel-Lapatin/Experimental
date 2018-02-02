@@ -8,14 +8,18 @@
 <link href="~/Content/organizationCard.css" rel="stylesheet" />
 
 <div class="card container-fluid w-100 h-100">
-    <div class="form-check">
-        @Html.CheckBoxFor(m => m.IsSelected)
-    </div>
     <!--Card image-->
     <div class="row w-100 justify-content-center">
-        <img class="img-fluid image" src="~/imgs/CardOrganizationDefault.jpg" alt="Card image cap" />
+        @if (Model != null && Model.Image != null && Model.Image.Length > 0)
+        {
+        <img class="img-fluid image" src="data:image/jpeg;base64, @Convert.ToBase64String(Model.Image)" alt="Card image cap" />
+        }
+        else
+        {
+            <img class="img-fluid image" src="~/imgs/CardOrganizationDefault.jpg" alt="Card image cap" />
+            <h6> Photo from http://moziru.com</h6>
+        }
     </div>
-    <h6> Photo from http://moziru.com</h6>
 
     <!--Card content-->
     <div class="card-body">
@@ -26,7 +30,7 @@
         <p class="card-text">Telephone: @Model.Phone</p>
         <p class="card-text">Email: @Model.Email</p>
         <div class="row w-100 justify-content-center">
-            @Html.ActionLink("Edit", "Edit", "Organistion", new { @class = "btn btn-info" })
+            @Html.ActionLink("Edit", "Edit", "Organistion", new { @class = "btn btn-info btn-bottom" })
         </div>
     </div>
 

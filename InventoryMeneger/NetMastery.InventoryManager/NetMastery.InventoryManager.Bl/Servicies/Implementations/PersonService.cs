@@ -12,7 +12,7 @@ using NetMastery.InventoryManager.Domain;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
 {
-    class PersonService : BusinessService, IPersonService
+    public class PersonService : BusinessService, IPersonService
     {
         public PersonService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

@@ -34,7 +34,15 @@
 .dash .navbar{
     height: 46px;
 }
-
+.btn-right {
+    
+    margin-right: 160px;
+}
+.btn-bottom {
+    bottom: 5px;
+    margin-bottom: 5px;
+    vertical-align: bottom;
+}
 .sidebar-sticky {
     position: -webkit-sticky;
     position: sticky;

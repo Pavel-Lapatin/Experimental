@@ -12,7 +12,7 @@ using NetMastery.InventoryManager.Bl.Exceptions;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
 {
-    class StorageService : BusinessService, IStorageService
+    public class StorageService : BusinessService, IStorageService
     {
         public StorageService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

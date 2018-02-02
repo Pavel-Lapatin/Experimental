@@ -21,6 +21,7 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             try
             {
                 _unitOfWork.OrganizationRepository.Create(_mapper.Map<Organization>(item));
+                _unitOfWork.Save();
             }
             catch (Exception)
             {
@@ -32,6 +33,7 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             try
             {
                 _unitOfWork.OrganizationRepository.Remove(_mapper.Map<Organization>(item));
+                _unitOfWork.Save();
             }
             catch (Exception)
             {
@@ -43,6 +45,7 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             try
             {
                 _unitOfWork.OrganizationRepository.RemoveRange( items.Select(item => _mapper.Map<Organization>(item)));
+                _unitOfWork.Save();
             }
             catch (Exception)
             {
@@ -54,6 +57,7 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
             try
             {
                 _unitOfWork.OrganizationRepository.Update(_mapper.Map<Organization>(item));
+                _unitOfWork.Save();
             }
             catch (Exception)
             {

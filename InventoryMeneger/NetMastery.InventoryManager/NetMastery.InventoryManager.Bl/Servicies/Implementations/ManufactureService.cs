@@ -12,7 +12,7 @@ using NetMastery.InventoryManager.Bl.Exceptions;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
 {
-    class ManufactureService : BusinessService, IManufactureService
+    public class ManufactureService : BusinessService, IManufactureService
     {
         public ManufactureService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

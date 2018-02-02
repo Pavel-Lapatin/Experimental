@@ -2,6 +2,7 @@
 using Microsoft.AspNet.Identity.Owin;
 using NetMastery.InventoryManager.Bl.DtoEntities;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
@@ -18,5 +19,6 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
         Task<IdentityResult> RegisterNewAccount(string email, string name, string phone, string password);
         int GetAccountId(string userId);
         Task<UserDto> FindUserByRole(int accountId, string roleName);
+        IEnumerable<UserDto> GetAll(int accountId);
     }
 }

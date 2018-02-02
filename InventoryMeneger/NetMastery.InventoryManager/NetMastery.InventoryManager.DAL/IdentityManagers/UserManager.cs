@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using System.Linq;
 using System.Data.Entity;
+using System.Collections.Generic;
 
 namespace NetMastery.InventoryManager.DAL.IdentityManagers
 {
@@ -93,6 +94,14 @@ namespace NetMastery.InventoryManager.DAL.IdentityManagers
                 return user;
             }
                 
+        }
+        public IEnumerable<User> GetAllForAccountId(int accountId)
+        {
+            using (var context = new InventoryDbContext())
+            {
+                return context.Users.Where(x => x.AccountId == accountId).ToArray();
+            }
+
         }
     }
 }

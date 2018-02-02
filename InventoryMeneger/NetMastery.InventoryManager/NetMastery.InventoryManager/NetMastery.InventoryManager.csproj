@@ -257,6 +257,7 @@
     <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\OrganizationController.cs" />
     <Compile Include="Controllers\PersonController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -275,6 +276,9 @@
     <Compile Include="Models\Paging\PagingInfo.cs" />
     <Compile Include="Models\Person\PersonViewModel.cs" />
     <Compile Include="Models\Subdivision\SubdivisionViewModel.cs" />
+    <Compile Include="Models\User\SearchViewModel.cs" />
+    <Compile Include="Models\User\UserListViewModel.cs" />
+    <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -314,6 +318,8 @@
     <Content Include="Views\Organization\EditForm.cshtml" />
     <Content Include="Views\Person\EditForm.cshtml" />
     <Content Include="Views\Person\PersonSideBar.cshtml" />
+    <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\User\UserForm.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

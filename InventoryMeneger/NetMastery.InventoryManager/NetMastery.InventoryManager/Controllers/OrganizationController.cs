@@ -4,6 +4,7 @@ using NetMastery.InventoryManager.Bl.Exceptions;
 using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using NetMastery.InventoryManager.Models;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -21,7 +22,7 @@ namespace NetMastery.InventoryManager.Controllers
                                       ISubdivisionService subdivisionService,
                                       IPersonService personService,
                                       IMapper mapper)
-        {
+         {
             _organizationService = organizationService;
             _subdivisionService = subdivisionService;
             _personService = personService;
@@ -63,59 +64,72 @@ namespace NetMastery.InventoryManager.Controllers
         [Authorize(Roles ="admin, accountant")]
         public ActionResult Edit(EditOrganizationViewModel model)
         {
-            model.Subdivisions = _subdivisionService.GetAll(model.Organization.OrganizationId);
+            model.Subdivisions = _subdivisionService
+                .GetAll(model.Organization.OrganizationId)
+                .Select(item => _mapper.Map<SubdivisionViewModel>(item));
             if (Request.IsAjaxRequest())
             {
-                return PartialView("EditPartial");
+                return PartialView("EditPartial", model);
             }
             else
             {
-                return View();
+                return View(model);
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        [Authorize(Roles = "admin")]
-        public ActionResult UploadImage(HttpPostedFileBase file)
-        {
-            if (file != null)
-            {
-                var model = new OrganizationViewModel();
-                //attach the uploaded image to the object before saving to Database
-                model.Image = new byte[file.ContentLength];
-                return View("Add", model);
-            }
-            return View("Add");
-        }
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //[Authorize(Roles = "admin")]
+        //public ActionResult UploadImage(HttpPostedFileBase file)
+        //{
+        //    if (file != null)
+        //    {
+        //        var model = new OrganizationViewModel();
+        //        //attach the uploaded image to the object before saving to Database
+        //        model.Image = new byte[file.ContentLength];
+        //        return View("Add", model);
+        //    }
+        //    return View("Add");
+        //}
+        [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult Add()
         {
+           
             return View();
         }
+
         [HttpPost]
-        [Authorize(Roles = "admin, accountant")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Add(OrganizationViewModel model)
+        public ActionResult Add(OrganizationViewModel model, HttpPostedFileBase file)
         {
             if (!ModelState.IsValid)
             {
-                return View(model);
+                return View();
             }
             try
             {
+                model.AccountId = (int)Session["Account"];
+                if (file != null)
+                {
+                    using (var binaryReader = new BinaryReader(file.InputStream))
+                    {
+                        model.Image = binaryReader.ReadBytes(file.ContentLength);
+                    }
+                }
                 _organizationService.Add(_mapper.Map<OrganizationDto>(model));
                 return RedirectToAction("Index");
             }
             catch (InventoryServiceException)
             {
                 ModelState.AddModelError("", "Organization wasn't added");
-                return View(model);
+                return View();
             }
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin, accountant")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Update(OrganizationViewModel model)
         {
@@ -136,27 +150,28 @@ namespace NetMastery.InventoryManager.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "admin, accountant")]
+        [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Remove(IEnumerable<OrganizationViewModel> model)
+        public ActionResult Remove(OrganizationListViewModel model)
         {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            var deletedItems = model.Where(x => x.IsSelected == true).ToArray();
+            var deletedItems = model.Organizations.Where(x => x.IsSelected == true)?.ToArray();
             try
             {
+                if(deletedItems != null)
+                {
                 _organizationService.DeleteRange(deletedItems.Select(item => _mapper.Map<OrganizationDto>(item)));
+                }
                 return RedirectToAction("Index");
             }
             catch (InventoryServiceException)
             {
                 ModelState.AddModelError("", "Organizations wasn't deleted");
-                return View(model);
+                return View("ListOrganizations", model);
             }
         }
+
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Search(OrganizationListViewModel model)
         {
             if (!ModelState.IsValid)

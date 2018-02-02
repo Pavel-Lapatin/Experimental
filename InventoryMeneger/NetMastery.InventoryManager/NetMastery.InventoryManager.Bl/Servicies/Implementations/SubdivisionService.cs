@@ -10,7 +10,7 @@ using NetMastery.InventoryManager.Domain;
 
 namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
 {
-    class SubdivisionService : BusinessService, ISubdivisionService
+    public class SubdivisionService : BusinessService, ISubdivisionService
     {
         public SubdivisionService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {

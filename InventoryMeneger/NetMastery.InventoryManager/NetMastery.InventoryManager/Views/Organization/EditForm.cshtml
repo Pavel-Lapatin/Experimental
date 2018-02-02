@@ -4,33 +4,28 @@
 @{
     ViewBag.Title = "Organization - Edit";
     Layout = null;
-    string url = "";
-}
-@{
-    if (Model == null || Model.Image == null)
-    {
-        url = "/imgs/addPicDef.png";
-    }
-    else
-    {
-        url = $"data:image;base64,{@System.Convert.ToBase64String(Model.Image)}";
-    }
 }
 
-@using (Html.BeginForm("Add", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+@using (Html.BeginForm("Add", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form", enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(m => m.OrganizationId)
     <div class="row">
         <div class="col-4 ">
             <label for="file" class="text-center">Choose images to upload</label>
             <div class="row w-100 justify-content-center">
                 <div class="preview">
-                    <img src="~/imgs/addPicDef.png" />
+                     @if (Model != null && Model.Image != null)
+                     {
+                        <img src="data:image/jpeg;base64, @Convert.ToBase64String(Model.Image)" />
+                     }
+                     else
+                     {
+                        <img src="~/imgs/addPicDef.png" />
+                     }
                 </div>
             </div>
             <div class="row w-100 justify-content-center">
-                <input type="file" class="file-loader" name="file" value="file" accept=".jpg, .jpeg, .png" />
+                <input type="file" class="file-loader" name="file" value="file" />
             </div>
         </div>
         <div class="col-8">
@@ -64,11 +59,10 @@
             </div>
             <div class="col-md-10">
                 <div class="form-group">
-                    <input type="submit" class="btn btn-success float-right w-25" value="Add" />
+                    <input type="submit" class="btn btn-success float-right w-25" value="Add organization" />
                 </div>
             </div>
         </div>
-
     </div>
 }
 

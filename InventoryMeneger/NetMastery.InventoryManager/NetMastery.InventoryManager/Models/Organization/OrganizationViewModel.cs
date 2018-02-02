@@ -4,6 +4,7 @@ namespace NetMastery.InventoryManager.Models
 {
     public class OrganizationViewModel
     {
+        public int AccountId { get; set; }
         public int OrganizationId { get; set; }
         [Required]
         [Display(Name = "Name")]
@@ -16,7 +17,6 @@ namespace NetMastery.InventoryManager.Models
         [Display(Name = "Phone")]
         public string Phone { get; set; }
         public byte[] Image { get; set; }
-        public string MimeType { get; set; }
         public bool IsSelected { get; set; }
     }
 }

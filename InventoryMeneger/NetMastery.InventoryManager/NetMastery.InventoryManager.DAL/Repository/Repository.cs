@@ -35,7 +35,11 @@ namespace NetMastery.InventoryManager.DAL.Repository
 
         public void RemoveRange(IEnumerable<TEntity> items)
         {
-            _dbSet.RemoveRange(items);
+            foreach(var item in items)
+            {
+                _dbSet.Attach(item);
+                _dbSet.Remove(item);
+            }
         }
 
         public TEntity Find(int id)
