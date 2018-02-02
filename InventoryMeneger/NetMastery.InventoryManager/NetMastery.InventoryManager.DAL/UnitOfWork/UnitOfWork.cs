@@ -46,7 +46,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _inventoryRepository;
             }
-            set => _inventoryRepository = value;
+            set { _inventoryRepository = value; }
         }
         public IRepository<InventoryType> InventoryTypeRepository
         {
@@ -58,7 +58,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _inventoryTypeRepository;
             }
-            set => _inventoryTypeRepository = value;
+            set { _inventoryTypeRepository = value; }
         }
         public IRepository<Card> CardRepository
         {
@@ -70,7 +70,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _cardRepository;
             }
-            set => _cardRepository = value;
+           set { _cardRepository = value; }
         }
         public IRepository<Organization> OrganizationRepository
         {
@@ -82,7 +82,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _organizationRepository;
             }
-            set => _organizationRepository = value;
+            set { _organizationRepository = value; }
         }
         
         public IRepository<PersonInCharge> PersonInChargeRepository
@@ -95,7 +95,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _personInChargeRepository;
             }
-            set => _personInChargeRepository = value;
+            set { _personInChargeRepository = value; }
         }
         public IRepository<Storage> StorageRepository
         {
@@ -107,7 +107,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _storageRepository;
             }
-            set => _storageRepository = value;
+            set { _storageRepository = value; }
         }
         public IRepository<Manufacture> ManufactureRepository
         {
@@ -119,7 +119,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _manufactureRepository;
             }
-            set => _manufactureRepository = value;
+            set { _manufactureRepository = value; }
         }
         public IRepository<Subdivision> SubdivisionRepository
         {
@@ -131,7 +131,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _subdivisionRepository;
             }
-            set => _subdivisionRepository = value;
+            set { _subdivisionRepository = value; }
         }
         public IRepository<Account> AccountRepository
         {
@@ -143,7 +143,7 @@ namespace NetMastery.InventoryManager.DAL.UnitOfWork
                 }
                 return _accountRepository;
             }
-            set => _accountRepository = value;
+            set { _accountRepository = value; }
         }
         public InventoryUserManager UserManager => _owinContext.GetUserManager<InventoryUserManager>();
         public InventorySignInManager SignInManager => _owinContext.Get<InventorySignInManager>();

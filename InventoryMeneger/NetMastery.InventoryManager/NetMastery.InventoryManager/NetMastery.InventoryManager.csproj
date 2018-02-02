@@ -276,7 +276,7 @@
     <Compile Include="Models\Paging\PagingInfo.cs" />
     <Compile Include="Models\Person\PersonViewModel.cs" />
     <Compile Include="Models\Subdivision\SubdivisionViewModel.cs" />
-    <Compile Include="Models\User\SearchViewModel.cs" />
+    <Compile Include="Models\User\UserSearchViewModel.cs" />
     <Compile Include="Models\User\UserListViewModel.cs" />
     <Compile Include="Models\User\UserViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -310,7 +310,6 @@
     <Content Include="Views\Account\LoginPartial.cshtml" />
     <Content Include="Views\Account\CreateAccountPartial.cshtml" />
     <Content Include="Views\Error\AccessDenied.cshtml" />
-    <Content Include="Views\Organization\ListOrganizations.cshtml" />
     <Content Include="Views\Organization\Edit.cshtml" />
     <Content Include="Views\Organization\Index.cshtml" />
     <Content Include="Views\Organization\Add.cshtml" />

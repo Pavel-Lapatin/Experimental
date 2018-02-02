@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace NetMastery.InventoryManager.Bl.DtoEntities
 {
     public class UserDto
@@ -14,5 +9,6 @@ namespace NetMastery.InventoryManager.Bl.DtoEntities
         public string Email { get; set; }
         public string PhoneNumber { get; set; }
         public byte[] Image { get; set; }
+        public string RoleName { get; set; }
     }
 }

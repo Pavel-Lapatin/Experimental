@@ -17,27 +17,25 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Implementations
         public RoleService(IUnitOfWork unitOfWork, IMapper mapper) : base(unitOfWork, mapper)
         {        
         }
-
         public async Task<IdentityResult> CreateAsync(RoleDto role)
         {
             return await _unitOfWork.RoleManager.CreateAsync(_mapper.Map<Role>(role));
         }
-
         public async Task<IdentityResult> DeleteAsync(RoleDto role)
         {
             return await _unitOfWork.RoleManager.DeleteAsync(_mapper.Map<Role>(role));
         }
-
         public async Task<RoleDto> FindByIdAsync(string Id)
         {
             return  _mapper.Map<RoleDto>(await _unitOfWork.RoleManager.FindByIdAsync(Id));
         }
-
+        public IEnumerable<RoleDto> GetAll()
+        {
+            return _unitOfWork.RoleManager.GetAll().Select(item => _mapper.Map<RoleDto>(item));
+        }
         public async Task<IdentityResult> UpdateAsync(RoleDto role)
         {
             return await _unitOfWork.RoleManager.UpdateAsync(_mapper.Map<Role>(role));
-        }
-
-        
+        }       
     }
 }

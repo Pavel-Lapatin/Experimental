@@ -5,28 +5,66 @@
     ViewBag.Title = "UserForm";
     Layout = null;
 }
-
-<div class="row w-100">
-    <div class="col-4">
-
-    </div>
-    <div class="col-6">
-
-    </div>
-    <div class="col-2">
-        <div>
-            <a class="btn btn-success" href="@Url.Action("Add","User")">Add New</a>
-        </div>
-        <div>
-
-                <div>
-                    @Html.ActionLink("Update", "Update", "User", null, new { @class = "btn btn-warning" })
+    @using (Html.BeginForm("Update", "User", FormMethod.Post, new { @class = "form-horizontal w-100 border-bottom", role = "form", enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken() 
+        <div class="row w-100">
+            <div class="col-3 text-center">
+                <div class="preview">
+                    @if (Model != null && Model.Image != null)
+                    {
+                        <img src="data:image/jpeg;base64, @Convert.ToBase64String(Model.Image)" />
+                    }
+                    else
+                    {
+                        <img src="~/imgs/addPicDef.png" />
+                    }
                 </div>
-                <div>
-                    @Html.ActionLink("Delete", "Delete", "User", null, new { @class = "btn btn-warning" })
+                <input type="file" class="file-loader" name="file" value="file" />
+            </div>
+            <div class="col-8">
+                @if(Model != null)
+                {
+                    @Html.HiddenFor(x => x.Id);
+                }
+                <div class="form-group">
+                    @Html.LabelFor(m => m.UserName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                    </div>
                 </div>
-
+                <div class="form-group">
+                    @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(m => m.RoleName, new { @class = "col-md-2 control-label" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(x => x.RoleName, (IEnumerable<SelectListItem>)@ViewBag.Roles, "Select role")
+                        @Html.ValidationMessageFor(m => m.RoleName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="col-1 btn-group-vertical justify-content-center">
+                <div>
+                    <input type="submit" value="Update" class="btn btn-warning" />
+                    @using (Html.BeginForm("Delete", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    {
+                        @Html.HiddenFor(x => x.Id);
+                        <input type="submit" value="Delete" class="btn btn-warning" />
+                    }
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-
+    }

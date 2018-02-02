@@ -29,28 +29,24 @@ namespace NetMastery.InventoryManager.Controllers
             _mapper = mapper;
         }
 
-        public ActionResult Index(OrganizationListViewModel model)
+        public ActionResult Index(OrganizationListViewModel model, int page = 1)
         {
-            return View(model);
-        }
-
-        public ActionResult ListOrganizations(int page = 1, string pattern = null)
-        {
-            var model = new OrganizationListViewModel();
-            var organisations = (pattern == null
+            model = model ?? new OrganizationListViewModel();
+            var organizations = (model.Pattern == null
                 ? _organizationService.GetAll((int)Session["Account"])
-                : _organizationService.Search((int)Session["Account"], pattern));
-            model.Organizations = organisations.OrderBy(x => x.Name)
+                : _organizationService.Search((int)Session["Account"], model.Pattern));
+            model.Organizations = organizations.OrderBy(x => x.Name)
                                                .Skip((page - 1) * pageSize)
                                                .Take(pageSize)
-                                               .Select(item => _mapper.Map<OrganizationViewModel>(item)).ToArray();
+                                               .Select(item => _mapper.Map<OrganizationViewModel>(item))
+                                               .ToArray();
             model.PagingInfo = new PagingInfo
             {
                 CurrentPage = page,
                 ItemsPerPage = pageSize,
-                TotalItems = organisations.Count()
+                TotalItems = organizations.Count()
             };
-            model.Pattern = pattern;
+            model.PagingInfo.CurrentPage = page;
             if (Request.IsAjaxRequest())
             {
                 return PartialView("Organizations", model);

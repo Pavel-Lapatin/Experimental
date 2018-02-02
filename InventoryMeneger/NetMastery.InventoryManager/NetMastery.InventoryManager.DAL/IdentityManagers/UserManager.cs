@@ -103,5 +103,21 @@ namespace NetMastery.InventoryManager.DAL.IdentityManagers
             }
 
         }
+        public IEnumerable<User> SearchByPattern(int accountId, string name, string email, string phone, string roleName)
+        {
+            using (var context = new InventoryDbContext())
+            {
+                
+                var role = roleName == null ? null : context.Roles.Where(x => x.Name == roleName).Single();
+                return context.Users.Where(x =>
+                 x.AccountId == accountId
+                 && name != null ? x.UserName == name : true
+                 && email != null ? x.Email == email : true
+                 && phone != null ? x.PhoneNumber == phone : true).ToArray();
+            }
+
+        }
+
+        
     }
 }

@@ -20,5 +20,8 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
         int GetAccountId(string userId);
         Task<UserDto> FindUserByRole(int accountId, string roleName);
         IEnumerable<UserDto> GetAll(int accountId);
+        IdentityResult Update(UserDto user);
+        IdentityResult Delete(UserDto user);
+        IEnumerable<UserDto> SearchByPattern(int accountId, string Name, string Email, string Phone, string Role);
     }
 }

@@ -7,11 +7,31 @@
 }
 
 <div class="row p-0 m-0">
-    <h1>Users on the account</h1>
+    <h1>Users</h1>
 </div>
-<div class="row p-0 m-0">
-    @Html.Action("ListUsers", Model)
+<div class="container-fluid">
+    <div class="row w-100 justify-content-end">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="btn btn-success" href=@Url.Action("Add", "User")>
+                    Add new
+                </a>
+            </li>
+        </ul>
+    </div>
+
+    <div class="row w-100 p-0 m-0 align-content-center">
+        @for (int i = 0; i < Model.Users.Count(); i++)
+        {
+            @Html.Partial("UserForm", Model.Users[i])
+        }
+    </div>
 </div>
+
+    <div class="row w-100 justify-content-center">
+        @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+    </div>
+
 
 @section SideBar{
     <div class="sidebar">
@@ -25,11 +45,15 @@
                     </a>
                 </li>
                 <li>
-                    @using (Html.BeginForm("Search", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                    <h6 class="text-center justify-content-center">Searching form</h6>
+                    @using (Html.BeginForm("Index", "User", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
                     {
                         @Html.AntiForgeryToken()
-
-                        @Html.TextBoxFor(m => m.{ @class = "user-name form-control", placeholder = "User Name" })
+                        
+                        @Html.TextBoxFor(m => m.SearchParametrs.Name, new { @class = "user-name form-control", placeholder = "User Name" })
+                        @Html.TextBoxFor(m => m.SearchParametrs.Email, new { @class = "user-name form-control", placeholder = "Email" })
+                        @Html.TextBoxFor(m => m.SearchParametrs.Phone, new { @class = "user-name form-control", placeholder = "Phone" })
+                        @Html.DropDownListFor(x=>x.SearchParametrs.Role, (IEnumerable<SelectListItem>)@ViewBag.Roles, "Select role", new { @class = "w-100 text-center" } )
                         <div class="row w-100 justify-content-center p2">
                             <input type="submit" class="btn btn-default btn-sm btn-login w-50 m-3" value="Search" />
                         </div>

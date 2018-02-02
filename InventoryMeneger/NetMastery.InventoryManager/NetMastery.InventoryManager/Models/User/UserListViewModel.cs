@@ -4,7 +4,8 @@ namespace NetMastery.InventoryManager.Models
 {
     public class UserListViewModel
     {
-        public IEnumerable<UserViewModel> Users { get; set; }
-        public SearchViewModel SearchParametrs { get; set; }
+        public IList<UserViewModel> Users { get; set; }
+        public UserSearchViewModel SearchParametrs { get; set; }
+        public PagingInfo PagingInfo { get; internal set; }
     }
 }

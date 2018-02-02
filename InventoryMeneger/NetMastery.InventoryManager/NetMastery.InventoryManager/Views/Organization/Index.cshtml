@@ -4,38 +4,63 @@
     ViewBag.Title = "Organization - Index";
     Layout = "~/Views/Shared/_inventoryLayout.cshtml";
 }
+<div class="row w-100 justify-content-center">
+        <h1>Your organizations</h1>
+       @using (Html.BeginForm("Remove", "Organization", FormMethod.Post, new { @class = "w-100" }))
+       {
+        <div class="row w-100 justify-content-end">
+            <div>
+                <div>
+                    <nav class="btn-right">
+                        <a class="btn btn-success" href=@Url.Action("Add", "Organization")>Add</a>
+                        @Html.AntiForgeryToken()
+                        <input type="submit" value="Delete selected" class="btn btn-warning">
 
- 
-            <div class="row p-0 m-0">
-                <h1>Your organizations</h1>
-            </div>
-            <div class="row p-0 m-0">
-                @Html.Action("ListOrganizations", new { pattern = Model.Pattern})
-            </div>
-
-@section SideBar{
-    <div class="sidebar">
-        <div class="sidebar-sticky">
-            <h3 class="text-center">Inventory Manager</h3>
-            <ul class="nav flex-column">
-                <li class="nav-item">
-                    <a class="nav-link active" href=@Url.Action("Index", "Dashboard")>
-                        <span data-feather="home"></span>
-                        Dashboard <span class="sr-only">(current)</span>
-                    </a>
-                </li>
-                <li>
-               @using (Html.BeginForm("Search", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
-               {
-                @Html.AntiForgeryToken()
-                    
-                        @Html.TextBoxFor(m =>m.Pattern, new { @class = "user-name form-control", placeholder = "Name" })
-                <div class="row w-100 justify-content-center p2">
-                    <input type="submit" class="btn btn-default btn-sm btn-login w-50 m-3" value="Search" />
+                    </nav>
                 </div>
-               }
-               </li>
-            </ul>
+            </div>
         </div>
-    </div>
-}
+        <div class="row w-100 justify-content-center">
+            @for (int i = 0; i < Model.Organizations.Count(); i++)
+            {
+                <div class="col-auto">
+                    @Html.HiddenFor(m => m.Organizations[i].OrganizationId)
+                    @Html.CheckBoxFor(m => m.Organizations[i].IsSelected)
+                    @Html.Partial("Organization", Model.Organizations[i])
+                </div>
+            }
+        </div>
+        <hr />
+       }
+</div>
+
+<div class="row w-100 justify-content-center">
+    @Html.PageLinks(Model.PagingInfo, x => Url.Action("Index", new { page = x }))
+</div>
+
+    @section SideBar{
+        <div class="sidebar">
+            <div class="sidebar-sticky">
+                <h3 class="text-center">Inventory Manager</h3>
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href=@Url.Action("Index", "Dashboard")>
+                            <span data-feather="home"></span>
+                            Dashboard <span class="sr-only">(current)</span>
+                        </a>
+                    </li>
+                    <li>
+                        @using (Html.BeginForm("Search", "Organization", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                        {
+                            @Html.AntiForgeryToken()
+
+                            @Html.TextBoxFor(m => m.Pattern, new { @class = "user-name form-control", placeholder = "Name" })
+                            <div class="row w-100 justify-content-center p2">
+                                <input type="submit" class="btn btn-default btn-sm btn-login w-50 m-3" value="Search" />
+                            </div>
+                        }
+                    </li>
+                </ul>
+            </div>
+        </div>
+    }

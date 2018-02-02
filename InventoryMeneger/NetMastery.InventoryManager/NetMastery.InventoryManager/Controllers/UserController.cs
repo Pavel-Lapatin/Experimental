@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using NetMastery.InventoryManager.Bl.DtoEntities;
+using NetMastery.InventoryManager.Bl.Exceptions;
 using NetMastery.InventoryManager.Bl.Servicies.Interfaces;
 using NetMastery.InventoryManager.Models;
 using System.IO;
@@ -11,28 +12,58 @@ namespace NetMastery.InventoryManager.Controllers
 {
     public class UserController : Controller
     {
-        
+
         private readonly IUserService _userService;
+        private readonly IRoleService _roleService;
         private readonly IMapper _mapper;
-        int pageSize = 3;
+        private int pageSize= 2;
         public UserController(IUserService userService,
+                              IRoleService roleService,
                               IMapper mapper)
         {
             _userService = userService;
+            _roleService = roleService;
             _mapper = mapper;
         }
+
         // GET: User
         [Authorize(Roles = "admin")]
-        public ActionResult Index(UserListViewModel model)
+        public ActionResult Index(UserListViewModel model, int page = 1)
         {
-            if(model == null)
+            model = model ?? new UserListViewModel();
+            var users = (model.SearchParametrs == null
+                ? _userService.GetAll((int)Session["Account"])
+                : _userService.SearchByPattern((int)Session["Account"], model.SearchParametrs.Name,
+                                                                        model.SearchParametrs.Email,
+                                                                        model.SearchParametrs.Phone,
+                                                                        model.SearchParametrs.Role));
+
+            model.Users = users.OrderBy(x => x.UserName)
+                               .Skip((page - 1) * pageSize)
+                               .Take(pageSize)
+                               .Select(item => _mapper.Map<UserViewModel>(item))
+                               .ToArray();
+            model.PagingInfo = new PagingInfo
             {
-                model.Users = _userService.GetAll((int)Session["Account"])
-                    .Select(item => _mapper.Map<UserViewModel>(item));
-            }
+                CurrentPage = page,
+                ItemsPerPage = pageSize,
+                TotalItems = users.Count()
+            };
+            model.PagingInfo.CurrentPage = page;
+            ViewData["Roles"] = _roleService.GetAll().Select(item => _mapper.Map<SelectListItem>(item));
             return View(model);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "admin")]
+        [ValidateAntiForgeryToken]
+        public ActionResult Index(UserListViewModel model)
+        {
+            ViewData["Roles"] = _roleService.GetAll().Select(item => _mapper.Map<SelectListItem>(item));
+            return View(model);
+        }
+
+        
         [HttpGet]
         [Authorize(Roles = "admin")]
         public ActionResult Add()
@@ -60,7 +91,7 @@ namespace NetMastery.InventoryManager.Controllers
                         model.Image = binaryReader.ReadBytes(file.ContentLength);
                     }
                 }
-                _organizationService.Add(_mapper.Map<OrganizationDto>(model));
+                _userService.Register(_mapper.Map<UserDto>(model),model.Password);
                 return RedirectToAction("Index");
             }
             catch (InventoryServiceException)
@@ -73,7 +104,7 @@ namespace NetMastery.InventoryManager.Controllers
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Update(OrganizationViewModel model)
+        public ActionResult Update(UserViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +112,7 @@ namespace NetMastery.InventoryManager.Controllers
             }
             try
             {
-                _organizationService.Update(_mapper.Map<OrganizationDto>(model));
+                _userService.Update(_mapper.Map<UserDto>(model));
                 return RedirectToAction("Index");
             }
             catch (InventoryServiceException)
@@ -94,15 +125,12 @@ namespace NetMastery.InventoryManager.Controllers
         [HttpPost]
         [Authorize(Roles = "admin")]
         [ValidateAntiForgeryToken]
-        public ActionResult Remove(OrganizationListViewModel model)
+        public ActionResult Remove(UserViewModel model)
         {
-            var deletedItems = model.Organizations.Where(x => x.IsSelected == true)?.ToArray();
             try
             {
-                if (deletedItems != null)
-                {
-                    _organizationService.DeleteRange(deletedItems.Select(item => _mapper.Map<OrganizationDto>(item)));
-                }
+                _userService.Delete(_mapper.Map<UserDto>(model));
+
                 return RedirectToAction("Index");
             }
             catch (InventoryServiceException)
@@ -112,20 +140,9 @@ namespace NetMastery.InventoryManager.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Search(OrganizationListViewModel model)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-            return RedirectToAction("Index", new { pattern = model.Pattern });
-        }
-
         protected override void Dispose(bool disposing)
         {
-            _organizationService.Dispose();
+            _userService.Dispose();
             base.Dispose(disposing);
         }
     }

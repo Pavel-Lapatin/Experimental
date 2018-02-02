@@ -14,7 +14,6 @@ namespace NetMastery.InventoryManager.Bl.Servicies.Interfaces
         Task<IdentityResult> UpdateAsync(RoleDto role);
         Task<IdentityResult> DeleteAsync(RoleDto role);
         Task<RoleDto> FindByIdAsync(string Id);
-
-
+        IEnumerable<RoleDto> GetAll();
     }
 }
